@@ -5,5 +5,6 @@ public class Fungorium {
         System.out.println("Gomba");
         System.out.println("Apád");
         System.out.println("Anyád");
+        System.out.println("Szívotekton");
     }
 }
