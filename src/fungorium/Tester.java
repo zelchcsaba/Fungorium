@@ -36,16 +36,12 @@ public class Tester {
                 ps+=", ";
             }
         }
-        System.out.println(cr + "->" + cd + " : " + func + "(" + ps + ")");
+        if(cr!="" || cd!="") System.out.println(cr + "->" + cd + " : " + func + "(" + ps + ")");
     }
 
 
     //Hasonló mint a toCall.
     public void toReturn(){
-        String f = map.get(from);
-        if(f==null) f="";
-        String t = map.get(to);
-        if(t==null) t="";
         String rt ="";
         int i=0;
         for (Object returnv : returnValue) {
@@ -55,18 +51,28 @@ public class Tester {
                 rt+=", ";
             }
         }
-        System.out.println(f + "-->" + t + " : " + rt);
-    }
-
-    public void toReturnBool(boolean returnValue){
         String f = map.get(from);
         if(f==null) f="";
         String t = map.get(to);
-        if(t==null) t="";
-        String rt = returnValue ? "true" : "false";
-        System.out.println(f + "-->" + t + " : " + rt);
+        if(t==null) {
+            t="";
+            if(f!="" || t!= "")System.out.println(t + "<--" + f + " : " + rt);
+        }
+        else if(f!="" || t!="") System.out.println(f + "-->" + t + " : " + rt);
     }
 
+    //Hasonló mint a toCall.
+    public void toReturn(boolean booleanReturnValue){
+        String rt = booleanReturnValue ? "true" : "false";
+        String f = map.get(from);
+        if(f==null) f="";
+        String t = map.get(to);
+        if(t==null) {
+            t="";
+            if(f!="" || t!="") System.out.println(t + "<--" + f + " : " + rt);
+        }
+        else if(f!="" || t!="") System.out.println(f + "-->" + t + " : " + rt);
+    }
     
 
     //Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs kész.
@@ -74,9 +80,15 @@ public class Tester {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő inicalizáló lépéseket.
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
+        caller = null;
         called = f; // Beállítjuk a tester attribútumait, hogy a kiíratás a valóságot tükrözze.
         parameters.add(t1);
         f.branchThread(t1); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
+        caller = null;
+        called = t1;
+        parameters.clear();
+        to = this; 
+        t1.getSpores();
     }
 
     public void init1(){
@@ -164,6 +176,82 @@ public class Tester {
 
     }
 
+    //Diagram 2-nek felel meg.
+    public void init2(){
+        // A kommunikációs diagrammnak megfelelő sorrendben és módon inicializáljuk az objektumokat.
+        // Ehhez implementálni kellett pár setter-t.
+        map.clear();
+        caller = null;
+        called = null;
+
+
+        MultiThreadTecton t1 = new MultiThreadTecton(this);//1.
+        SingleThreadTecton t2 = new SingleThreadTecton(this);//2.
+        SingleThreadTecton t3 = new SingleThreadTecton(this);//3.
+        MultiThreadTecton t4 = new MultiThreadTecton(this);//4.
+        MultiThreadTecton t5 = new MultiThreadTecton(this);//5.
+        MultiThreadTecton t6 = new MultiThreadTecton(this);//6.
+
+        List<Tecton> t1Neighbors = new ArrayList<>();
+        t1Neighbors.add(t2);
+        t1.setNeighbors(t1Neighbors); //7.
+
+        List<Tecton> t2Neighbors = new ArrayList<>();
+        t2Neighbors.add(t1);
+        t2Neighbors.add(t3);
+        t2.setNeighbors(t2Neighbors); //8.
+
+        List<Tecton> t3Neighbors = new ArrayList<>();
+        t3Neighbors.add(t2);
+        t3.setNeighbors(t3Neighbors); //9.
+
+        List<Tecton> t4Neighbors = new ArrayList<>();
+        t4Neighbors.add(t2);
+        t4Neighbors.add(t5);
+        t4.setNeighbors(t4Neighbors); //10.
+
+        List<Tecton> t5Neighbors = new ArrayList<>();
+        t5Neighbors.add(t4);
+        t5Neighbors.add(t6);
+        t5.setNeighbors(t5Neighbors); //11.
+
+        List<Tecton> t6Neighbors = new ArrayList<>();
+        t6Neighbors.add(t5);
+        t6.setNeighbors(t6Neighbors); //12.
+
+        FungalThread f = new FungalThread(this); //13.
+        Mushroom m = new Mushroom(this); //14.
+
+        List<Tecton> fTectons = new ArrayList<>();
+        fTectons.add(t1);
+        fTectons.add(t2);
+        fTectons.add(t3);
+        fTectons.add(t5);
+        fTectons.add(t6);
+        f.setTectons(fTectons); //15.
+
+        t1.putThread(f); //16.
+        t2.putThread(f); //17.
+        t3.putThread(f); //18.
+        t5.putThread(f); //19.
+        t6.putThread(f); //20.
+
+        m.setPosition(t2); //21.
+        t2.setMushroom(m); //22.
+        m.setThread(f); //23.
+
+        //Végül betesszük a map-be, hogy elő tudjuk őket szedni, hogy meghívjuk a függvényeiket
+        map.put(f, "f");
+        map.put(m, "m");
+        map.put(t1, "t1");
+        map.put(t2, "t2");
+        map.put(t3, "t3");
+        map.put(t4, "t4");
+        map.put(t5, "t5");
+        map.put(t6, "t6");
+
+    }
+
     //Diagram 3-nak felel meg.
     public void init3(){
 
@@ -216,10 +304,6 @@ public class Tester {
         map.put(t2, "t2");
         map.put(t3, "t3");
         map.put(s, "s");
-
-        for (int i = 0; i < 50; i++) { // Kiír 50 üres sort jobb hijján, hogy ne látszódjanak a setterek kiírásai.
-            System.out.println();
-        }
     }
 
     // Segéd függvény, hogy a neve alapján elő szedjünk egy objektumot
