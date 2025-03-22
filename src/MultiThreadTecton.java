@@ -16,14 +16,19 @@ public class MultiThreadTecton extends Tecton{
         this.mushroom=mushroom;
     }
 
-    // TO DO
-    public boolean putMushroom(Mushroom m) {return true;}
+    public void setThreads(List<FungalThread> threads){
+        this.threads=threads;
+    }
+    
     public boolean putThread(FungalThread f) {
         t.toCall("putThread");
         threads.add(f);
 
         return true;
     }
+
+    // TO DO
+    public boolean putMushroom(Mushroom m) {return true;}
     public boolean removeMushroom() {return true;}
     public boolean removeThread(FungalThread f) {return true;}
     public boolean breakTecton() {return true;}

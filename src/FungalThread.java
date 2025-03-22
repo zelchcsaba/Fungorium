@@ -15,7 +15,6 @@ public class FungalThread {
         this.tectons=tectons;
     }
     
-    public void deleteUnnecessaryThreads() {}
     public boolean branchThread(Tecton t) {
         this.t.toCall("branchThread"); // És itt iratjuk a testerrel.
         //Nincs megállás
@@ -27,16 +26,17 @@ public class FungalThread {
 
         return true;
     }
+
     public boolean addTecton(Tecton t) {
-        tectons.add(t);
-        return true;
+        return tectons.add(t);
     }
+    
     public boolean removeTecton(Tecton t) {
-        tectons.remove(t);
-        return true;
+        return tectons.remove(t);
     }
-    public boolean growMushroom(Tecton t) {
-        return true;
-    }
+
+    //TO DO majd, most nem kell
+    public boolean growMushroom(Tecton t) {return true;}
+    public void deleteUnnecessaryThreads() {}
 
 }
