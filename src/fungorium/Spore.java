@@ -14,6 +14,10 @@ public abstract class Spore {
         this.thread=thread;
     }
 
+    public FungalThread getThread(){
+        return thread;
+    }
+
     public abstract void applyEffect(Insect i);
 
 }

@@ -14,7 +14,7 @@ public class AbsorbingTecton extends Tecton{
     }
 
     //setterek getterek
-    public void setThreads(ArrayList<FungalThread> list){
+    public void setThreads(List<FungalThread> list){
         threads = list;
     }
 

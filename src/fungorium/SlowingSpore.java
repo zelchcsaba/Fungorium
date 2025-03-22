@@ -2,7 +2,12 @@ package fungorium;
 
 public class SlowingSpore extends Spore{
 
-    Tester t;
-    public void applyEffect(Insect i) {}
+    public SlowingSpore(Tester t){
+        super(t);
+    }
+
+    public void applyEffect(Insect i) {
+        i.setState(SporeEffect.SLOWED);
+    }
 
 }

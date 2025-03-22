@@ -15,7 +15,7 @@ public class SingleThreadTecton extends Tecton{
         thread = null;
     }
 
-    public void setThreads(ArrayList<FungalThread> list){
+    public void setThreads(List<FungalThread> list){
         thread = list.get(0);
     }
 
@@ -34,16 +34,58 @@ public class SingleThreadTecton extends Tecton{
     }
 
 
-//To do
-    public boolean putMushroom(Mushroom m) {}
+//ha nincs meg mushroom rarakjuk
+    public boolean putMushroom(Mushroom m) {
+        if(mushroom == null){
+            mushroom = m;
+            return true;
+        }
+        return false;
+    }
+
+    //ha van rajta mushroom toroljuk
+    public boolean removeMushroom() {
+        if(mushroom != null){
+            mushroom = null;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //ha nincs egy fonal se rajta, akkor lehet fonalat helyezni ra
     public boolean putThread(FungalThread f) {
         if(thread == null){
             thread = f;
+            return true;
+        }else{
+            return false;
         }
     }
-    public boolean removeMushroom() {}
-    public boolean removeThread(FungalThread f) {}
-    public boolean breakTecton() {}
-    public boolean putFirstMushroom() {}
+
+
+//ha a kapott thread megegyezik az eltarolt threaddel
+    public boolean removeThread(FungalThread f) {
+        if(thread.equals(f)){
+            thread = null;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //to do
+    public boolean breakTecton() {
+        return true;
+    }
+
+//To do
+    public boolean putFirstMushroom() {
+        if(mushroom == null){
+           return true;
+        }else{
+            return false;
+        }
+    }
 
 }

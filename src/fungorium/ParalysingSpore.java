@@ -1,8 +1,13 @@
 package fungorium;
 
-public class ParalysingSpore {
+public class ParalysingSpore extends Spore{
 
-    Tester t;
-    public void applyEffect(Insect i) {}
+    public ParalysingSpore(Tester t){
+        super(t);
+    }
+    
+    public void applyEffect(Insect i) {
+        i.setState(SporeEffect.PARALYZED);
+    }
 
 }
