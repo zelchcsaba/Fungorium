@@ -49,6 +49,7 @@ public class FungalThread {
         return tectons.add(t);
     }
     
+    //keveszi a tectons többől a kapott tektont
     public boolean removeTecton(Tecton t) {
         this.t.toCall("removeTecton");
 
@@ -56,6 +57,7 @@ public class FungalThread {
         this.t.returnValue.add(Boolean.TRUE);
         this.t.toReturn();
 
+        tectons.remove(t);
         return true;
     }
 
