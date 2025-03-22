@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Fungorium {
     public static void main(String[] args) {
+<<<<<<< HEAD
 
         Scanner scanner = new Scanner(System.in);
         Tester t = new Tester();
@@ -46,5 +47,17 @@ public class Fungorium {
                     break;
             }
         }
+=======
+        Tester t = new Tester();
+        //t.unevolvedShootSpore();
+        System.out.println("\n\n");
+        //t.putFirstMushroomTrue();
+        System.out.println("\n\n");
+        t.putFirstMushroomFalseAbsorb();
+        System.out.println("\n\n");
+        t.putFirstMushroomFalseIsMush();
+        System.out.println("\n\n");
+        t.unevolvedShootSporeTrue();
+>>>>>>> a21efe7bc30c8487a95c3d428142aaf3e7ff18ce
     }
 }

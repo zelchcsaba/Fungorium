@@ -212,6 +212,7 @@ public class Tester {
         list.add(m);
         parameters.clear();
         parameters.add(t2);
+        m.shootSpore(t2);
 
         System.out.println("t2 céltekton szomszédos?");
         String select = scanner.next();
@@ -251,7 +252,38 @@ public class Tester {
         t5.putFirstMushroom();
     }
 
-    public void init1() {
+    /**
+     * Use-case-hez tartozó név: Első gombatest lehelyezése egy tektonra,
+     *                           amelyre nem lehet lehelyezni (van gombatest a tektonon).
+     *
+     */
+    public void putFirstMushroomFalseIsMush(){
+        init1();
+        MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
+        list.add(null);
+        list.add(t1);
+        parameters.clear();
+        t1.putFirstMushroom();
+
+    }
+
+    /**
+     * Use-case-hez tartozó név: Fejletlen gombatest spóra szórása olyan tektonra, amelyre tud.
+     *                           
+     *
+     */
+    public void unevolvedShootSporeTrue(){
+        init1();
+        Mushroom m = (Mushroom) getObjectByValue("m");
+        SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
+        list.add(null);
+        list.add(m);
+        parameters.clear();
+        parameters.add(t3);
+        m.shootSpore(t3);
+    }
+
+    public void init1(){
 
         map.clear();
 
