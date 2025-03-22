@@ -101,11 +101,41 @@ public class MultiThreadTecton extends Tecton{
     public boolean breakTecton() {return true;}
 
     public boolean putFirstMushroom() {
+        this.t.toCall("putFirstMushroom");
         if(mushroom == null){
+            FungalThread ft = new FungalThread(t);
+            this.t.toCreate(this, ft, "ft");
+            Mushroom mush = new Mushroom(t);
+            t.toCreate(this, mush, "mush");
+
+            t.list.add(this);
+            t.list.add(ft);
+            t.parameters.clear();
+            t.parameters.add(this);
+            ft.addTecton(this);
+
+            t.list.add(this);
+            t.list.add(mush);
+            t.parameters.clear();
+            t.parameters.add(this);
+            mush.setPosition(this);
+
+            t.list.add(this);
+            t.list.add(mush);
+            t.parameters.clear();
+            t.parameters.add(ft);
+            mush.setThread(ft);
+
+
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
             return true;
-         }else{
-             return false;
-         }
+        }
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.FALSE);
+        this.t.toReturn();
+        return false;
     }
 
     public List<FungalThread> getThreadsWithoutCout(){

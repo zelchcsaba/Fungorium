@@ -1,5 +1,6 @@
 package fungorium;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,10 @@ public class FungalThread {
     }
 
     public boolean addTecton(Tecton t) {
+        this.t.toCall("addTecton");
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
         return tectons.add(t);
     }
     

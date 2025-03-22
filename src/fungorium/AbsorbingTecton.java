@@ -82,6 +82,10 @@ public class AbsorbingTecton extends Tecton{
 
     //false, mert nem lehet gombát rárakni
     public boolean putFirstMushroom() {
+        t.toCall("putFirstMushroom");
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.FALSE);
+        this.t.toReturn();
         return false;
     }
 
