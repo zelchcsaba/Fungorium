@@ -6,9 +6,9 @@ import java.util.List;
 public abstract class Tecton {
 
     Tester t;
-    private List<Spore> spores;
-    private List<Tecton> neighbors;
-    private Insect i;
+    protected  List<Spore> spores;
+    protected List<Tecton> neighbors;
+    protected  Insect i;
 
     public Tecton(Tester t){
         this.t = t;
@@ -26,6 +26,7 @@ public abstract class Tecton {
     public abstract boolean removeThread(FungalThread f);
     public abstract boolean breakTecton();
     public abstract boolean putFirstMushroom();
+    public abstract List<FungalThread> getThreads();
 
     //TO DO
     public boolean putSpore(Spore sp, Tecton t) {return true;}
