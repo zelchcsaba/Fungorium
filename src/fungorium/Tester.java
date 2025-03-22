@@ -103,6 +103,31 @@ public class Tester {
         t5Neighbors.add(t3);
         t5.setNeighbors(t5Neighbors);//10.
 
+        FungalThread f = new FungalThread(this);//11.
+        Mushroom m = new Mushroom(this);//12.
+
+        List<Tecton> fTectons = new ArrayList<>();
+        fTectons.add(t1);
+        fTectons.add(t3);
+        fTectons.add(t2);
+        f.setTectons(fTectons);//13.
+
+        t1.putThread(f);//14.
+        t3.putThread(f);//15.
+        t2.putThread(f);//16.
+
+        m.setPosition(t1);//17
+        t1.setMushroom(m);//18
+        m.setThread(f);//19
+
+        SlowingSpore s = new SlowingSpore(this);//20
+        
+        List<Spore> spores = new ArrayList<>();
+        spores.add(s);
+        t3.setSpores(spores);//22
+
+        Insect i = new Insect(this);//23
+        i.setTec
 
 
 
