@@ -13,13 +13,14 @@ public class Tester {
     public Object caller, called, from, to; //A függvény hívója, az objektum amin meghívták.
     public List<Object> parameters; // Paraméterek amiket átadtunk.
     public List<Object> returnValue;
+    public Scanner scanner;
 
     public Tester(){
         map = new HashMap<>();
         parameters = new ArrayList<>();
         returnValue = new ArrayList<>();
+        scanner = new Scanner(System.in);
     }
-    public Scanner scanner = new Scanner(System.in);
 
     //Tester osztály egyik kíírató függvénye. A meghívott fg-k törzsében hívjuk meg.
     // Mindegyik osztálynak kell legyen egy Tester objektuma, hogy ezeket meghívhassa
