@@ -60,10 +60,10 @@ public class Tester {
         }
     }
 
-    public void toCreate(Object o1, Object o2, String name){
-        String caller = map.get(o1);
-        String created = map.get(o2);
-        System.out.println(caller + "-->" + created + " :  <<create>>");
+    public void toCreate(Object caller, Object called, String name){
+        String callerName = map.get(caller);
+        map.put(called, name);
+        System.out.println(callerName + "-->" + name + " :  <<create>>");
     }
 
     //Hasonló mint a toCall.
@@ -164,6 +164,20 @@ public class Tester {
         parameters.clear();
         t4.putFirstMushroom();
 
+    }
+
+    /**
+     * Use-case-hez tartozó név: Első gombatest lehelyezése egy tektonra,
+     *                           amelyre nem lehet lehelyezni (AbsorbingTecton).
+     *
+     */
+    public void putFirstMushroomFalseAbsorb(){
+        init1();
+        AbsorbingTecton t5 = (AbsorbingTecton) getObjectByValue("t5");
+        list.add(null);
+        list.add(t5);
+        parameters.clear();
+        t5.putFirstMushroom();
     }
 
     public void init1(){

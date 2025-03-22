@@ -3,6 +3,10 @@ package fungorium;
 public class Fungorium {
     public static void main(String[] args) {
         Tester t = new Tester();
-        t.unevolvedShootSpore();;
+        t.unevolvedShootSpore();
+        System.out.println("\n\n");
+        t.putFirstMushroomTrue();
+        System.out.println("\n\n");
+        t.putFirstMushroomFalseAbsorb();
     }
 }
