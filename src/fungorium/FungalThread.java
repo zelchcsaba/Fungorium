@@ -25,13 +25,19 @@ public class FungalThread {
         this.t.parameters.clear();
         this.t.parameters.add(this);
 
-        t.putThread(this);
-
-        this.t.returnValue.clear();
-        this.t.returnValue.add(Boolean.TRUE);
-        this.t.toReturn();
-        
-        return true;
+        if(!t.putThread(this)){
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        }
+        else{
+            tectons.add(t);
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+            return true;
+        }
     }
 
     public boolean addTecton(Tecton t) {
@@ -91,6 +97,10 @@ public class FungalThread {
         this.t.returnValue.clear();
         this.t.toReturn();
 
+    }
+
+    public List<Tecton> getTectons(){
+        return tectons;
     }
 
 }
