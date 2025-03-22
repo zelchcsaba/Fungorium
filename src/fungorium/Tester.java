@@ -8,7 +8,7 @@ import java.util.Map;
 //Tester osztély a teszteléshez.
 public class Tester {
     public Map<Object, String> map = new HashMap<>(); // Ebben tároljuk a kulcs-érték párokat. kulcs=objektum érték=név. 1:1 megfeleltetés.
-    public Object caller, called; //A függvény hívója, az objektum amin meghívták.
+    public Object caller, called, from, to; //A függvény hívója, az objektum amin meghívták.
     public List<Object> parameters = new ArrayList<>(); // Paraméterek amiket átadtunk.
     public List<Object> returnValue = new ArrayList<>();
 
@@ -35,13 +35,33 @@ public class Tester {
 
 
     //Hasonló mint a toCall.
-    public void toReturn(String value){
-        String cr = map.get(caller);
-        if(cr==null) cr="";
-        String cd = map.get(called);
-        if(cd==null) cd="";
-        System.out.println(cr + "-->" + cd + " : " + value);
+    public void toReturn(){
+        String f = map.get(from);
+        if(f==null) f="";
+        String t = map.get(to);
+        if(t==null) t="";
+        String rt ="";
+        int i=0;
+        for (Object returnv : returnValue) {
+            rt+= map.get(returnv);
+            i++;
+            if(i<returnValue.size()){
+                rt+=", ";
+            }
+        }
+        System.out.println(f + "-->" + t + " : " + rt);
     }
+
+    public void toReturnBool(boolean returnValue){
+        String f = map.get(from);
+        if(f==null) f="";
+        String t = map.get(to);
+        if(t==null) t="";
+        String rt = returnValue ? "true" : "false";
+        System.out.println(f + "-->" + t + " : " + rt);
+    }
+
+    
 
     //Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs kész.
     public void FungalThreadBranching(){

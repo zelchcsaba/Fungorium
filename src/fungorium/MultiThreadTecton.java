@@ -23,13 +23,21 @@ public class MultiThreadTecton extends Tecton{
     }
     
     public List<FungalThread> getThreads(){
+        t.toCall("getThreads");
+        t.from=this;
+        t.returnValue=new ArrayList<>(threads);
+        t.toReturn();
         return threads;
     }
 
     public boolean putThread(FungalThread f) {
         t.toCall("putThread");
-        for(Tecton t : neighbors){
-            t.getThreads();
+        for(Tecton tecton : neighbors){
+            t.caller=this;
+            t.called=tecton;
+            t.parameters.clear();
+            t.to=this;
+            tecton.getThreads();
         }
         
         threads.add(f);
