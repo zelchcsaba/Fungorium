@@ -341,8 +341,6 @@ public class Tester {
 
     public void init4() {
         map.clear();
-        caller = null;
-        called = null;
 
         Tecton t1 = new MultiThreadTecton(this);    // 1.
         Tecton t2 = new SingleThreadTecton(this);   // 2.
@@ -416,8 +414,6 @@ public class Tester {
 
     public void init5() {
         map.clear();
-        caller = null;
-        called = null;
 
         FungalThread f = new FungalThread(this);    // 1.
         Tecton t1 = new MultiThreadTecton(this);    // 2.
