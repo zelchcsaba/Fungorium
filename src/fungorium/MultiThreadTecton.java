@@ -86,11 +86,13 @@ public class MultiThreadTecton extends Tecton{
     public boolean breakTecton() {return true;}
 
     public boolean putFirstMushroom() {
-        if(mushroom == null){
-            return true;
-         }else{
-             return false;
-         }
+        this.t.toCall("putFirstMushroom");
+        this.t.list.add(this);
+        this.t.parameters.clear();
+        this.t.parameters.add(this);
+       if(mushroom == null){
+            FungalThread ft = new FungalThread(t);
+       }
     }
 
 }

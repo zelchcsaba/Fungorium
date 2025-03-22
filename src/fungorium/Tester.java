@@ -133,6 +133,21 @@ public class Tester {
         
     }
 
+
+    /**
+     * Use-case-hez tartozó név: Első gombatest lehelyezése olyan tektonra,
+     *                           amelyre le lehet helyezni.
+     */
+    public void putFirstMushroomTrue(){
+        init1();
+        MultiThreadTecton t4 = (MultiThreadTecton) getObjectByValue("t4");
+        list.add(null);
+        list.add(t4);
+        parameters.clear();
+        t4.putFirstMushroom();
+
+    }
+
     public void init1(){
 
         map.clear();
