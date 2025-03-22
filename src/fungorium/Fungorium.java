@@ -8,5 +8,9 @@ public class Fungorium {
         t.putFirstMushroomTrue();
         System.out.println("\n\n");
         t.putFirstMushroomFalseAbsorb();
+        System.out.println("\n\n");
+        t.putFirstMushroomFalseIsMush();
+        System.out.println("\n\n");
+        t.unevolvedShootSporeTrue();
     }
 }
