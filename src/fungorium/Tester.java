@@ -158,31 +158,41 @@ public class Tester {
         }
     }
 
-    public void simpleFungalThreadBranching(){
+    /**
+     * Use-case-hez tartozó név: Gombafonál sikertelen elágaztatása egyfonalas tektonra, 
+     *                           mert már van rajta.
+     */
+    public void simpleFungalThreadBranchingFalse(){
+        init4(); 
+        FungalThread f2 = (FungalThread) getObjectByValue("f2"); // Előszedjük a megfelelő nevű objektumokat.
+        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+        list.add(null);
+        list.add(f2);
+        parameters.clear();
+        parameters.add(t2);
+        f2.branchThread(t2); 
+    }
+
+    /**
+     * Use-case-hez tartozó név: Gombafonál sikeres elágaztatása tektonra. 
+     */
+    public void simpleFungalThreadBranchingTrue(){
         init1(); 
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
-        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
-        
-        System.out.println("Van t2-ön fonál?");
-        String select = scanner.next();
-        if(!select.equals("y")){
-            t2.setThreads(null);
-        }
-        System.out.println("Van t2 szomszédain már f fonál?");
-        select = scanner.next();
-        if(!select.equals("y")){
-            SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
-            t3.setThreads(null);
-        }
+        MultiThreadTecton t4 = (MultiThreadTecton) getObjectByValue("t4");
         list.add(null);
         list.add(f);
         parameters.clear();
-        parameters.add(t2);
-        f.branchThread(t2); 
+        parameters.add(t4);
+        f.branchThread(t4); 
     }
 
 
-    public void unevolvedShootSpore(){
+    /**
+     * Use-case-hez tartozó név: Sikertelen spóraszórás, mert nem szomszédos a céltekton.
+     *
+     */
+    public void unevolvedShootSporeFalse(){
         init1();
         Mushroom m = (Mushroom) getObjectByValue("m");
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");

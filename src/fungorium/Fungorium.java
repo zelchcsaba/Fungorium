@@ -12,5 +12,11 @@ public class Fungorium {
         t.putFirstMushroomFalseIsMush();
         System.out.println("\n\n");
         t.unevolvedShootSporeTrue();
+        System.out.println("\n\n");
+        t.unevolvedShootSporeFalse();
+        System.out.println("\n\n");
+        t.simpleFungalThreadBranchingFalse();
+        System.out.println("\n\n");
+        t.simpleFungalThreadBranchingTrue();
     }
 }
