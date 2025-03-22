@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.event.TreeSelectionListener;
+import java.util.Scanner;
 
 //Tester osztély a teszteléshez.
 public class Tester {
@@ -11,6 +13,7 @@ public class Tester {
     public Object caller, called, from, to; //A függvény hívója, az objektum amin meghívták.
     public List<Object> parameters = new ArrayList<>(); // Paraméterek amiket átadtunk.
     public List<Object> returnValue = new ArrayList<>();
+    public Scanner scanner = new Scanner(System.in);
 
     //Tester osztály egyik kíírató függvénye. A meghívott fg-k törzsében hívjuk meg.
     // Mindegyik osztálynak kell legyen egy Tester objektuma, hogy ezeket meghívhassa
@@ -78,11 +81,24 @@ public class Tester {
         called = f; // Beállítjuk a tester attribútumait, hogy a kiíratás a valóságot tükrözze.
         parameters.add(t1);
         f.branchThread(t1); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
-        caller = null;
-        called = t1;
-        parameters.clear();
-        to = this; 
-        t1.getSpores();
+        System.out.println("Van t1-en spóra?");
+        String select = scanner.next();
+        if(select.equals("y")){
+            SpeedSpore spores = new SpeedSpore(this);
+            List<Spore> slist = new ArrayList<Spore>(); 
+            slist.add(spores);
+            t1.setSpores(slist);
+            caller = null;
+            called = t1;
+            parameters.clear();
+            to = this; 
+            t1.getSpores();
+        }
+        else{
+            System.out.println(":3");
+        }
+
+        
     }
 
     public void init1(){
