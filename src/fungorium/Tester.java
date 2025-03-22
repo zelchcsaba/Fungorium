@@ -325,6 +325,7 @@ public class Tester {
         map.clear();
         caller = null;
         called = null;
+
         Tecton t1 = new MultiThreadTecton(this);    // 1.
         Tecton t2 = new SingleThreadTecton(this);   // 2.
         Tecton t3 = new AbsorbingTecton(this);      // 3.
@@ -381,6 +382,17 @@ public class Tester {
         Insect i = new Insect(this);                 // 28.
         i.setPosition(t3);                              // 29.
         t3.setInsect(i);                                // 30.
+
+        map.put(t1, "t1");
+        map.put(t2, "t2");
+        map.put(t3, "t3");
+        map.put(t4, "t4");
+        map.put(t5, "t5");
+        map.put(f1, "f1");
+        map.put(f2, "f2");
+        map.put(m1, "m1");
+        map.put(m2, "m2");
+        map.put(i, "i");
     }
 
 
@@ -439,6 +451,16 @@ public class Tester {
         s2.setThread(f);                              // 23.
         s3.setThread(f);                              // 24.
         s4.setThread(f);                              // 25.
+
+        map.put(f, "f");
+        map.put(t1, "t1");
+        map.put(t2, "t2");
+        map.put(t3, "t3");
+        map.put(m, "m");
+        map.put(s1, "s1");
+        map.put(s2, "s2");
+        map.put(s3, "s3");
+        map.put(s4, "s4");
     }
 
     // Segéd függvény, hogy a neve alapján elő szedjünk egy objektumot
