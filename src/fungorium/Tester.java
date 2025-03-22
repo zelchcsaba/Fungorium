@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.event.TreeSelectionListener;
 import java.util.Scanner;
 
 //Tester osztély a teszteléshez.
@@ -92,6 +91,7 @@ public class Tester {
         String select = scanner.next();
         if(select.equals("y")){
             SpeedSpore spores = new SpeedSpore(this);
+            map.put(spores, "spores");
             List<Spore> slist = new ArrayList<Spore>(); 
             slist.add(spores);
             t1.setSpores(slist);
@@ -102,7 +102,7 @@ public class Tester {
             t1.getSpores();
         }
         else{
-            System.out.println(":3");
+            System.out.println("Nem tud megint lépni");
         }
 
         

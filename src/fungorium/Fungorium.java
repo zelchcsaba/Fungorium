@@ -9,5 +9,7 @@ public class Fungorium {
         Tester t = new Tester();
         t.FungalThreadBranching();
     
+        Integer i = new Integer(10);
+        System.out.println(i.toString());
     }
 }
