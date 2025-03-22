@@ -20,12 +20,17 @@ public class FungalThread {
     public boolean branchThread(Tecton t) {
         this.t.toCall("branchThread"); // És itt iratjuk a testerrel.
         //Nincs megállás
-        this.t.caller = this;
-        this.t.called = t;
+        this.t.list.add(this);
+        this.t.list.add(t);
         this.t.parameters.clear();
         this.t.parameters.add(this);
+
         t.putThread(this);
 
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
+        
         return true;
     }
 

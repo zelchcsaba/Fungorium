@@ -10,15 +10,16 @@ import java.util.Scanner;
 //Tester osztély a teszteléshez.
 public class Tester {
     public Map<Object, String> map; // Ebben tároljuk a kulcs-érték párokat. kulcs=objektum érték=név. 1:1 megfeleltetés.
-    public Object caller, called, from, to; //A függvény hívója, az objektum amin meghívták.
     public List<Object> parameters; // Paraméterek amiket átadtunk.
     public List<Object> returnValue;
     public Scanner scanner;
+    public List<Object> list;
 
     public Tester(){
         map = new HashMap<>();
         parameters = new ArrayList<>();
         returnValue = new ArrayList<>();
+        list = new ArrayList<>();
         scanner = new Scanner(System.in);
     }
 
@@ -26,57 +27,81 @@ public class Tester {
     // Mindegyik osztálynak kell legyen egy Tester objektuma, hogy ezeket meghívhassa
     //A caller-t, called-t, parameters-t, függvényhívás előtt beállítottuk. 
     //Itt csak kikeressük a nevüket és kiíratjuk a doksiban lévő szintax alapján.
-    public void toCall(String func){
-        String cr = map.get(caller);
-        if(cr==null) cr=""; // Ha null, mert pl a tester a hívó akkor nem írunk ki semmit balra.
-        String cd = map.get(called);
-        if(cd==null) cd="";
-        String ps ="";
-        int i=0;
-        for (Object parameter : parameters) {
-            ps+= map.get(parameter);
-            i++;
-            if(i<parameters.size()){
-                ps+=", ";
-            }
+    public void toCall( String func){
+
+        if(!list.isEmpty()){
+
+
+            String caller = map.get(list.get(list.size()-2));
+
+            if(caller==null) caller=""; // Ha null, mert pl a tester a hívó akkor nem írunk ki semmit balra.
+
+
+         String called = map.get(list.get(list.size()-1));
+
+            if(called==null) called="";
+
+            String parameterString ="";
+
+            int i=0;
+
+         for (Object parameter : parameters) {
+             if(map.get(parameter)==null){
+                    parameterString+=parameter.toString();
+             }else{
+                  parameterString+= map.get(parameter);
+             }
+             i++;
+                if(i<parameters.size()){
+                   parameterString+=", ";
+             }
+         }
+            if(caller!="" || called!="") System.out.println(caller + "->" + called + " : " + func + "(" + parameterString + ")");
+
         }
-        if(cr!="" || cd!="") System.out.println(cr + "->" + cd + " : " + func + "(" + ps + ")");
     }
 
+    public void toCreate(Object o1, Object o2){
+
+    }
 
     //Hasonló mint a toCall.
     public void toReturn(){
-        String rt ="";
+
+        if(!list.isEmpty()){
+
+        String returnString ="";
+
         int i=0;
         for (Object returnv : returnValue) {
-            rt+= map.get(returnv);
+            if(map.get(returnv)==null){
+                returnString+=returnv.toString();
+            }else{
+                returnString+= map.get(returnv);
+            }
+    
             i++;
             if(i<returnValue.size()){
-                rt+=", ";
+                returnString+=", ";
             }
         }
-        String f = map.get(from);
-        if(f==null) f="";
-        String t = map.get(to);
-        if(t==null) {
-            t="";
-            if(f!="" || t!= "")System.out.println(t + "<--" + f + " : " + rt);
+
+        String fromString = map.get(list.get(list.size()-1));
+        if(fromString==null) fromString="";
+        String toString = map.get(list.get(list.size()-2));
+
+        if(toString==null) {
+            toString="";
+            if(fromString!="" || toString!= "")System.out.println(toString + "<--" + fromString + " : " + returnString);
         }
-        else if(f!="" || t!="") System.out.println(f + "-->" + t + " : " + rt);
+        else if(fromString!="" || toString!="") System.out.println(fromString + "-->" + toString + " : " + returnString);
+
+        list.remove(list.size() - 1);
+        list.remove(list.size() - 1);
+
+    }
     }
 
-    //Hasonló mint a toCall.
-    public void toReturn(boolean booleanReturnValue){
-        String rt = booleanReturnValue ? "true" : "false";
-        String f = map.get(from);
-        if(f==null) f="";
-        String t = map.get(to);
-        if(t==null) {
-            t="";
-            if(f!="" || t!="") System.out.println(t + "<--" + f + " : " + rt);
-        }
-        else if(f!="" || t!="") System.out.println(f + "-->" + t + " : " + rt);
-    }
     
 
     //Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs kész.
@@ -84,24 +109,23 @@ public class Tester {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő inicalizáló lépéseket.
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
-        caller = null;
-        called = f; // Beállítjuk a tester attribútumait, hogy a kiíratás a valóságot tükrözze.
+        list.add(null);
+        list.add(f);
+        parameters.clear();
         parameters.add(t1);
         f.branchThread(t1); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
+
         System.out.println("Van t1-en spóra?");
         String select = scanner.next();
+
         if(select.equals("y")){
-            SpeedSpore spores = new SpeedSpore(this);
-            List<Spore> slist = new ArrayList<Spore>(); 
-            slist.add(spores);
-            t1.setSpores(slist);
-            caller = null;
-            called = t1;
+            list.add(null);
+            list.add(f);
+            MultiThreadTecton t3 = (MultiThreadTecton) getObjectByValue("t3");
             parameters.clear();
-            to = this; 
-            t1.getSpores();
-        }
-        else{
+            parameters.add(t3);
+            f.branchThread(t3); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
+        }else{
             System.out.println(":3");
         }
 
@@ -111,8 +135,6 @@ public class Tester {
     public void init1(){
 
         map.clear();
-        caller=null;
-        called=null;
 
         MultiThreadTecton t1 = new MultiThreadTecton(this);//1
         SingleThreadTecton t2 = new SingleThreadTecton(this);//2
@@ -195,8 +217,6 @@ public class Tester {
         // A kommunikációs diagrammnak megfelelő sorrendben és módon inicializáljuk az objektumokat.
         // Ehhez implementálni kellett pár setter-t.
         map.clear();
-        caller = null;
-        called = null;
 
 
         MultiThreadTecton t1 = new MultiThreadTecton(this);//1.
@@ -270,8 +290,6 @@ public class Tester {
     public void init3(){
 
         map.clear();
-        caller=null;
-        called=null;
 
         // A kommunikációs diagrammnak megfelelő sorrendben és módon inicializáljuk az objektumokat.
         // Ehhez implementálni kellett pár setter-t.
