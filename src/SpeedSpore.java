@@ -1,5 +1,9 @@
-public class SpeedSpore {
+public class SpeedSpore extends Spore{
 
+    public SpeedSpore(Tester t){
+        super(t);
+    }
+    
     public void applyEffect(Insect i) {}
 
 }

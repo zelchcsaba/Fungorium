@@ -1,5 +1,6 @@
 public class SingleThreadTecton {
-
+    
+    Tester t;
     private Mushroom mushroom;
     private FungalThread thread;
 

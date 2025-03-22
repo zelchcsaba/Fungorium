@@ -1,5 +1,6 @@
 public class Insect {
 
+    Tester t;
     private Tecton position;
     private SporeEffect state;
 

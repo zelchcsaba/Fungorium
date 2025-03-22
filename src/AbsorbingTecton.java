@@ -1,4 +1,6 @@
-public class AbsorbingTecton {
+import java.util.List;
+
+public class AbsorbingTecton extends Tecton{
 
     private List<FungalThread> threads;
 

@@ -1,13 +1,32 @@
-public class MultiThreadTecton {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MultiThreadTecton extends Tecton{
 
     private Mushroom mushroom;
     private List<FungalThread> threads;
 
-    public boolean putMushroom(Mushroom m) {}
-    public boolean putThread(FungalThread f) {}
-    public boolean removeMushroom() {}
-    public boolean removeThread(FungalThread f) {}
-    public boolean breakTecton() {}
-    public boolean putFirstMushroom() {}
+    public MultiThreadTecton(Tester t){
+        super(t);
+        mushroom = null;
+        threads = new ArrayList<>();
+    }
+
+    public void setMushroom(Mushroom mushroom){
+        this.mushroom=mushroom;
+    }
+
+    // TO DO
+    public boolean putMushroom(Mushroom m) {return true;}
+    public boolean putThread(FungalThread f) {
+        t.toCall("putThread");
+        threads.add(f);
+
+        return true;
+    }
+    public boolean removeMushroom() {return true;}
+    public boolean removeThread(FungalThread f) {return true;}
+    public boolean breakTecton() {return true;}
+    public boolean putFirstMushroom() {return true;}
 
 }
