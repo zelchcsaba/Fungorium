@@ -171,9 +171,6 @@ public class Tester {
         map.put(s, "s");
         map.put(s2, "s2");
 
-
-
-
     }
 
     //Diagram 2-nek felel meg.
