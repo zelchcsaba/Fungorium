@@ -14,11 +14,11 @@ public class Insect {
     }
 
     //getter setter
-    public void setTecton(Tecton t){
+    public void setPosition(Tecton t){
         position = t;
     }
 
-    public Tecton getTecton(){
+    public Tecton getPosition(){
         return position;
     }
 
