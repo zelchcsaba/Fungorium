@@ -149,6 +149,11 @@ public class Tester {
     public void init2(){
         // A kommunikációs diagrammnak megfelelő sorrendben és módon inicializáljuk az objektumokat.
         // Ehhez implementálni kellett pár setter-t.
+        map.clear();
+        caller = null;
+        called = null;
+
+
         MultiThreadTecton t1 = new MultiThreadTecton(this);//1.
         SingleThreadTecton t2 = new SingleThreadTecton(this);//2.
         SingleThreadTecton t3 = new SingleThreadTecton(this);//3.
@@ -185,6 +190,35 @@ public class Tester {
 
         FungalThread f = new FungalThread(this); //13.
         Mushroom m = new Mushroom(this); //14.
+
+        List<Tecton> fTectons = new ArrayList<>();
+        fTectons.add(t1);
+        fTectons.add(t2);
+        fTectons.add(t3);
+        fTectons.add(t5);
+        fTectons.add(t6);
+        f.setTectons(fTectons); //15.
+
+        t1.putThread(f); //16.
+        t2.putThread(f); //17.
+        t3.putThread(f); //18.
+        t5.putThread(f); //19.
+        t6.putThread(f); //20.
+
+        m.setPosition(t2); //21.
+        t2.setMushroom(m); //22.
+        m.setThread(f); //23.
+
+        //Végül betesszük a map-be, hogy elő tudjuk őket szedni, hogy meghívjuk a függvényeiket
+        map.put(f, "f");
+        map.put(m, "m");
+        map.put(t1, "t1");
+        map.put(t2, "t2");
+        map.put(t3, "t3");
+        map.put(t4, "t4");
+        map.put(t5, "t5");
+        map.put(t6, "t6");
+
     }
 
     //Diagram 3-nak felel meg.
