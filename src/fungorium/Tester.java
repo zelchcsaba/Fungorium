@@ -62,7 +62,9 @@ public class Tester {
     }
 
     public void toCreate(Object o1, Object o2){
-
+        String caller = map.get(o1);
+        String created = map.get(o2);
+        System.out.println(caller + "-->" + created + " :  <<create>>");
     }
 
     //Hasonló mint a toCall.
