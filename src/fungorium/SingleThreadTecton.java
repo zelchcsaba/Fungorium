@@ -30,6 +30,13 @@ public class SingleThreadTecton extends Tecton{
     }
 
     public Mushroom getMushroom(){
+
+        this.t.toCall("getMushroom"); // És itt iratjuk a testerrel.
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(mushroom);
+        this.t.toReturn();
+
         return mushroom;
     }
 
@@ -66,12 +73,15 @@ public class SingleThreadTecton extends Tecton{
 
 //ha a kapott thread megegyezik az eltarolt threaddel
     public boolean removeThread(FungalThread f) {
-        if(thread.equals(f)){
-            thread = null;
-            return true;
-        }else{
-            return false;
-        }
+
+        this.t.toCall("deleteUnnecessaryThreads"); // És itt iratjuk a testerrel.
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
+
+        thread = null;
+        return true;
     }
 
     //to do
