@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.event.TreeSelectionListener;
 import java.util.Scanner;
 
 //Tester osztély a teszteléshez.
@@ -130,8 +129,26 @@ public class Tester {
         }else{
             System.out.println(":3");
         }
+    }
 
-        
+    public void unevolvedShootSpore(){
+        init1();
+        Mushroom m = (Mushroom) getObjectByValue("m");
+        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+        list.add(null);
+        list.add(m);
+        parameters.clear();
+        parameters.add(t2);
+
+        System.out.println("t2 céltekton szomszédos?");
+        String select = scanner.next();
+        if(select.equals("y")){
+            t2.neighbors.add(m.getPosition());
+            m.shootSpore(t2);
+        }
+        else{
+            m.shootSpore(t2);   
+        }
     }
 
     public void init1(){

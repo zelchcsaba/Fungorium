@@ -60,7 +60,22 @@ public abstract class Tecton {
     
 
     //TO DO
-    public boolean putSpore(Spore sp, Tecton t) {return true;}
+    public boolean putSpore(Spore sp, Tecton t) {
+        this.t.toCall("putSpore");
+        if(!neighbors.contains(t)){
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        }
+        else{
+            spores.add(sp);
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+            return true;
+        }
+    }
 //To do
 
     public List<Tecton> getThreadSection(FungalThread f) {
