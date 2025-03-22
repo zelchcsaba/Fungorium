@@ -12,67 +12,67 @@ public class Mushroom {
     private MushroomState state;
     private int shootedSporesCount;
 
-    //kontruktor
-    public Mushroom(Tester t){
-        this.t=t;
+    // kontruktor
+    public Mushroom(Tester t) {
+        this.t = t;
         position = null;
-        spores=new ArrayList<>();
+        spores = new ArrayList<>();
         thread = null;
         state = MushroomState.UNEVOLVED;
         shootedSporesCount = 0;
     }
 
-//getter settter
-    public void setPosition(Tecton position){
+    // getter settter
+    public void setPosition(Tecton position) {
         this.t.toCall("setPosition");
         this.t.returnValue.clear();
         this.t.toReturn();
-        this.position=position;
+        this.position = position;
     }
 
-    public Tecton getPosition(){
+    public Tecton getPosition() {
         return position;
     }
 
-    public void setThread(FungalThread thread){
+    public void setThread(FungalThread thread) {
         this.t.toCall("setThread");
         this.t.returnValue.clear();
         this.t.toReturn();
-        this.thread=thread;
+        this.thread = thread;
     }
 
-    public FungalThread getThread(){
+    public FungalThread getThread() {
         return thread;
     }
 
-    public void setSpores(List<Spore> spores){
-        this.spores=spores;
+    public void setSpores(List<Spore> spores) {
+        this.spores = spores;
     }
 
-    public List<Spore> getSpores(){
+    public List<Spore> getSpores() {
         return spores;
     }
 
-    public void setShootedSporesCount(int shootedSporesCount){
-        this.shootedSporesCount=shootedSporesCount;
+    public void setShootedSporesCount(int shootedSporesCount) {
+        this.shootedSporesCount = shootedSporesCount;
     }
 
-    public int getShootedSporesCount(){
+    public int getShootedSporesCount() {
         return shootedSporesCount;
     }
 
-    public void setState(MushroomState s){
-        state=s;
+    public void setState(MushroomState s) {
+        state = s;
     }
 
-    public MushroomState getState(){
+    public MushroomState getState() {
         return state;
     }
 
-    //To do
+    // To do
     public boolean shootSpore(Tecton t) {
         this.t.toCall("shootSpore");
-        if(spores.isEmpty()){
+        if (spores.isEmpty()) {
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.FALSE);
             this.t.toReturn();
@@ -83,13 +83,12 @@ public class Mushroom {
         this.t.parameters.clear();
         this.t.parameters.add(spores.get(0));
         this.t.parameters.add(position);
-        if(!t.putSpore(spores.get(0), position)){
+        if (!t.putSpore(spores.get(0), position)) {
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.FALSE);
             this.t.toReturn();
             return false;
-        }
-        else{
+        } else {
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.TRUE);
             this.t.toReturn();
@@ -97,13 +96,13 @@ public class Mushroom {
         }
     }
 
-//allapot beallitas
+    // allapot beallitas
     public boolean evolve() {
-        state=MushroomState.EVOLVED;
+        state = MushroomState.EVOLVED;
         return true;
     }
 
-//spora hozzaadas
+    // spora hozzaadas
     public boolean generateSpore(Spore sp) {
         spores.add(sp);
         return true;
