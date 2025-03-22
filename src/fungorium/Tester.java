@@ -73,6 +73,41 @@ public class Tester {
         f.branchThread(t1); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
     }
 
+    public void init1(){
+        MultiThreadTecton t1 = new MultiThreadTecton(this);//1
+        SingleThreadTecton t2 = new SingleThreadTecton(this);//2
+        SingleThreadTecton t3 = new SingleThreadTecton(this);//3
+        MultiThreadTecton t4 = new MultiThreadTecton(this);//4
+        AbsorbingTecton t5 = new AbsorbingTecton(this);//5
+
+        List<Tecton> t1Neighbors = new ArrayList<>();
+        t1Neighbors.add(t3);
+        t1.setNeighbors(t1Neighbors);//6.
+
+        List<Tecton> t2Neighbors = new ArrayList<>();
+        t2Neighbors.add(t3);
+        t2.setNeighbors(t2Neighbors);//7.
+
+        List<Tecton> t3Neighbors = new ArrayList<>();
+        t3Neighbors.add(t1);
+        t3Neighbors.add(t2);
+        t3Neighbors.add(t4);
+        t3Neighbors.add(t5);
+        t3.setNeighbors(t3Neighbors);//8.
+
+        List<Tecton> t4Neighbors = new ArrayList<>();
+        t4Neighbors.add(t3);
+        t4.setNeighbors(t4Neighbors);//9.
+
+        List<Tecton> t5Neighbors = new ArrayList<>();
+        t5Neighbors.add(t3);
+        t5.setNeighbors(t5Neighbors);//10.
+
+
+
+
+    }
+
     //Diagram 3-nak felel meg.
     public void init3(){
         // A kommunikációs diagrammnak megfelelő sorrendben és módon inicializáljuk az objektumokat.
