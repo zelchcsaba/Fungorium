@@ -25,7 +25,7 @@ public abstract class Tecton {
     public List<Spore> getSpores(){
         t.toCall("getSpores");
         t.from = this;
-        t.parameters = new ArrayList<>(spores);
+        t.returnValue = new ArrayList<>(spores);
         t.toReturn();
         return spores;
     }
