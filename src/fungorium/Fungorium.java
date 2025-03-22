@@ -1,3 +1,4 @@
+package fungorium;
 
 public class Fungorium {
     public static void main(String[] args) {

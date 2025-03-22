@@ -1,3 +1,5 @@
+package fungorium;
+
 public abstract class Spore {
 
     Tester t;

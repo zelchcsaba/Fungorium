@@ -1,4 +1,4 @@
-
+package fungorium;
 
 public class SpeedSpore extends Spore{
 

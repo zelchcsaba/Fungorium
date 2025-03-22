@@ -1,3 +1,5 @@
+package fungorium;
+
 public class ParalysingSpore {
 
     Tester t;

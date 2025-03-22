@@ -1,3 +1,5 @@
+package fungorium;
+
 public class SingleThreadTecton {
     
     Tester t;
