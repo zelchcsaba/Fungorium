@@ -1,7 +1,7 @@
 package fungorium;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AbsorbingTecton extends Tecton{
 
@@ -39,6 +39,9 @@ public class AbsorbingTecton extends Tecton{
 
         t.toReturn();
 
+        return threads;
+    }
+    public List<FungalThread> getThreadsWithoutCout(){
         return threads;
     }
 

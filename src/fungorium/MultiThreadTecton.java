@@ -108,4 +108,9 @@ public class MultiThreadTecton extends Tecton{
          }
     }
 
+    public List<FungalThread> getThreadsWithoutCout(){
+        return threads;
+    }
+
+
 }

@@ -25,9 +25,12 @@ public class SingleThreadTecton extends Tecton{
 
     public List<FungalThread> getThreads(){    
         t.toCall("getThreads");
-        
         ArrayList<FungalThread> list= new ArrayList<>();
-        if(thread == null) list = null;
+        if(thread == null){
+            t.returnValue.clear();
+            t.toReturn();
+            return null;
+        }
         else{
             list.add(thread);
         }
@@ -79,7 +82,7 @@ public class SingleThreadTecton extends Tecton{
         t.toCall("putThread");
         if(thread == null && !neighbors.isEmpty()){
             for(Tecton tecton : neighbors){
-                List<FungalThread> threads = tecton.getThreads();
+                List<FungalThread> threads = tecton.getThreadsWithoutCout();
                 if (threads != null) { // Csak akkor iterálj, ha nem null
                     for (FungalThread fungals : threads) {
                         if(fungals!=null && fungals.equals(f)){
@@ -133,6 +136,18 @@ public class SingleThreadTecton extends Tecton{
         }else{
             return false;
         }
+    }
+
+    // getter, csak nem írat ki
+    public List<FungalThread> getThreadsWithoutCout(){    
+        ArrayList<FungalThread> list= new ArrayList<>();
+        if(thread == null){
+            return null;
+        }
+        else{
+            list.add(thread);
+        }
+        return list;   
     }
 
 }
