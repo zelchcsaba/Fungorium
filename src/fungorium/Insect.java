@@ -16,6 +16,9 @@ public class Insect {
     //getter setter
     public void setPosition(Tecton t){
         position = t;
+        this.t.toCall("setPosition");
+        this.t.returnValue.clear();
+        this.t.toReturn();
     }
 
     public Tecton getPosition(){

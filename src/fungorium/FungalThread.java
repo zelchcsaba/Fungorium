@@ -39,7 +39,13 @@ public class FungalThread {
     }
     
     public boolean removeTecton(Tecton t) {
-        return tectons.remove(t);
+        this.t.toCall("removeTecton");
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
+
+        return true;
     }
 
     //TO DO majd, most nem kell

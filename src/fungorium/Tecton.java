@@ -24,7 +24,8 @@ public abstract class Tecton {
     }
     public List<Spore> getSpores(){
         t.toCall("getSpores");
-        t.returnValue = new ArrayList<>(spores);
+        t.returnValue.clear();
+        t.returnValue.addAll(spores);
         t.toReturn();
         return spores;
     }
@@ -38,6 +39,10 @@ public abstract class Tecton {
     }
 
     public void setInsect(Insect i){
+        t.toCall("getSpores");
+        t.returnValue.clear();
+        t.toReturn();
+        
         this.i = i;
     }
 
@@ -80,7 +85,7 @@ public abstract class Tecton {
 //visszaadja azokat a szomszédos tektonokat, amelyeken el van ágazva az f fonál
     public List<Tecton> getThreadSection(FungalThread f) {
          //meghívja a tester kiíró függvényét
-        this.t.toCall("getThreadSection"); // És itt iratjuk a testerrel.
+        this.t.toCall("getThreadSection"); 
 
         List<Tecton> tectons = new ArrayList<>();
 
@@ -134,7 +139,28 @@ public abstract class Tecton {
     }
 
     public boolean addNeighbor(List<Tecton> tlist) {
+
+        //meghívja a tester kiíró függvényét
+        this.t.toCall("getThreadSection"); 
+
         neighbors.addAll(tlist);
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
+
+        return true;
+    }
+
+    public boolean removeNeighbor(Tecton t){
+
+        this.t.toCall("getThreadSection");
+        neighbors.remove(t);
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
+
         return true;
     }
 

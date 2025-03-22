@@ -36,6 +36,7 @@ public class MultiThreadTecton extends Tecton{
         this.threads=threads;
     }
     
+    //visszaadja azokat a gombafonalakat, amelyek rajta vannak
     public List<FungalThread> getThreads(){
         t.toCall("getThreads");
 
