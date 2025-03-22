@@ -6,13 +6,15 @@ public class Insect {
     private Tecton position;
     private SporeEffect state;
 
+    //konstruktor
     public Insect(Tester t){
         this.t = t;
         position = null;
-        state = NORMAL;
+        state = SporeEffect.NORMAL;
     }
+
     //getter setter
-    public void setInsect(Tecton t){
+    public void setTecton(Tecton t){
         position = t;
     }
 
@@ -29,9 +31,14 @@ public class Insect {
     }
 
 
+ //To do
+    public boolean move(Tecton t) {
+        return true;
+    }
 
-    public boolean move(Tecton t) {}
-    public boolean cut(Tecton t) {}
-    public void setState(Spore sp) {}
+    //To do
+    public boolean cut(Tecton t) {
+        return true;
+    }
 
 }

@@ -17,16 +17,25 @@ public class Mushroom {
         position = null;
         spores=new ArrayList<>();
         thread = null;
-        state = null;
+        state = MushroomState.UNEVOLVED;
         shootedSporesCount = 0;
     }
 
+//getter settter
     public void setPosition(Tecton position){
         this.position=position;
     }
 
+    public Tecton getPosition(){
+        return position;
+    }
+
     public void setThread(FungalThread thread){
         this.thread=thread;
+    }
+
+    public FungalThread getThread(){
+        return thread;
     }
 
     public void setSpores(List<Spore> spores){
