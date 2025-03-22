@@ -6,6 +6,8 @@ public class SpeedSpore extends Spore{
         super(t);
     }
     
-    public void applyEffect(Insect i) {}
+    public void applyEffect(Insect i) {
+        i.setState(SporeEffect.SPEEDBOOST);
+    }
 
 }

@@ -10,16 +10,39 @@ public abstract class Tecton {
     protected List<Tecton> neighbors;
     protected  Insect i;
 
+//konstruktor
     public Tecton(Tester t){
         this.t = t;
         spores = new ArrayList<>(); 
         neighbors = new ArrayList<>();
         i = null;
     }
+
+    //getter setter
+    public void setSpores(List<Spore> list){
+        spores = list;
+    }
+    public List<Spore> getSpores(){
+        return spores;
+    }
+
     public void setNeighbors(List<Tecton> neighbors){
         this.neighbors=neighbors;
     }
 
+    public List<Tecton> getNeighbors(){
+        return neighbors;
+    }
+
+    public void setInsect(Insect i){
+        this.i = i;
+    }
+
+    public Insect getInsect(){
+        return i;
+    }
+
+    //abstract metodusok
     public abstract boolean putMushroom(Mushroom m);
     public abstract boolean putThread(FungalThread f);
     public abstract boolean removeMushroom();
@@ -30,13 +53,50 @@ public abstract class Tecton {
 
     //TO DO
     public boolean putSpore(Spore sp, Tecton t) {return true;}
+//To do
     public List<Tecton> getThreadSection(FungalThread f) {return null;}
-    public boolean putFirstInsect() {return true;}
+//to do
+    public boolean putFirstInsect() {
+        if(i == null){
+            return true;
+         }else{
+             return false;
+         }
+    }
+
+    //to do
     public boolean putInsect(Insect i, Tecton t) {return true;}
-    public boolean removeInsect() {return true;}
-    public boolean isNeighbor(Tecton t) {return true;}
-    public boolean addNeighbor(List<Tecton> tlist) {return true;}
+
+    public boolean removeInsect() {
+        if(i!=null){
+            i=null;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    public boolean isNeighbor(Tecton t) {
+        if(neighbors.contains(t)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean addNeighbor(List<Tecton> tlist) {
+        neighbors.addAll(tlist);
+        return true;
+    }
+
+    //to do
     public boolean putEvolvedSpore(Spore sp, Tecton t) {return true;}
-    public boolean removeSpores(List<Spore> slist) {return true;}
+
+
+    public boolean removeSpores(List<Spore> slist) {
+        spores.removeAll(slist);
+        return true;
+    }
 
 }
