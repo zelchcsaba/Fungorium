@@ -60,9 +60,43 @@ public abstract class Tecton {
     
 
     //TO DO
-    public boolean putSpore(Spore sp, Tecton t) {return true;}
+    public boolean putSpore(Spore sp, Tecton t) {
+        this.t.toCall("putSpore");
+        if(!neighbors.contains(t)){
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        }
+        else{
+            spores.add(sp);
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+            return true;
+        }
+    }
 //To do
-    public List<Tecton> getThreadSection(FungalThread f) {return null;}
+
+    public List<Tecton> getThreadSection(FungalThread f) {
+
+        this.t.toCall("getThreadSection"); // És itt iratjuk a testerrel.
+
+        List<Tecton> tectons = new ArrayList<>();
+
+        for(int i=0; i<neighbors.size();i++){
+            List<FungalThread> list = neighbors.get(i).getThreads();
+            if(list.contains(f)){
+                tectons.add(neighbors.get(i));
+            } 
+        }
+
+        this.t.returnValue.clear();
+        this.t.returnValue.addAll(tectons);
+        this.t.toReturn();
+
+        return tectons;
+    }
 //to do
     public boolean putFirstInsect() {
         if(i == null){
