@@ -74,18 +74,26 @@ public class Tester {
         String returnString ="";
 
         int i=0;
-        for (Object returnv : returnValue) {
-            if(map.get(returnv)==null){
-                returnString+=returnv.toString();
-            }else{
-                returnString+= map.get(returnv);
+
+            for (Object returnv : returnValue) {
+                if(map.get(returnv)==null){
+
+                    if(returnv!=null){
+                        returnString+=returnv.toString();
+                    }else{
+                        returnString+="";
+                    }
+                    
+                }else{
+                    returnString+= map.get(returnv);
+                }
+    
+                i++;
+                if(i<returnValue.size()){
+                   returnString+=", ";
+                }
             }
     
-            i++;
-            if(i<returnValue.size()){
-                returnString+=", ";
-            }
-        }
 
         String fromString = map.get(list.get(list.size()-1));
         if(fromString==null) fromString="";
@@ -103,6 +111,15 @@ public class Tester {
     }
     }
 
+    public void delete_Unnecessary_Threads(){
+        init2();
+        FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
+        list.add(null);
+        list.add(f);
+        parameters.clear();
+        f.deleteUnnecessaryThreads();
+
+    }
     
 
     //Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs kész.

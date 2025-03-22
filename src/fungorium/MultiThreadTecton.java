@@ -20,8 +20,9 @@ public class MultiThreadTecton extends Tecton{
         this.mushroom=mushroom;
     }
 
+    //visszaadja a tektonon található gombatestet
     public Mushroom getMushroom(){
-
+        //meghívja a tester kiíró függvényét
         this.t.toCall("getMushroom"); // És itt iratjuk a testerrel.
 
         this.t.returnValue.clear();
@@ -83,8 +84,15 @@ public class MultiThreadTecton extends Tecton{
         }
     }
 
-    //kitorol kapott fonal
+    //a kapott fonalat kitörli a listájából
     public boolean removeThread(FungalThread f) {
+        //meghívja a tester kiíró függvényét
+        this.t.toCall("removeThread");
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
+
         threads.remove(f);
         return true;
     }

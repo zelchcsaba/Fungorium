@@ -5,7 +5,6 @@ import java.util.List;
 
 public class SingleThreadTecton extends Tecton{
     
-    Tester t;
     private Mushroom mushroom;
     private FungalThread thread;
 
@@ -20,8 +19,18 @@ public class SingleThreadTecton extends Tecton{
     }
 
     public List<FungalThread> getThreads(){
+
+        t.toCall("getThreads");
+
+        
+
         ArrayList<FungalThread> list= new ArrayList<>();
         list.add(thread);
+
+        t.returnValue.clear();
+        t.returnValue.addAll(list);
+
+        t.toReturn();
         return list;
     }
 
@@ -29,9 +38,10 @@ public class SingleThreadTecton extends Tecton{
         this.mushroom=mushroom;
     }
 
+    //visszaadja a tektonon található gombatestet
     public Mushroom getMushroom(){
-
-        this.t.toCall("getMushroom"); // És itt iratjuk a testerrel.
+        //meghívja a tester kiíró függvényét
+        this.t.toCall("getMushroom"); 
 
         this.t.returnValue.clear();
         this.t.returnValue.add(mushroom);
@@ -71,10 +81,10 @@ public class SingleThreadTecton extends Tecton{
     }
 
 
-//ha a kapott thread megegyezik az eltarolt threaddel
+//ha a kapott thread megegyezik az eltarolt threaddel, akkor töröljük
     public boolean removeThread(FungalThread f) {
-
-        this.t.toCall("deleteUnnecessaryThreads"); // És itt iratjuk a testerrel.
+        //meghívja a tester kiíró függvényét
+        this.t.toCall("removeThread");
 
         this.t.returnValue.clear();
         this.t.returnValue.add(Boolean.TRUE);
