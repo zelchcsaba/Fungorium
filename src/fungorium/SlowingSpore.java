@@ -1,8 +1,8 @@
 package fungorium;
 
-public class SlowingSpore extends Spore{
+public class SlowingSpore extends Spore {
 
-    public SlowingSpore(Tester t){
+    public SlowingSpore(Tester t) {
         super(t);
     }
 

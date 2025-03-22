@@ -6,40 +6,39 @@ public class Insect {
     private Tecton position;
     private SporeEffect state;
 
-    //konstruktor
-    public Insect(Tester t){
+    // konstruktor
+    public Insect(Tester t) {
         this.t = t;
         position = null;
         state = SporeEffect.NORMAL;
     }
 
-    //beállítja a bogárnak a position-ját
-    public void setPosition(Tecton t){
+    // beállítja a bogárnak a position-ját
+    public void setPosition(Tecton t) {
         position = t;
         this.t.toCall("setPosition");
         this.t.returnValue.clear();
         this.t.toReturn();
     }
 
-    public Tecton getPosition(){
+    public Tecton getPosition() {
         return position;
     }
 
-    public void setState(SporeEffect s){
+    public void setState(SporeEffect s) {
         state = s;
     }
 
-    public SporeEffect getState(){
+    public SporeEffect getState() {
         return state;
     }
 
-
- //To do
+    // To do
     public boolean move(Tecton t) {
         return true;
     }
 
-    //To do
+    // To do
     public boolean cut(Tecton t) {
         return true;
     }
