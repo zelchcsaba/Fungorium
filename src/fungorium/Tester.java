@@ -123,7 +123,7 @@ public class Tester {
     
 
     //Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs kész.
-    public void FungalThreadBranching(){
+    public void fungalThreadBranching(){
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő inicalizáló lépéseket.
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
@@ -144,9 +144,21 @@ public class Tester {
             parameters.add(t3);
             f.branchThread(t3); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
         }else{
-            System.out.println(":3");
+            System.out.println("t1-en nincsen spóra");
         }
     }
+
+    public void simpleFungalThreadBranching(){
+        init4(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő inicalizáló lépéseket.
+        FungalThread f2 = (FungalThread) getObjectByValue("f2"); // Előszedjük a megfelelő nevű objektumokat.
+        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+        list.add(null);
+        list.add(f2);
+        parameters.clear();
+        parameters.add(t2);
+        f2.branchThread(t2); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
+    }
+
 
     public void unevolvedShootSpore(){
         init1();
