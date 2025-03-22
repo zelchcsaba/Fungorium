@@ -32,6 +32,7 @@ public class AbsorbingTecton extends Tecton{
         threads = list;
     }
 
+    //visszaadja azokat a gombafonalakat, amelyek rajta vannak
     public List<FungalThread> getThreads(){
         t.toCall("getThreads");
         t.returnValue.clear();
