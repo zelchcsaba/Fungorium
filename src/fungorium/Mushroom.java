@@ -24,6 +24,9 @@ public class Mushroom {
 
 //getter settter
     public void setPosition(Tecton position){
+        this.t.toCall("setPosition");
+        this.t.returnValue.clear();
+        this.t.toReturn();
         this.position=position;
     }
 
@@ -32,6 +35,9 @@ public class Mushroom {
     }
 
     public void setThread(FungalThread thread){
+        this.t.toCall("setThread");
+        this.t.returnValue.clear();
+        this.t.toReturn();
         this.thread=thread;
     }
 

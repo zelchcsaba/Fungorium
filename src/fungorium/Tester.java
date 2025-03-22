@@ -60,10 +60,10 @@ public class Tester {
         }
     }
 
-    public void toCreate(Object o1, Object o2, String name){
-        String caller = map.get(o1);
-        String created = map.get(o2);
-        System.out.println(caller + "-->" + created + " :  <<create>>");
+    public void toCreate(Object caller, Object called, String name){
+        String callerName = map.get(caller);
+        map.put(called, name);
+        System.out.println(callerName + "-->" + name + " :  <<create>>");
     }
 
     //Hasonló mint a toCall.
@@ -98,16 +98,16 @@ public class Tester {
         String fromString = map.get(list.get(list.size()-1));
         if(fromString==null) fromString="";
         String toString = map.get(list.get(list.size()-2));
+        if(toString==null) toString="";
 
-        if(toString==null) {
-            toString="";
-            if(fromString!="" || toString!= "")System.out.println(toString + "<--" + fromString + " : " + returnString);
+        if(toString.equals("") && !fromString.equals("")){
+            System.out.println(toString + "<--" + fromString + " : " + returnString);
         }
-        else if(fromString!="" || toString!="") System.out.println(fromString + "-->" + toString + " : " + returnString);
-
+        else if(!toString.equals("") && !fromString.equals("")){
+            System.out.println(fromString + "-->" + toString + " : " + returnString);
+        }
         list.remove(list.size() - 1);
         list.remove(list.size() - 1);
-
     }
     }
 
@@ -149,14 +149,26 @@ public class Tester {
     }
 
     public void simpleFungalThreadBranching(){
-        init4(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő inicalizáló lépéseket.
-        FungalThread f2 = (FungalThread) getObjectByValue("f2"); // Előszedjük a megfelelő nevű objektumokat.
+        init1(); 
+        FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+        
+        System.out.println("Van t2-ön fonál?");
+        String select = scanner.next();
+        if(!select.equals("y")){
+            t2.setThreads(null);
+        }
+        System.out.println("Van t2 szomszédain már f fonál?");
+        select = scanner.next();
+        if(!select.equals("y")){
+            SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
+            t3.setThreads(null);
+        }
         list.add(null);
-        list.add(f2);
+        list.add(f);
         parameters.clear();
         parameters.add(t2);
-        f2.branchThread(t2); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
+        f.branchThread(t2); 
     }
 
 
@@ -178,6 +190,35 @@ public class Tester {
         else{
             m.shootSpore(t2);   
         }
+    }
+
+
+    /**
+     * Use-case-hez tartozó név: Első gombatest lehelyezése olyan tektonra,
+     *                           amelyre le lehet helyezni.
+     */
+    public void putFirstMushroomTrue(){
+        init1();
+        MultiThreadTecton t4 = (MultiThreadTecton) getObjectByValue("t4");
+        list.add(null);
+        list.add(t4);
+        parameters.clear();
+        t4.putFirstMushroom();
+
+    }
+
+    /**
+     * Use-case-hez tartozó név: Első gombatest lehelyezése egy tektonra,
+     *                           amelyre nem lehet lehelyezni (AbsorbingTecton).
+     *
+     */
+    public void putFirstMushroomFalseAbsorb(){
+        init1();
+        AbsorbingTecton t5 = (AbsorbingTecton) getObjectByValue("t5");
+        list.add(null);
+        list.add(t5);
+        parameters.clear();
+        t5.putFirstMushroom();
     }
 
     public void init1(){

@@ -55,6 +55,7 @@ public abstract class Tecton {
     public abstract Mushroom getMushroom();
     public abstract void setThreads(List<FungalThread> threads);
     public abstract List<FungalThread> getThreads();
+    public abstract List<FungalThread> getThreadsWithoutCout(); // Ez eskü jól jön
     
     public abstract boolean putMushroom(Mushroom m);
     public abstract boolean putThread(FungalThread f);

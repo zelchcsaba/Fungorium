@@ -1,7 +1,7 @@
 package fungorium;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AbsorbingTecton extends Tecton{
 
@@ -42,6 +42,9 @@ public class AbsorbingTecton extends Tecton{
 
         return threads;
     }
+    public List<FungalThread> getThreadsWithoutCout(){
+        return threads;
+    }
 
 //To do
     public void absorb() {}
@@ -80,6 +83,10 @@ public class AbsorbingTecton extends Tecton{
 
     //false, mert nem lehet gombát rárakni
     public boolean putFirstMushroom() {
+        t.toCall("putFirstMushroom");
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.FALSE);
+        this.t.toReturn();
         return false;
     }
 

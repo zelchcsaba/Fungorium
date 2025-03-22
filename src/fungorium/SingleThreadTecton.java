@@ -15,7 +15,12 @@ public class SingleThreadTecton extends Tecton{
     }
 
     public void setThreads(List<FungalThread> list){
-        thread = list.get(0);
+        if(list==null){
+            thread=null;
+        }
+        else{
+            thread = list.get(0);
+        }
     }
 
     //visszaadja azokat a gombafonalakat, amelyek rajta vannak
@@ -24,13 +29,19 @@ public class SingleThreadTecton extends Tecton{
         t.toCall("getThreads");
         //berakom egy listába a fonalat
         ArrayList<FungalThread> list= new ArrayList<>();
-        list.add(thread);
+        if(thread == null){
+            t.returnValue.clear();
+            t.toReturn();
+            return null;
+        }
+        else{
+            list.add(thread);
+        }
 
         t.returnValue.clear();
         t.returnValue.addAll(list);
-
         t.toReturn();
-        return list;
+        return list;   
     }
 
     public void setMushroom(Mushroom mushroom){
@@ -71,12 +82,35 @@ public class SingleThreadTecton extends Tecton{
 
     //ha nincs egy fonal se rajta, akkor lehet fonalat helyezni ra
     public boolean putThread(FungalThread f) {
-        if(thread == null){
+        t.toCall("putThread");
+        if(thread == null && !neighbors.isEmpty()){
+            for(Tecton tecton : neighbors){
+                List<FungalThread> threads = tecton.getThreadsWithoutCout();
+                if (threads != null) { // Csak akkor iterálj, ha nem null
+                    for (FungalThread fungals : threads) {
+                        if(fungals!=null && fungals.equals(f)){
+                            thread = f;
+                            t.returnValue.clear();
+                            t.returnValue.add(Boolean.TRUE);
+                            t.toReturn();
+                            return true;
+                        }
+                    }
+                }
+            }
             thread = f;
-            return true;
-        }else{
+            t.returnValue.clear();
+            t.returnValue.add(Boolean.FALSE);
+            t.toReturn();
             return false;
         }
+        else{
+            t.returnValue.clear();
+            t.returnValue.add(Boolean.FALSE);
+            t.toReturn();
+            return false;
+        }
+        
     }
 
 
@@ -212,6 +246,18 @@ public class SingleThreadTecton extends Tecton{
         }else{
             return false;
         }
+    }
+
+    // getter, csak nem írat ki
+    public List<FungalThread> getThreadsWithoutCout(){    
+        ArrayList<FungalThread> list= new ArrayList<>();
+        if(thread == null){
+            return null;
+        }
+        else{
+            list.add(thread);
+        }
+        return list;   
     }
 
 }
