@@ -13,7 +13,7 @@ public class Insect {
         state = SporeEffect.NORMAL;
     }
 
-    //getter setter
+    //beállítja a bogárnak a position-ját
     public void setPosition(Tecton t){
         position = t;
         this.t.toCall("setPosition");

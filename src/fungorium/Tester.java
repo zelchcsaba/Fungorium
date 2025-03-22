@@ -120,6 +120,16 @@ public class Tester {
         f.deleteUnnecessaryThreads();
 
     }
+
+    public void break_tecton(){
+        init1();
+        SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
+        list.add(null);
+        list.add(t3);
+        parameters.clear();
+        t3.breakTecton();
+
+    }
     
 
     //Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs kész.

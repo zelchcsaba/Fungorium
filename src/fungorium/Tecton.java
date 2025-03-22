@@ -38,8 +38,9 @@ public abstract class Tecton {
         return neighbors;
     }
 
+    //rárakja a tektonra a bogarat
     public void setInsect(Insect i){
-        t.toCall("getSpores");
+        t.toCall("setInsect");
         t.returnValue.clear();
         t.toReturn();
         
@@ -139,10 +140,11 @@ public abstract class Tecton {
         }
     }
 
+    //hozzáadja a neighbors listához a kapott tektonokat
     public boolean addNeighbor(List<Tecton> tlist) {
 
         //meghívja a tester kiíró függvényét
-        this.t.toCall("getThreadSection"); 
+        this.t.toCall("addNeighbor"); 
 
         neighbors.addAll(tlist);
 
@@ -153,9 +155,9 @@ public abstract class Tecton {
         return true;
     }
 
+    //kitörli a kapott tektont a neighbors listából
     public boolean removeNeighbor(Tecton t){
-
-        this.t.toCall("getThreadSection");
+        this.t.toCall("removeNeighbor");
         neighbors.remove(t);
 
         this.t.returnValue.clear();
