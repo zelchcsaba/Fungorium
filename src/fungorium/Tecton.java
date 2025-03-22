@@ -23,6 +23,10 @@ public abstract class Tecton {
         spores = list;
     }
     public List<Spore> getSpores(){
+        t.toCall("getSpores");
+        t.from = this;
+        t.parameters = new ArrayList<>(spores);
+        t.toReturn();
         return spores;
     }
 
