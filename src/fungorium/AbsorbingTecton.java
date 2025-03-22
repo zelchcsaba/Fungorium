@@ -14,6 +14,12 @@ public class AbsorbingTecton extends Tecton{
     }
 
     //setterek getterek
+    public void setMushroom(Mushroom mushroom){}
+
+    public Mushroom getMushroom(){
+        return null;
+    }
+
     public void setThreads(List<FungalThread> list){
         threads = list;
     }
@@ -39,8 +45,7 @@ public class AbsorbingTecton extends Tecton{
     public boolean removeMushroom() {
         return false;
     }
-
-
+//kitorli a kapott thread-et
     public boolean removeThread(FungalThread f) {
         threads.remove(f);
         return true;

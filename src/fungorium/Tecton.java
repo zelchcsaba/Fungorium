@@ -43,13 +43,18 @@ public abstract class Tecton {
     }
 
     //abstract metodusok
+    public abstract void setMushroom(Mushroom mushroom);
+    public abstract Mushroom getMushroom();
+    public abstract void setThreads(List<FungalThread> threads);
+    public abstract List<FungalThread> getThreads();
+    
     public abstract boolean putMushroom(Mushroom m);
     public abstract boolean putThread(FungalThread f);
     public abstract boolean removeMushroom();
     public abstract boolean removeThread(FungalThread f);
     public abstract boolean breakTecton();
     public abstract boolean putFirstMushroom();
-    public abstract List<FungalThread> getThreads();
+    
 
     //TO DO
     public boolean putSpore(Spore sp, Tecton t) {return true;}
