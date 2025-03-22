@@ -200,6 +200,9 @@ public class Tester {
 
 
     public void init4() {
+        map.clear();
+        caller = null;
+        called = null;
         Tecton t1 = new MultiThreadTecton(this);    // 1.
         Tecton t2 = new SingleThreadTecton(this);   // 2.
         Tecton t3 = new AbsorbingTecton(this);      // 3.
@@ -258,6 +261,63 @@ public class Tester {
         t3.setInsect(i);                                // 30.
     }
 
+
+    public void init5() {
+        map.clear();
+        caller = null;
+        called = null;
+
+        FungalThread f = new FungalThread(this);    // 1.
+        Tecton t1 = new MultiThreadTecton(this);    // 2.
+        Tecton t2 = new SingleThreadTecton(this);   // 3.
+        Tecton t3 = new SingleThreadTecton(this);   // 4.
+
+        Mushroom m = new Mushroom(this);            // 5.
+        Spore s1 = new SlowingSpore(this);          // 6.
+        Spore s2 = new NoCutSpore(this);            // 7.
+        Spore s3 = new ParalysingSpore(this);       // 8.
+        Spore s4 = new SpeedSpore(this);            // 9.
+
+        List<Tecton> fTectons = new ArrayList<>();
+        fTectons.add(t1);
+        fTectons.add(t2);
+        fTectons.add(t3);
+
+        f.setTectons(fTectons);                       // 10. (10.1)
+        m.setPosition(t1);                            // 10. (10.2)
+        m.setThread(f);                               // 11.
+
+        List<Spore> s4List = new ArrayList<>();
+        s4List.add(s4);
+
+        m.setSpores(s4List);                          // 12.
+        m.evolve();                                   // 13.
+
+        List<Tecton> t3List = new ArrayList<>();
+        t3List.add(t3);
+        t1.setNeighbors(t3List);                      // 14.
+        t1.putThread(f);                              // 15.
+        t1.setMushroom(m);                            // 16.
+        t2.setNeighbors(t3List);                      // 17.
+        t2.putThread(f);                              // 18.
+
+        List<Tecton> t3Neighbors = new ArrayList<>();
+        t3Neighbors.add(t1);
+        t3Neighbors.add(t2);
+        t3.setNeighbors(t3Neighbors);                 // 19.
+        t3.putThread(f);                              // 20.
+
+        List<Spore> t3Spores = new ArrayList<>();
+        t3Spores.add(s1);
+        t3Spores.add(s2);
+        t3Spores.add(s3);
+        t3.setSpores(t3Spores);                       // 21.
+
+        s1.setThread(f);                              // 22.
+        s2.setThread(f);                              // 23.
+        s3.setThread(f);                              // 24.
+        s4.setThread(f);                              // 25.
+    }
 
     // Segéd függvény, hogy a neve alapján elő szedjünk egy objektumot
     public Object getObjectByValue(String value) {
