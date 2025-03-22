@@ -126,6 +126,67 @@ public class Tester {
         }
     }
 
+
+    public void init4() {
+        Tecton t1 = new MultiThreadTecton(this);    // 1.
+        Tecton t2 = new SingleThreadTecton(this);   // 2.
+        Tecton t3 = new AbsorbingTecton(this);      // 3.
+        Tecton t4 = new MultiThreadTecton(this);    // 4.
+        Tecton t5 = new MultiThreadTecton(this);    // 5.
+
+        List<Tecton> t3Array = new ArrayList<>();
+        t3Array.add(t3);
+
+        t1.setNeighbors(t3Array);                       // 6.
+        t2.setNeighbors(t3Array);                       // 7.
+
+        List<Tecton> t3Neighbors = new ArrayList<>();
+        t3Neighbors.add(t1);
+        t3Neighbors.add(t2);
+        t3Neighbors.add(t4);
+        t3Neighbors.add(t5);
+
+        t3.setNeighbors(t3Neighbors);                   // 8.
+        t4.setNeighbors(t3Array);                       // 9.
+        t5.setNeighbors(t3Array);                       // 10.
+
+        FungalThread f1 = new FungalThread(this);    // 11.
+        Mushroom m1 = new Mushroom(this);            // 12.
+
+        List<Tecton> f1Tectons = new ArrayList<>();
+        f1.addTecton(t1);
+        f1.addTecton(t2);
+        f1.addTecton(t3);
+
+        f1.setTectons(f1Tectons);                       // 13.
+        t1.putThread(f1);                               // 14.
+        t2.putThread(f1);                               // 15.
+        t3.putThread(f1);                               // 16.
+
+        m1.setPosition(t1);                             // 17.
+        t1.setMushroom(m1);                             // 18.
+        m1.setThread(f1);                               // 19.
+
+        FungalThread f2 = new FungalThread(this);    // 20.
+        Mushroom m2 = new Mushroom(this);            // 21.
+
+        List<Tecton> f2Tectons = new ArrayList<>();
+        f2Tectons.add(t3);
+        f2Tectons.add(t5);
+
+        f2.setTectons(f2Tectons);                       // 22.
+        t5.putThread(f2);                               // 23.
+        t3.putThread(f2);                               // 24.
+        m2.setPosition(t5);                             // 25.
+        t5.setMushroom(m2);                             // 26.
+        m2.setThread(f2);                               // 27.
+
+        Insect i = new Insect(this);                 // 28.
+        i.setPosition(t3);                              // 29.
+        t3.setInsect(i);                                // 30.
+    }
+
+
     // Segéd függvény, hogy a neve alapján elő szedjünk egy objektumot
     public Object getObjectByValue(String value) {
         for (Map.Entry<Object, String> entry : map.entrySet()) {
