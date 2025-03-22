@@ -21,6 +21,13 @@ public class MultiThreadTecton extends Tecton{
     }
 
     public Mushroom getMushroom(){
+
+        this.t.toCall("getMushroom"); // És itt iratjuk a testerrel.
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(mushroom);
+        this.t.toReturn();
+
         return mushroom;
     }
 

@@ -17,6 +17,13 @@ public class AbsorbingTecton extends Tecton{
     public void setMushroom(Mushroom mushroom){}
 
     public Mushroom getMushroom(){
+
+        this.t.toCall("getMushroom"); // És itt iratjuk a testerrel.
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(null);
+        this.t.toReturn();
+
         return null;
     }
 
@@ -47,6 +54,13 @@ public class AbsorbingTecton extends Tecton{
     }
 //kitorli a kapott thread-et
     public boolean removeThread(FungalThread f) {
+
+        this.t.toCall("removeThread"); // És itt iratjuk a testerrel.
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
+
         threads.remove(f);
         return true;
     }
