@@ -118,21 +118,6 @@ public class Tester {
         String select = scanner.next();
 
         if(select.equals("y")){
-<<<<<<< HEAD
-            SpeedSpore spores = new SpeedSpore(this);
-            map.put(spores, "spores");
-            List<Spore> slist = new ArrayList<Spore>(); 
-            slist.add(spores);
-            t1.setSpores(slist);
-            caller = null;
-            called = t1;
-            parameters.clear();
-            to = this; 
-            t1.getSpores();
-        }
-        else{
-            System.out.println("Nem tud megint lépni");
-=======
             list.add(null);
             list.add(f);
             MultiThreadTecton t3 = (MultiThreadTecton) getObjectByValue("t3");
@@ -141,7 +126,6 @@ public class Tester {
             f.branchThread(t3); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
         }else{
             System.out.println(":3");
->>>>>>> 8f6a7b91c333ef4b9988c3a5c7f40ffe90dbdd9f
         }
 
         
