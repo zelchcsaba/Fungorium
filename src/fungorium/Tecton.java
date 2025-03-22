@@ -76,15 +76,21 @@ public abstract class Tecton {
             return true;
         }
     }
-//To do
 
+//visszaadja azokat a szomszédos tektonokat, amelyeken el van ágazva az f fonál
     public List<Tecton> getThreadSection(FungalThread f) {
-
+         //meghívja a tester kiíró függvényét
         this.t.toCall("getThreadSection"); // És itt iratjuk a testerrel.
 
         List<Tecton> tectons = new ArrayList<>();
 
+        //végigmegy a szomzsédokon, és lekéri a threads tömbjüket, ha ebben benne van f, akkor hozzáadja a tectons listához
         for(int i=0; i<neighbors.size();i++){
+
+            this.t.list.add(this);
+            this.t.list.add(neighbors.get(i));
+            this.t.parameters.clear();
+
             List<FungalThread> list = neighbors.get(i).getThreads();
             if(list.contains(f)){
                 tectons.add(neighbors.get(i));

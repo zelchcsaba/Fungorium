@@ -74,39 +74,56 @@ public class Tester {
         String returnString ="";
 
         int i=0;
-        for (Object returnv : returnValue) {
-            if(map.get(returnv)==null){
-                returnString+=returnv.toString();
-            }else{
-                returnString+= map.get(returnv);
+
+            for (Object returnv : returnValue) {
+                if(map.get(returnv)==null){
+
+                    if(returnv!=null){
+                        returnString+=returnv.toString();
+                    }else{
+                        returnString+="";
+                    }
+                    
+                }else{
+                    returnString+= map.get(returnv);
+                }
+    
+                i++;
+                if(i<returnValue.size()){
+                   returnString+=", ";
+                }
             }
     
-            i++;
-            if(i<returnValue.size()){
-                returnString+=", ";
-            }
-        }
 
         String fromString = map.get(list.get(list.size()-1));
         if(fromString==null) fromString="";
         String toString = map.get(list.get(list.size()-2));
+        if(toString==null) toString="";
 
-        if(toString==null) {
-            toString="";
-            if(fromString!="" || toString!= "")System.out.println(toString + "<--" + fromString + " : " + returnString);
+        if(toString.equals("") && !fromString.equals("")){
+            System.out.println(toString + "<--" + fromString + " : " + returnString);
         }
-        else if(fromString!="" || toString!="") System.out.println(fromString + "-->" + toString + " : " + returnString);
-
+        else if(!toString.equals("") && !fromString.equals("")){
+            System.out.println(fromString + "-->" + toString + " : " + returnString);
+        }
         list.remove(list.size() - 1);
         list.remove(list.size() - 1);
-
     }
     }
 
+    public void delete_Unnecessary_Threads(){
+        init2();
+        FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
+        list.add(null);
+        list.add(f);
+        parameters.clear();
+        f.deleteUnnecessaryThreads();
+
+    }
     
 
     //Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs kész.
-    public void FungalThreadBranching(){
+    public void fungalThreadBranching(){
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő inicalizáló lépéseket.
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
@@ -127,9 +144,33 @@ public class Tester {
             parameters.add(t3);
             f.branchThread(t3); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
         }else{
-            System.out.println(":3");
+            System.out.println("t1-en nincsen spóra");
         }
     }
+
+    public void simpleFungalThreadBranching(){
+        init1(); 
+        FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
+        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+        
+        System.out.println("Van t2-ön fonál?");
+        String select = scanner.next();
+        if(!select.equals("y")){
+            t2.setThreads(null);
+        }
+        System.out.println("Van t2 szomszédain már f fonál?");
+        select = scanner.next();
+        if(!select.equals("y")){
+            SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
+            t3.setThreads(null);
+        }
+        list.add(null);
+        list.add(f);
+        parameters.clear();
+        parameters.add(t2);
+        f.branchThread(t2); 
+    }
+
 
     public void unevolvedShootSpore(){
         init1();
