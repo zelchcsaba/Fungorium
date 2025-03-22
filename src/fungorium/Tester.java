@@ -9,10 +9,16 @@ import java.util.Scanner;
 
 //Tester osztély a teszteléshez.
 public class Tester {
-    public Map<Object, String> map = new HashMap<>(); // Ebben tároljuk a kulcs-érték párokat. kulcs=objektum érték=név. 1:1 megfeleltetés.
+    public Map<Object, String> map; // Ebben tároljuk a kulcs-érték párokat. kulcs=objektum érték=név. 1:1 megfeleltetés.
     public Object caller, called, from, to; //A függvény hívója, az objektum amin meghívták.
-    public List<Object> parameters = new ArrayList<>(); // Paraméterek amiket átadtunk.
-    public List<Object> returnValue = new ArrayList<>();
+    public List<Object> parameters; // Paraméterek amiket átadtunk.
+    public List<Object> returnValue;
+
+    public Tester(){
+        map = new HashMap<>();
+        parameters = new ArrayList<>();
+        returnValue = new ArrayList<>();
+    }
     public Scanner scanner = new Scanner(System.in);
 
     //Tester osztály egyik kíírató függvénye. A meghívott fg-k törzsében hívjuk meg.
@@ -102,6 +108,11 @@ public class Tester {
     }
 
     public void init1(){
+
+        map.clear();
+        caller=null;
+        called=null;
+
         MultiThreadTecton t1 = new MultiThreadTecton(this);//1
         SingleThreadTecton t2 = new SingleThreadTecton(this);//2
         SingleThreadTecton t3 = new SingleThreadTecton(this);//3
@@ -153,16 +164,117 @@ public class Tester {
         List<Spore> spores = new ArrayList<>();
         spores.add(s);
         t3.setSpores(spores);//22
-
+//21 az nincs
         Insect i = new Insect(this);//23
-        i.setTec
+        i.setPosition(t3);//24
+        t3.setInsect(i);//25
+        SpeedSpore s2 = new SpeedSpore(this);//26
+        s2.setThread(f);//27
+
+        List<Spore> spores2 = new ArrayList<>();
+        spores2.add(s2);
+        m.setSpores(spores2);
+
+        //Végül betesszük a map-be, hogy elő tudjuk őket szedni, hogy meghívjuk a függvényeiket
+        map.put(f, "f");
+        map.put(m, "m");
+        map.put(t1, "t1");
+        map.put(t2, "t2");
+        map.put(t3, "t3");
+        map.put(t4, "t4");
+        map.put(t5, "t5");
+        map.put(i,"i");
+        map.put(s, "s");
+        map.put(s2, "s2");
+
 
 
 
     }
 
+    //Diagram 2-nek felel meg.
+    public void init2(){
+        // A kommunikációs diagrammnak megfelelő sorrendben és módon inicializáljuk az objektumokat.
+        // Ehhez implementálni kellett pár setter-t.
+        map.clear();
+        caller = null;
+        called = null;
+
+
+        MultiThreadTecton t1 = new MultiThreadTecton(this);//1.
+        SingleThreadTecton t2 = new SingleThreadTecton(this);//2.
+        SingleThreadTecton t3 = new SingleThreadTecton(this);//3.
+        MultiThreadTecton t4 = new MultiThreadTecton(this);//4.
+        MultiThreadTecton t5 = new MultiThreadTecton(this);//5.
+        MultiThreadTecton t6 = new MultiThreadTecton(this);//6.
+
+        List<Tecton> t1Neighbors = new ArrayList<>();
+        t1Neighbors.add(t2);
+        t1.setNeighbors(t1Neighbors); //7.
+
+        List<Tecton> t2Neighbors = new ArrayList<>();
+        t2Neighbors.add(t1);
+        t2Neighbors.add(t3);
+        t2.setNeighbors(t2Neighbors); //8.
+
+        List<Tecton> t3Neighbors = new ArrayList<>();
+        t3Neighbors.add(t2);
+        t3.setNeighbors(t3Neighbors); //9.
+
+        List<Tecton> t4Neighbors = new ArrayList<>();
+        t4Neighbors.add(t2);
+        t4Neighbors.add(t5);
+        t4.setNeighbors(t4Neighbors); //10.
+
+        List<Tecton> t5Neighbors = new ArrayList<>();
+        t5Neighbors.add(t4);
+        t5Neighbors.add(t6);
+        t5.setNeighbors(t5Neighbors); //11.
+
+        List<Tecton> t6Neighbors = new ArrayList<>();
+        t6Neighbors.add(t5);
+        t6.setNeighbors(t6Neighbors); //12.
+
+        FungalThread f = new FungalThread(this); //13.
+        Mushroom m = new Mushroom(this); //14.
+
+        List<Tecton> fTectons = new ArrayList<>();
+        fTectons.add(t1);
+        fTectons.add(t2);
+        fTectons.add(t3);
+        fTectons.add(t5);
+        fTectons.add(t6);
+        f.setTectons(fTectons); //15.
+
+        t1.putThread(f); //16.
+        t2.putThread(f); //17.
+        t3.putThread(f); //18.
+        t5.putThread(f); //19.
+        t6.putThread(f); //20.
+
+        m.setPosition(t2); //21.
+        t2.setMushroom(m); //22.
+        m.setThread(f); //23.
+
+        //Végül betesszük a map-be, hogy elő tudjuk őket szedni, hogy meghívjuk a függvényeiket
+        map.put(f, "f");
+        map.put(m, "m");
+        map.put(t1, "t1");
+        map.put(t2, "t2");
+        map.put(t3, "t3");
+        map.put(t4, "t4");
+        map.put(t5, "t5");
+        map.put(t6, "t6");
+
+    }
+
     //Diagram 3-nak felel meg.
     public void init3(){
+
+        map.clear();
+        caller=null;
+        called=null;
+
         // A kommunikációs diagrammnak megfelelő sorrendben és módon inicializáljuk az objektumokat.
         // Ehhez implementálni kellett pár setter-t.
         MultiThreadTecton t1 = new MultiThreadTecton(this);//1. 
