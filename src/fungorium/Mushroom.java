@@ -65,7 +65,30 @@ public class Mushroom {
 
     //To do
     public boolean shootSpore(Tecton t) {
-        return true;
+        this.t.toCall("shootSpore");
+        if(spores.isEmpty()){
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        }
+        this.t.list.add(this);
+        this.t.list.add(t);
+        this.t.parameters.clear();
+        this.t.parameters.add(spores.get(0));
+        this.t.parameters.add(position);
+        if(!t.putSpore(spores.get(0), position)){
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        }
+        else{
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+            return true;
+        }
     }
 
 //allapot beallitas
