@@ -8,6 +8,7 @@ public class Tester {
     public Map<Object, String> map = new HashMap<>(); // Ebben tároljuk a kulcs-érték párokat. kulcs=objektum érték=név. 1:1 megfeleltetés.
     public Object caller, called; //A függvény hívója, az objektum amin meghívták.
     public List<Object> parameters = new ArrayList<>(); // Paraméterek amiket átadtunk.
+    public List<Object> returnValue = new ArrayList<>();
 
     //Tester osztály egyik kíírató függvénye. A meghívott fg-k törzsében hívjuk meg.
     // Mindegyik osztálynak kell legyen egy Tester objektuma, hogy ezeket meghívhassa
@@ -29,6 +30,7 @@ public class Tester {
         }
         System.out.println(cr + "->" + cd + " : " + func + "(" + ps + ")");
     }
+
 
     //Hasonló mint a toCall.
     public void toReturn(String value){

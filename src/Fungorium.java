@@ -1,4 +1,4 @@
-import Tester;
+
 public class Fungorium {
     public static void main(String[] args) {
         System.out.println("Gomba");

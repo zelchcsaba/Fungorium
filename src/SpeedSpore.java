@@ -1,3 +1,5 @@
+
+
 public class SpeedSpore extends Spore{
 
     public SpeedSpore(Tester t){
