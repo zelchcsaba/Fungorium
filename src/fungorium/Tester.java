@@ -30,7 +30,7 @@ public class Tester {
                 ps+=", ";
             }
         }
-        System.out.println(cr + "->" + cd + " : " + func + "(" + ps + ")");
+        if(cr!="" || cd!="") System.out.println(cr + "->" + cd + " : " + func + "(" + ps + ")");
     }
 
 
@@ -50,9 +50,9 @@ public class Tester {
         String t = map.get(to);
         if(t==null) {
             t="";
-            System.out.println(t + "<--" + f + " : " + rt);
+            if(f!="" || t!= "")System.out.println(t + "<--" + f + " : " + rt);
         }
-        else System.out.println(f + "-->" + t + " : " + rt);
+        else if(f!="" || t!="") System.out.println(f + "-->" + t + " : " + rt);
     }
 
     //Hasonló mint a toCall.
@@ -63,9 +63,9 @@ public class Tester {
         String t = map.get(to);
         if(t==null) {
             t="";
-            System.out.println(t + "<--" + f + " : " + rt);
+            if(f!="" || t!="") System.out.println(t + "<--" + f + " : " + rt);
         }
-        else System.out.println(f + "-->" + t + " : " + rt);
+        else if(f!="" || t!="") System.out.println(f + "-->" + t + " : " + rt);
     }
     
 
@@ -192,10 +192,6 @@ public class Tester {
         map.put(t2, "t2");
         map.put(t3, "t3");
         map.put(s, "s");
-
-        for (int i = 0; i < 50; i++) { // Kiír 50 üres sort jobb hijján, hogy ne látszódjanak a setterek kiírásai.
-            System.out.println();
-        }
     }
 
     // Segéd függvény, hogy a neve alapján elő szedjünk egy objektumot
