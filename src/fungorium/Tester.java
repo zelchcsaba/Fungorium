@@ -789,13 +789,14 @@ public class Tester {
         System.out.println();
 
         Mushroom m = (Mushroom) getObjectByValue("m");
-        Spore s2 = (Spore) getObjectByValue("s2");
+        SpeedSpore s1 = new SpeedSpore(this);// A tester generálja a spórát
+        map.put(s1, "s1");             // A gomba már csak beteszi
 
         list.add(null);
         list.add(m);
         parameters.clear();
-        parameters.add(s2);
-        m.generateSpore(s2);
+        parameters.add(s1);
+        m.generateSpore(s1);
 
         toReturn();
     }
