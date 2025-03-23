@@ -806,6 +806,7 @@ public class Tester {
      */
     public void init1(){
 
+        map.clear();
 
         MultiThreadTecton t1 = new MultiThreadTecton(this);// 1
         SingleThreadTecton t2 = new SingleThreadTecton(this);// 2
@@ -1173,6 +1174,8 @@ public class Tester {
     }
 
     public void init6(){
+
+        map.clear();
 
         SingleThreadTecton t2 = new SingleThreadTecton(this);// 2
         SingleThreadTecton t3 = new SingleThreadTecton(this);// 3
