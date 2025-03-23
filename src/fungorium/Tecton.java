@@ -180,7 +180,28 @@ public abstract class Tecton {
 
     // to do
     public boolean putEvolvedSpore(Spore sp, Tecton t) {
-        return true;
+        this.t.toCall("putEvolvedSpore");
+        if (!neighbors.contains(t)) {
+            for(int i = 0; i < neighbors.size(); i++){
+                if(neighbors.get(i).getNeighbors().contains(t)){
+                    spores.add(sp);
+                    this.t.returnValue.clear();
+                    this.t.returnValue.add(Boolean.TRUE);
+                    this.t.toReturn();
+                    return true;
+                }
+            }
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        } else {
+            spores.add(sp);
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+            return true;
+        }
     }
 
     public boolean removeSpores(List<Spore> slist) {

@@ -85,9 +85,12 @@ public class Mushroom {
         this.t.parameters.add(spores.get(0));
         this.t.parameters.add(position);
         if(state == MushroomState.UNEVOLVED){
-            returnV = t.putSpore();
+            returnV = t.putSpore(spores.get(0), position);
         }
-        if (!t.putSpore(spores.get(0), position)) {
+        else{
+            returnV = t.putEvolvedSpore(spores.get(0), position);
+        }
+        if (!returnV) {
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.FALSE);
             this.t.toReturn();

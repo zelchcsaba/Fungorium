@@ -153,17 +153,6 @@ public class Tester {
         t3.absorb();
     }
 
-    public void mushroom_die(){
-        init3();
-        Mushroom m = (Mushroom) getObjectByValue("m");
-        MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
-        list.add(null);
-        list.add(t1);
-        parameters.clear();
-        parameters.add(t1);
-        m.shootSpore(t1);
-    }
-
     // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs
     // kész.
     public void fungalThreadBranching() {
@@ -294,10 +283,20 @@ public class Tester {
     }
 
     /**
-     * Use-case-hez tartozó név: Fejletlen gombatest spóra szórása olyan tektonra, amelyre tud.
+     * Use-case-hez tartozó név: Fejlett gombatest spóra szórása olyan tektonra, amelyre tud.
      *                           
      *
      */
+    public void evolvedShootSporeFalse(){
+        init5();
+        Mushroom m =  (Mushroom) getObjectByValue("m");
+        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+        list.add(null);
+        list.add(m);
+        parameters.clear();
+        parameters.add(t2);
+        m.shootSpore(t2);
+    }
 
 
     public void init1(){
