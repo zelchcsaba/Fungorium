@@ -220,7 +220,14 @@ public abstract class Tecton {
         }
     }
 
-    // to do
+
+    /**
+     * Egy rovart próbál helyezni az adott Tecton objektumba.
+     *
+     * @param ins A rovar objektum, amelyet a Tecton-ba kell helyezni.
+     * @param t Az a Tecton objektum, amelybe a rovar behelyezésre kerül.
+     * @return Igaz, ha a rovar sikeresen behelyezésre került, hamis, ha a behelyezés sikertelen.
+     */
     public boolean putInsect(Insect ins, Tecton t) {
         this.t.toCall("putInsect");
 

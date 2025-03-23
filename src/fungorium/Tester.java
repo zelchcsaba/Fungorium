@@ -786,6 +786,7 @@ public class Tester {
         System.out.println("participant \"Tester\" as \"\"");
         System.out.println("participant \"m:Mushroom\" as m");
         System.out.println("participant \"s2:SpeedSpore\" as s2");
+        System.out.println();
 
         Mushroom m = (Mushroom) getObjectByValue("m");
         Spore s2 = (Spore) getObjectByValue("s2");

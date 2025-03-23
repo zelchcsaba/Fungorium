@@ -9,7 +9,7 @@ public class Fungorium {
         Tester t = new Tester();
 
         boolean loop = true;
-        while (loop == true) {
+        while (loop) {
             System.out.println("1 - Első gombatest lehelyezése olyan tektonra, amelyre le lehet helyezni");
             System.out.println("2 - Első gombatest lehelyezése olyan tektonra, amelyre nem lehet lehelyezni (AbsorbingTecton)");
             System.out.println("3 - Első gombatest lehelyezése olyan tektonra, amelyre nem lehet lehelyezni (van gombatest a tektonon)");
@@ -72,7 +72,7 @@ public class Fungorium {
                 case 9:
                     t.generateSpore();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 10:
                     t.mushroom_die();
                     System.out.println("\n\n");
@@ -80,50 +80,50 @@ public class Fungorium {
                 case 11:
                     t.delete_Unnecessary_Threads();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 12:
                     t.break_tecton();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 13:
                     t.break_tecton_with_mushroom();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 14:
                     t.absorb_from_tecton();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 15:
                     t.cut_fungalthread();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 16:
                     t.putFirstInsectTrue();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 17:
                     t.putFirstInsectFalse();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 18:
                     t.moveInsectTrue();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 19:
                     t.moveInsectFalse();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 20:
                     t.growingNewMushroom();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 21:
                     t.fungalThreadBranching();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 22:
                     loop = false;
-                break;
+                    break;
             }
         }
     }
