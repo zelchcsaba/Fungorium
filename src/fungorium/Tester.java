@@ -592,6 +592,11 @@ public class Tester {
      */
     public void putFirstMushroomTrue() {
         init1();
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"t4:MultiThreadTecton\" as t4");
+        System.out.println("participant \"ft:FungalThread\" as ft");
+        System.out.println("participant \"mush:Mushroom\" as mush\n");
+
         MultiThreadTecton t4 = (MultiThreadTecton) getObjectByValue("t4");
         list.add(null);
         list.add(t4);
@@ -615,12 +620,16 @@ public class Tester {
      */
     public void putFirstMushroomFalseAbsorb() {
         init1();
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"t5:AbsorbingTecton\" as t5\n");
+
         AbsorbingTecton t5 = (AbsorbingTecton) getObjectByValue("t5");
         list.add(null);
         list.add(t5);
         parameters.clear();
         t5.putFirstMushroom();
     }
+
 
 
     /**
@@ -639,6 +648,9 @@ public class Tester {
      */
     public void putFirstMushroomFalseIsMush(){
         init1();
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1\n");
+
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
         list.add(null);
         list.add(t1);
@@ -665,6 +677,10 @@ public class Tester {
      */
     public void unevolvedShootSporeTrue(){
         init1();
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3\n");
+
         Mushroom m = (Mushroom) getObjectByValue("m");
         SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
         list.add(null);
@@ -687,6 +703,11 @@ public class Tester {
      */
     public void evolvedShootSporeTrue(){
         init5();
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3\n");
+
         Mushroom m =  (Mushroom) getObjectByValue("m");
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
         list.add(null);
