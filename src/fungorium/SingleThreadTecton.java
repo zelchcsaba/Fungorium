@@ -67,16 +67,11 @@ public class SingleThreadTecton extends Tecton {
     // ha nincs meg mushroom rarakjuk
     public boolean putMushroom(Mushroom m) {
         t.toCall("putMushroom");
-        t.list.add(this);
-        t.list.add(m);
         t.parameters.clear();
         t.parameters.add(this);
 
         if(mushroom == null) {
             mushroom = m;
-            t.returnValue.clear();
-            t.returnValue.add(Boolean.TRUE);
-            t.toReturn();
             return true;
         }
         return false;
