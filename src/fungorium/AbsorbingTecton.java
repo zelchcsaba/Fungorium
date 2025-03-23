@@ -91,15 +91,21 @@ public class AbsorbingTecton extends Tecton {
         return true;
     }
 
-    // false mert nem tud Mushroom nőni
+    // false mert nem tud Mushroom nőni rajta, így sose lesz mit kitörölni
     public boolean removeMushroom() {
+        this.t.toCall("removeMushroom"); 
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.FALSE);
+        this.t.toReturn();
+
         return false;
     }
 
     // a kapott fonalat kitörli a listájából
     public boolean removeThread(FungalThread f) {
         // meghívja a tester kiíró függvényét
-        this.t.toCall("removeThread"); // És itt iratjuk a testerrel.
+        this.t.toCall("removeThread"); 
 
         this.t.returnValue.clear();
         this.t.returnValue.add(Boolean.TRUE);

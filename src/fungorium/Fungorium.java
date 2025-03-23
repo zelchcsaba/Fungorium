@@ -42,6 +42,10 @@ public class Fungorium {
                     System.out.println("\n\n");
                     break;
                 case 8:
+                    t.mushroom_die();
+                    System.out.println("\n\n");
+                break;
+                case 9:
                     loop = false;
                     break;
             }
