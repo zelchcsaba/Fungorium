@@ -132,6 +132,10 @@ public class SingleThreadTecton extends Tecton {
 
     }
 
+    public void addThread(FungalThread f){
+        thread = f;
+    } 
+
     // ha a kapott thread megegyezik az eltarolt threaddel, akkor töröljük
     public boolean removeThread(FungalThread f) {
         // meghívja a tester kiíró függvényét

@@ -90,9 +90,24 @@ public class AbsorbingTecton extends Tecton {
     }
 
     public boolean putThread(FungalThread f) {
-        threads.add(f);
-        return true;
+        t.toCall("putThread");
+        for (Tecton tecton : neighbors) {
+            if(tecton.getThreads().contains(f)){
+                t.returnValue.clear();
+                t.returnValue.add(Boolean.TRUE);
+                t.toReturn();
+                return true;
+            }
+        }
+        t.returnValue.clear();
+        t.returnValue.add(Boolean.FALSE);
+        t.toReturn();
+        return false;
     }
+
+    public void addThread(FungalThread f){
+        threads.add(f);
+    } 
 
     // false mert nem tud Mushroom nőni rajta, így sose lesz mit kitörölni
     public boolean removeMushroom() {
