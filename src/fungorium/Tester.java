@@ -287,7 +287,7 @@ public class Tester {
      *                           
      *
      */
-    public void evolvedShootSporeFalse(){
+    public void evolvedShootSporeTrue(){
         init5();
         Mushroom m =  (Mushroom) getObjectByValue("m");
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");

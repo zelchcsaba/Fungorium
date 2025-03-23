@@ -36,6 +36,10 @@ public abstract class Tecton {
     }
 
     public List<Tecton> getNeighbors() {
+        t.toCall("getNeighbors");
+        this.t.returnValue.clear();
+        this.t.returnValue.addAll(neighbors);
+        this.t.toReturn();
         return neighbors;
     }
 
@@ -183,6 +187,9 @@ public abstract class Tecton {
         this.t.toCall("putEvolvedSpore");
         if (!neighbors.contains(t)) {
             for(int i = 0; i < neighbors.size(); i++){
+                this.t.list.add(this);
+                this.t.list.add(neighbors.get(i));
+                this.t.parameters.clear();
                 if(neighbors.get(i).getNeighbors().contains(t)){
                     spores.add(sp);
                     this.t.returnValue.clear();
