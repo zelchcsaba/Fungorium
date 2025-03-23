@@ -147,13 +147,14 @@ public class Tester {
     public void delete_Unnecessary_Threads() {
         init2();
 
-        System.out.println("participants \"Tester\" as t");
-        System.out.println("participants \"f:FungalThread\" as f");
-        System.out.println("participants \"t1:MultiThreadTecton\" as t1");
-        System.out.println("participants \"t2:SingleThreadTecton\" as t2");
-        System.out.println("participants \"t3:SingleThreadTecton\" as t3");
-        System.out.println("participants \"t5:MultiThreadTecton\" as t5");
-        System.out.println("participants \"t6:MultiThreadTecton\" as t6");
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"t5:MultiThreadTecton\" as t5");
+        System.out.println("participant \"t6:MultiThreadTecton\" as t6");
+        System.out.println();
 
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         list.add(null);
@@ -168,17 +169,18 @@ public class Tester {
     public void break_tecton() {
         init1();
 
-        System.out.println("participants \"Tester\" as t");
-        System.out.println("participants \"f:FungalThread\" as f");
-        System.out.println("participants \"t1:MultiThreadTecton\" as t1");
-        System.out.println("participants \"t2:SingleThreadTecton\" as t2");
-        System.out.println("participants \"t3:SingleThreadTecton\" as t3");
-        System.out.println("participants \"t4:MultiThreadTecton\" as t4");
-        System.out.println("participants \"t5:AbsorbingTecton\" as t5");
-        System.out.println("participants \"t6:SingleThreadTecton\" as t6");
-        System.out.println("participants \"t7:SingleThreadTecton\" as t7");
-        System.out.println("participants \"i:Insect\" as i");
-        System.out.println("participants \"s:SlowingSpore\" as s");
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"t4:MultiThreadTecton\" as t4");
+        System.out.println("participant \"t5:AbsorbingTecton\" as t5");
+        System.out.println("participant \"t6:SingleThreadTecton\" as t6");
+        System.out.println("participant \"t7:SingleThreadTecton\" as t7");
+        System.out.println("participant \"i:Insect\" as i");
+        System.out.println("participant \"s:SlowingSpore\" as s");
+        System.out.println();
 
         SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
         list.add(null);
@@ -192,8 +194,9 @@ public class Tester {
     //tekton kettétörése, ha gombaatest van rajta
     public void break_tecton_with_mushroom(){
         init1();
-        System.out.println("participants \"Tester\" as t");
-        System.out.println("participants \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");
+        System.out.println();
 
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
         list.add(null);
@@ -207,10 +210,11 @@ public class Tester {
     public void absorb_form_tecton() {
         init4();
 
-        System.out.println("participants \"Tester\" as t");
-        System.out.println("participants \"t3:SingleThreadTecton\" as t3");
-        System.out.println("participants \"f1:FungalThread\" as f1");
-        System.out.println("participants \"f2:FungalThread\" as f2");
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"f1:FungalThread\" as f1");
+        System.out.println("participant \"f2:FungalThread\" as f2");
+        System.out.println();
 
         AbsorbingTecton t3 = (AbsorbingTecton) getObjectByValue("t3");
         list.add(null);
@@ -224,11 +228,13 @@ public class Tester {
     public void mushroom_die(){
         init3();
 
-        System.out.println("participants \"Tester\" as t");
-        System.out.println("participants \"f:FungalThread\" as f");
-        System.out.println("participants \"t1:MultiThreadTecton\" as t1");
-        System.out.println("participants \"t2:SingleThreadTecton\" as t2");
-        System.out.println("participants \"m:Mushroom\" as m");
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println();
+
         Mushroom m = (Mushroom) getObjectByValue("m");
 
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
@@ -244,11 +250,12 @@ public class Tester {
     public void cut_fungalthread(){
         init4();
 
-        System.out.println("participants \"Tester\" as t");
-        System.out.println("participants \"i:Insect\" as i");
-        System.out.println("participants \"t2:SingleThreadTecton\" as t2");
-        System.out.println("participants \"t3:SingleThreadTecton\" as t3");
-        System.out.println("participants \"f1:FungalThread\" as f1");
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"i:Insect\" as i");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"f1:FungalThread\" as f1");
+        System.out.println();
 
         Insect i = (Insect) getObjectByValue("i");
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
@@ -268,8 +275,16 @@ public class Tester {
     public void fungalThreadBranching() {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő
                  // inicalizáló lépéseket.
+        System.out.println("participant \"Tester\" as \"\""); 
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participant \"t2:MultiThreadTecton\" as t2");
+        System.out.println("participant \"t3:MultiThreadTecton\" as t3");
+        System.out.println();
+        
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
+
         list.add(null);
         list.add(f);
         parameters.clear();
@@ -278,7 +293,6 @@ public class Tester {
 
         System.out.println("Van t1-en spóra?");
         String select = scanner.next();
-
         if (select.equals("y")) {
             MultiThreadTecton t3 = (MultiThreadTecton) getObjectByValue("t3");//Kicsit mókolni kell, hogy úgy írjon ki, mint a szekvenciadia
             MultiThreadTecton t2 = (MultiThreadTecton) getObjectByValue("t2");//Tehát most a kom. dia.-al ellentétben t3 t1-el is szomszédos, nem csak t2-el
@@ -303,8 +317,15 @@ public class Tester {
      */
     public void simpleFungalThreadBranchingFalse(){
         init4(); 
+
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"f2:FungalThread\" as f2");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println();
+
         FungalThread f2 = (FungalThread) getObjectByValue("f2"); // Előszedjük a megfelelő nevű objektumokat.
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+
         list.add(null);
         list.add(f2);
         parameters.clear();
@@ -317,8 +338,16 @@ public class Tester {
      */
     public void simpleFungalThreadBranchingTrue(){
         init1(); 
+
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t4:MultiThreadTecton\" as t4");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3"); //t4 szomszédja
+        System.out.println();
+
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         MultiThreadTecton t4 = (MultiThreadTecton) getObjectByValue("t4");
+
         list.add(null);
         list.add(f);
         parameters.clear();
@@ -333,8 +362,17 @@ public class Tester {
      */
     public void unevolvedShootSporeFalse(){
         init1();
+
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");//ezen van 
+        System.out.println("participant \"s2:SpeedSpore\" as s2");//m spórája
+        System.out.println();
+
         Mushroom m = (Mushroom) getObjectByValue("m");
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+
         list.add(null);
         list.add(m);
         parameters.clear();
