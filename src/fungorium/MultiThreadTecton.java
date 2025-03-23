@@ -51,7 +51,11 @@ public class MultiThreadTecton extends Tecton {
     public boolean putThread(FungalThread f) {
         t.toCall("putThread");
         for (Tecton tecton : neighbors) {
-            if(tecton.getThreadsWithoutCout().contains(f)){
+            t.list.add(this);
+            t.list.add(tecton);
+            t.parameters.clear();
+            if(tecton.getThreads().contains(f)){
+                threads.add(f);
                 t.returnValue.clear();
                 t.returnValue.add(Boolean.TRUE);
                 t.toReturn();

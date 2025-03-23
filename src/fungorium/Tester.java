@@ -260,15 +260,11 @@ public class Tester {
         i.cut(t2);
     }
 
-<<<<<<< HEAD
-    
-
-    // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. 
-=======
   
-    // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs
-    // kész.
->>>>>>> c674dde584627dc255bfff51f4e51a7b5771d144
+    /**
+     * Use-case-hez tartozó név: Gombafonal elágazása olyan tektonra, ahol van spóra.
+     *                           
+     */
     public void fungalThreadBranching() {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő
                  // inicalizáló lépéseket.
@@ -284,12 +280,18 @@ public class Tester {
         String select = scanner.next();
 
         if (select.equals("y")) {
+            MultiThreadTecton t3 = (MultiThreadTecton) getObjectByValue("t3");//Kicsit mókolni kell, hogy úgy írjon ki, mint a szekvenciadia
+            MultiThreadTecton t2 = (MultiThreadTecton) getObjectByValue("t2");//Tehát most a kom. dia.-al ellentétben t3 t1-el is szomszédos, nem csak t2-el
+            List<Tecton> t3Neighbors = new ArrayList<>();//Mivel az a játékszabály, hogy a spórával szomszédos tektonokra mehet tovább 
+            t3Neighbors.add(t1);
+            t3Neighbors.add(t2);
+            t3.setNeighbors(t3Neighbors);
+
             list.add(null);
             list.add(f);
-            MultiThreadTecton t3 = (MultiThreadTecton) getObjectByValue("t3");
             parameters.clear();
             parameters.add(t3);
-            f.branchThread(t3); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
+            f.branchThread(t3); // Meghívjuk a fg-t.
         } else {
             System.out.println("t1-en nincsen spóra");
         }

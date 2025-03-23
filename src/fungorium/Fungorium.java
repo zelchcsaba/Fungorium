@@ -10,13 +10,17 @@ public class Fungorium {
 
         boolean loop = true;
         while (loop == true) {
-            
+            System.out.println("1 - Sikertelen spóraszórás, mert nem szomszédos a céltekton.");
+
             System.out.println("7 - Fonál felszívódása tektonról");
             System.out.println("8 - Tekton kettétörése");
             System.out.println("9 - Tekton kettétörése, ha a tektonon gombatest van");
             System.out.println("10 - Gombatesthez nem kapcsolódó fonálrész eltávolítása");
             System.out.println("11 - Gombatest elpusztulása");
             System.out.println("12 - Gombafonál elvágása");
+            System.out.println("13 - Gombafonál sikertelen elágaztatása egyfonalas tektonra, mert már van rajta.");
+            System.out.println("14 - Gombafonál sikeres elágaztatása tektonra.");
+            System.out.println("15 - Gombafonal elágazása olyan tektonra, ahol van spóra.");
             System.out.print("Kérek egy számot: ");
 
             int select = scanner.nextInt();
