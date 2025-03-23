@@ -78,11 +78,15 @@ public class Mushroom {
             this.t.toReturn();
             return false;
         }
+        boolean returnV = false;
         this.t.list.add(this);
         this.t.list.add(t);
         this.t.parameters.clear();
         this.t.parameters.add(spores.get(0));
         this.t.parameters.add(position);
+        if(state == MushroomState.UNEVOLVED){
+            returnV = t.putSpore();
+        }
         if (!t.putSpore(spores.get(0), position)) {
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.FALSE);
@@ -94,6 +98,7 @@ public class Mushroom {
             this.t.toReturn();
             return true;
         }
+        
     }
 
     // allapot beallitas

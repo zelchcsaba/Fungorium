@@ -270,7 +270,6 @@ public class Tester {
     /**
      * Use-case-hez tartozó név: Fejletlen gombatest spóra szórása olyan tektonra, amelyre tud.
      *                           
-     *
      */
     public void unevolvedShootSporeTrue(){
         init1();
@@ -282,6 +281,13 @@ public class Tester {
         parameters.add(t3);
         m.shootSpore(t3);
     }
+
+    /**
+     * Use-case-hez tartozó név: Fejletlen gombatest spóra szórása olyan tektonra, amelyre tud.
+     *                           
+     *
+     */
+
 
     public void init1(){
 
