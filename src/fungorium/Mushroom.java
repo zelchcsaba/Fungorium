@@ -212,7 +212,6 @@ public class Mushroom {
      *
      * @return true értékkel tér vissza, ha az állapot sikeresen módosult EVOLVED értékre.
      */
-    // allapot beallitas
     public boolean evolve() {
         state = MushroomState.EVOLVED;
         return true;
@@ -225,9 +224,15 @@ public class Mushroom {
      * @param sp A hozzáadandó spóra objektum.
      * @return true, ha a spóra sikeresen hozzá lett adva.
      */
-    // spora hozzaadas
     public boolean generateSpore(Spore sp) {
+        this.t.toCall("generateSpore");
+        this.t.toCreate(this, sp, "s2");
+
+        sp.setThread(this.thread);
         spores.add(sp);
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
         return true;
     }
 

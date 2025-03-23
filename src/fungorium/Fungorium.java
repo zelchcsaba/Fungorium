@@ -70,7 +70,7 @@ public class Fungorium {
                     System.out.println("\n\n");
                     break;
                 case 9:
-                    //Új spóra termelődése
+                    t.generateSpore();
                     System.out.println("\n\n");
                 break;
                 case 10:
