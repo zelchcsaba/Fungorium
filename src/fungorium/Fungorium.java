@@ -97,14 +97,21 @@ public class Fungorium {
                     t.cut_fungalthread();
                     System.out.println("\n\n");
                 break;
+                case 16:
+                    t.putFirstInsectTrue();
+                    System.out.println("\n\n");
+                break;
                 case 17:
-
+                    t.putFirstInsectFalse();
+                    System.out.println("\n\n");
                 break;
                 case 18:
-
+                    t.moveInsectTrue();
+                    System.out.println("\n\n");
                 break;
                 case 19:
-
+                    t.moveInsectFalse();
+                    System.out.println("\n\n");
                 break;
                 case 20:
                     t.growingNewMushroom();
