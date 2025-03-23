@@ -3,18 +3,34 @@ package fungorium;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A SingleThreadTecton osztály a Tecton osztályból származik, és egy olyan különleges tektont reprezentál,
+ * amelyen legfeljebb egy gomba (Mushroom) és egy fonál (FungalThread) lehet jelen.
+ */
 public class SingleThreadTecton extends Tecton {
 
     private Mushroom mushroom;
     private FungalThread thread;
 
+
+    /**
+     * Egy új SingleThreadTecton példányt hoz létre a megadott Tester példánnyal.
+     *
+     * @param t A Tester példány, amely kapcsolódik az új SingleThreadTecton objektumhoz.
+     */
     public SingleThreadTecton(Tester t) {
         super(t);
         mushroom = null;
         thread = null;
     }
 
-    public void setThreads(List<FungalThread> list){
+
+    /**
+     * Beállítja a tektonon található gombafonalakat.
+     *
+     * @param list A beállítani kívánt gombafonalak listája.
+     */
+    public void setThreads(List<FungalThread> list) {
         t.toCall("setThreads");
         t.list.add(this);
         t.list.add(list);
@@ -28,7 +44,12 @@ public class SingleThreadTecton extends Tecton {
         t.toReturn();
     }
 
-    // visszaadja azokat a gombafonalakat, amelyek rajta vannak
+
+    /**
+     * Visszaadja azokat a gombafonalakat, amelyek rajta vannak a tektonon.
+     *
+     * @return A rajta lévő gombafonalak listája. Ha nincs rajta gombafonal, akkor null-t ad vissza.
+     */
     public List<FungalThread> getThreads() {
 
         t.toCall("getThreads");
@@ -48,11 +69,22 @@ public class SingleThreadTecton extends Tecton {
         return list;
     }
 
+
+    /**
+     * Beállítja a tektonon lévő gombatestet a megadott gombával.
+     *
+     * @param mushroom A beállítandó gomba objektum.
+     */
     public void setMushroom(Mushroom mushroom) {
         this.mushroom = mushroom;
     }
 
-    // visszaadja a tektonon található gombatestet
+
+    /**
+     * Visszaadja a tektonon található gombatestet.
+     *
+     * @return A gombatest, amely a tektonon található.
+     */
     public Mushroom getMushroom() {
         // meghívja a tester kiíró függvényét
         this.t.toCall("getMushroom");
@@ -64,20 +96,31 @@ public class SingleThreadTecton extends Tecton {
         return mushroom;
     }
 
-    // ha nincs meg mushroom rarakjuk
+
+    /**
+     * Ráhelyez egy gombatestet a tektonra, ha még nincs rajta másik gombatest.
+     *
+     * @param m a hozzáadni kívánt gombatest
+     * @return igaz, ha sikerült a gombatestet ráhelyezni, hamis, ha már volt rajta egy másik gombatest
+     */
     public boolean putMushroom(Mushroom m) {
         t.toCall("putMushroom");
         t.parameters.clear();
         t.parameters.add(this);
 
-        if(mushroom == null) {
+        if (mushroom == null) {
             mushroom = m;
             return true;
         }
         return false;
     }
 
-    // ha van rajta mushroom toroljuk
+
+    /**
+     * Eltávolítja a tektonról a hozzá kapcsolt gombatestet, ha az létezik.
+     *
+     * @return true, ha sikeresen eltávolította a gombát, false, ha nem volt hozzá tartozó gombatest.
+     */
     public boolean removeMushroom() {
 
         t.toCall("removeMushroom");
@@ -100,7 +143,16 @@ public class SingleThreadTecton extends Tecton {
         }
     }
 
-    // ha nincs egy fonal se rajta, akkor lehet fonalat helyezni ra
+
+    /**
+     * Ha nincs egy fonal se rajta és van szomszédos tekton, akkor lehet fonalat helyezni rá.
+     * Ellenőrzi, hogy a szomszédos tektonokon az adott fonal már szerepel-e,
+     * és ennek megfelelően adja hozzá a jelenlegi objektumhoz a fonalat, vagy elutasítja.
+     *
+     * @param f A hozzáadni kívánt gombafonal.
+     * @return true, ha sikeresen el lett helyezve a gombafonal;
+     * false, ha a feltételek nem teljesültek (pl.: már van rajta fonal, vagy "f" nem található a szomszédok között).
+     */
     public boolean putThread(FungalThread f) {
         t.toCall("putThread");
         if (thread == null && !neighbors.isEmpty()) {
@@ -129,14 +181,25 @@ public class SingleThreadTecton extends Tecton {
             t.toReturn();
             return false;
         }
-
     }
 
-    public void addThread(FungalThread f){
-        thread = f;
-    } 
 
-    // ha a kapott thread megegyezik az eltarolt threaddel, akkor töröljük
+    /**
+     * Egy FungalThread típusú gombafonal hozzáadása a tektonhoz.
+     *
+     * @param f A hozzáadni kívánt gombafonal (FungalThread objektum).
+     */
+    public void addThread(FungalThread f) {
+        thread = f;
+    }
+
+
+    /**
+     * Törli a megadott gombafonalat, ha megegyezik a tárolt gombafonallal.
+     *
+     * @param f A törölni kívánt FungalThread objektum.
+     * @return Igaz értéket ad vissza, ha a törlés sikeres.
+     */
     public boolean removeThread(FungalThread f) {
         // meghívja a tester kiíró függvényét
         this.t.toCall("removeThread");
@@ -149,16 +212,23 @@ public class SingleThreadTecton extends Tecton {
         return true;
     }
 
-    // To do
+
+    /**
+     * Ellenőrzi, hogy van-e gomba (mushroom) az aktuális tektonon (tecton).
+     * Ha nincs gomba, a metódus sikeres végrehajtás esetén true értékkel tér vissza.
+     *
+     * @return true, ha nincs gomba az aktuális tektonon, különben false.
+     */
     public boolean putFirstMushroom() {
-        if (mushroom == null) {
-            return true;
-        } else {
-            return false;
-        }
+        return mushroom == null;
     }
 
-    // getter, csak nem írat ki
+
+    /**
+     * Visszaadja a tektonhoz tartozó gombafonalak listáját, a kiíratás mellőzésével.
+     *
+     * @return A tektonhoz tartozó gombafonalak listája, ha van; egyébként null.
+     */
     public List<FungalThread> getThreadsWithoutCout() {
         ArrayList<FungalThread> list = new ArrayList<>();
         if (thread == null) {
@@ -169,7 +239,25 @@ public class SingleThreadTecton extends Tecton {
         return list;
     }
 
-    // ketté törik a tekton
+
+    /**
+     * A tekton kettétörését végző metódus, amely két új tekton objektumot hoz létre,
+     * majd az eredeti tekton szomszédsági kapcsolatait felosztja az újonnan létrehozott
+     * tektonok között. A metódus csak akkor hajtja végre a műveletet, ha az eredeti
+     * tektonon nincs gomba.
+     *
+     * A művelet végrehajtása során:
+     * - Létrehoz két új tekton objektumot.
+     * - Szétosztja a szomszédos tektonokat az új tektonok között.
+     * - Frissíti a szomszédsági kapcsolatokat a megfelelő szomszédlisták szerint.
+     * - Az eredeti tektonon lévő bogarat és fonalakat az új tektonokra helyezi át.
+     * - Eltávolítja az eredeti tekton objektumot a gombafonalból.
+     * - Törli azokat a fonaldarabokat, amelyek a törés során már nem kapcsolódnak
+     * egyetlen gombatesthez sem.
+     *
+     * @return true, ha a tekton sikeresen kettétörött, false, ha a tektonon
+     * található gomba miatt a művelet nem hajtható végre.
+     */
     public boolean breakTecton() {
         // meghívja a tester kiíró függvényét
         this.t.toCall("breakTecton");

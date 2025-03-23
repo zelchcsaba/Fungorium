@@ -6,7 +6,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-//Tester osztély a teszteléshez.
+
+/**
+ * A Tester osztály célja szimulált műveletek végrehajtása objektumok
+ * és függvények között, kifejezetten szekvencia diagramokban
+ * és belső kezelési logikákban.
+ *
+ * Az osztály többek között tartalmaz metódusokat függvényhívások
+ * szimulálására, objektumok létrehozására és visszatérési értékek
+ * megjelenítésére.
+ *
+ * A metódusok egy részében belső adatszerkezeteket használ, például
+ * a map, list és parameters adattagokat, amelyek a manipulált objektumok
+ * tárolását és visszakeresését segítik elő.
+ *
+ * Használati célok:
+ * - Virtuális hívási láncok és objektumműveletek szimulálása.
+ * - Folyamatok vizualizációja tesztelési forgatókönyvekben.
+ * - Speciális adatkezelési logikák és algoritmusok tesztelése.
+ *
+ * Az osztály az input kezelésére scanner objektumot is alkalmaz.
+ */
 public class Tester {
     public Map<Object, String> map; // Ebben tároljuk a kulcs-érték párokat. kulcs=objektum érték=név. 1:1
                                     // megfeleltetés.

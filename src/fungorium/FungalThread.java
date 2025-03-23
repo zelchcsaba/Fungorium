@@ -4,20 +4,45 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A FungalThread osztály egy fonál modellt definiál, amely gombák növekedését
+ * és tektonok közötti kapcsolatot reprezentálja. Ez az osztály számos funkciót biztosít
+ * a fonál részeinek kezelésére, például hozzáadására, eltávolítására, elágazására,
+ * és a nem szükséges fonálrészek automatikus eltávolítására.
+ */
 public class FungalThread {
 
     Tester t;
     private List<Tecton> tectons;
 
+
+    /**
+     * Egy új FungalThread objektum létrehozása a megadott Tester objektummal.
+     *
+     * @param t A Tester példány, amely a FungalThread-hez kapcsolódik és annak működését felügyeli.
+     */
     public FungalThread(Tester t) {
         this.t = t;
         tectons = new ArrayList<>();
     }
 
+
+    /**
+     * Beállítja a fonalhoz tartozó tectonok listáját.
+     *
+     * @param tectons A tectonok listája, amelyeket be kell állítani.
+     */
     public void setTectons(List<Tecton> tectons) {
         this.tectons = tectons;
     }
 
+
+    /**
+     * Egy új ágazó fonalat hoz létre, amely a meglévő fonálból indul és egy másik tektonra kiterjed.
+     *
+     * @param t A céltekton, amelyhez az új fonalat csatlakoztatják.
+     * @return Igaz, ha a fonál sikeresen létrejött és csatlakozott, hamis, ha a csatlakozás nem sikerült.
+     */
     public boolean branchThread(Tecton t) {
         this.t.toCall("branchThread"); // És itt iratjuk a testerrel.
         // Nincs megállás
@@ -40,6 +65,13 @@ public class FungalThread {
         }
     }
 
+
+    /**
+     * Hozzáadja a megadott Tectont a jelenlegi FungalThread-hez tartozó tectons listához.
+     *
+     * @param t a Tecton példány, amelyet hozzá kell adni
+     * @return true értéket ad vissza, ha a Tecton sikeresen hozzáadásra került; false egyébként
+     */
     public boolean addTecton(Tecton t) {
         this.t.toCall("addTecton");
         this.t.returnValue.clear();
@@ -48,7 +80,13 @@ public class FungalThread {
         return tectons.add(t);
     }
 
-    // keveszi a tectons többől a kapott tektont
+
+    /**
+     * Eltávolítja a megadott tektont a jelenlegi tectons listából.
+     *
+     * @param t A tektont, amelyet el kell távolítani a tectons listából.
+     * @return true értéket ad vissza, ha a művelet sikeres.
+     */
     public boolean removeTecton(Tecton t) {
         this.t.toCall("removeTecton");
 
@@ -61,6 +99,15 @@ public class FungalThread {
     }
 
 
+    /**
+     * Növeszt egy új gombát a megadott Tecton objektummal kapcsolódva.
+     * Ellenőrzi, hogy minden spóra a jelenlegi fonálrész segítségével működik-e,
+     * majd létrehozza és megfelelően inicializálja a gombát.
+     *
+     * @param t A Tecton objektum, amelyhez kapcsolódva a gomba növekszik.
+     * @return true, ha a gomba sikeresen létrejött és inicializálva lett,
+     * false, ha az ellenőrzések során hiba történt.
+     */
     public boolean growMushroom(Tecton t) {
         this.t.toCall("growMushroom");
 
@@ -72,7 +119,7 @@ public class FungalThread {
 
         boolean allSporesUseThisThread = true;
         for (Spore s : t.spores) {
-            if(s.getThread() != this) {
+            if (s.getThread() != this) {
                 allSporesUseThisThread = false;
                 break;
             }
@@ -128,8 +175,21 @@ public class FungalThread {
         return true;
     }
 
-    // olyan fonálrészek eltávolítása, amelyek nem kapcsolódnak ugyanolyan fajból
-    // származó gombatesthez
+
+    /**
+     * Eltávolítja azokat a fonálrészeket, amelyek nem kapcsolódnak ugyanolyan fajból származó gombatesthez.
+     * <p>
+     * A metódus végigiterál a tectons listán, és azokat a tektonokat, amelyek kapcsolódnak egy gombatestre,
+     * összegyűjti egy ideiglenes connectedTectons listába. Azokon a tectonokon, amelyek nem szerepelnek a
+     * connectedTectons listában, eltávolítja a fonálrészeket.
+     * <p>
+     * Függvényfolyamat:
+     * 1. Kiválasztja azokat a tektonokat (Tecton példányokat), amelyeken gombatest található, és egy külön listába helyezi.
+     * 2. Összegyűjti azokat a tektonokat, amelyek fonálrésszel kapcsolódnak ugyanolyan fajból származó gombatesthez.
+     * 3. Azokból a tektonokból, amelyek nem szerepelnek a kapcsolódó tektonok listájában, eltávolítja a fonálrészeket.
+     * <p>
+     * A szimulációt segítő t.toCall() metódus különböző részfolyamatokat naplóz ki.
+     */
     public void deleteUnnecessaryThreads() {
         // meghívja a tester kiíró függvényét
         this.t.toCall("deleteUnnecessaryThreads"); // És itt iratjuk a testerrel.
@@ -194,6 +254,12 @@ public class FungalThread {
 
     }
 
+
+    /**
+     * Visszaadja a jelenlegi tectonok listáját.
+     *
+     * @return egy lista, amely tartalmazza az összes tectont
+     */
     public List<Tecton> getTectons() {
         return tectons;
     }
