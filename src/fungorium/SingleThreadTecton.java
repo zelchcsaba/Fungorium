@@ -16,7 +16,17 @@ public class SingleThreadTecton extends Tecton{
     }
 
     public void setThreads(List<FungalThread> list){
-        thread = list.get(0);
+        t.toCall("setThreads");
+        t.list.add(this);
+        t.list.add(list);
+        t.parameters.clear();
+        t.parameters.add(this);
+
+        thread = list.getFirst();
+
+        t.returnValue.clear();
+        t.returnValue.add(Boolean.TRUE);
+        t.toReturn();
     }
 
     public List<FungalThread> getThreads(){
@@ -36,8 +46,17 @@ public class SingleThreadTecton extends Tecton{
 
 //ha nincs meg mushroom rarakjuk
     public boolean putMushroom(Mushroom m) {
-        if(mushroom == null){
+        t.toCall("putMushroom");
+        t.list.add(this);
+        t.list.add(m);
+        t.parameters.clear();
+        t.parameters.add(this);
+
+        if(mushroom == null) {
             mushroom = m;
+            t.returnValue.clear();
+            t.returnValue.add(Boolean.TRUE);
+            t.toReturn();
             return true;
         }
         return false;

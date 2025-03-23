@@ -42,8 +42,56 @@ public class FungalThread {
         return tectons.remove(t);
     }
 
-    //TO DO majd, most nem kell
-    public boolean growMushroom(Tecton t) {return true;}
+
+    public boolean growMushroom(Tecton t) {
+        this.t.toCall("growMushroom");
+
+        this.t.list.add(this);
+        this.t.list.add(t);
+        this.t.parameters.clear();
+
+        t.getSpores();
+
+        boolean allSporesUseThisThread = true;
+        for (Spore s : t.spores) {
+            if(s.getThread() != this) {
+                allSporesUseThisThread = false;
+                break;
+            }
+        }
+
+
+
+        if (!allSporesUseThisThread) {
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        }
+
+        Mushroom m = (Mushroom) this.t.getObjectByValue("m");
+
+        this.t.list.add(this);
+        this.t.list.add(m);
+        this.t.parameters.clear();
+        this.t.parameters.add(t);
+
+        m.setPosition(t);
+        m.setThread(this);
+
+        List<FungalThread> thisThread = new ArrayList<>();
+        thisThread.add(this);
+        t.setThreads(thisThread);
+
+        t.putMushroom(m);
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
+
+        return true;
+    }
+
     public void deleteUnnecessaryThreads() {}
 
 }

@@ -22,6 +22,7 @@ public abstract class Tecton {
     public void setSpores(List<Spore> list){
         spores = list;
     }
+
     public List<Spore> getSpores(){
         t.toCall("getSpores");
         t.returnValue = new ArrayList<>(spores);
@@ -65,11 +66,7 @@ public abstract class Tecton {
     public List<Tecton> getThreadSection(FungalThread f) {return null;}
 //to do
     public boolean putFirstInsect() {
-        if(i == null){
-            return true;
-         }else{
-             return false;
-         }
+        return i == null;
     }
 
     //to do
@@ -86,11 +83,7 @@ public abstract class Tecton {
 
 
     public boolean isNeighbor(Tecton t) {
-        if(neighbors.contains(t)){
-            return true;
-        }else{
-            return false;
-        }
+        return neighbors.contains(t);
     }
 
     public boolean addNeighbor(List<Tecton> tlist) {

@@ -86,11 +86,7 @@ public class MultiThreadTecton extends Tecton{
     public boolean breakTecton() {return true;}
 
     public boolean putFirstMushroom() {
-        if(mushroom == null){
-            return true;
-         }else{
-             return false;
-         }
+        return mushroom == null;
     }
 
 }

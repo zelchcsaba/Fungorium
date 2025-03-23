@@ -24,7 +24,18 @@ public class Mushroom {
 
 //getter settter
     public void setPosition(Tecton position){
+        t.toCall("setPosition");
+
+        t.list.add(this);
+        t.list.add(position);
+        t.parameters.clear();
+        t.parameters.add(this);
+
         this.position=position;
+
+        t.returnValue.clear();
+        t.returnValue.add(Boolean.TRUE);
+        t.toReturn();
     }
 
     public Tecton getPosition(){
@@ -32,7 +43,18 @@ public class Mushroom {
     }
 
     public void setThread(FungalThread thread){
+        t.toCall("setThread");
+
+        t.list.add(this);
+        t.list.add(thread);
+        t.parameters.clear();
+        t.parameters.add(this);
+
         this.thread=thread;
+
+        t.returnValue.clear();
+        t.returnValue.add(Boolean.TRUE);
+        t.toReturn();
     }
 
     public FungalThread getThread(){

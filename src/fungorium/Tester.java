@@ -15,7 +15,7 @@ public class Tester {
     public Scanner scanner;
     public List<Object> list;
 
-    public Tester(){
+    public Tester() {
         map = new HashMap<>();
         parameters = new ArrayList<>();
         returnValue = new ArrayList<>();
@@ -23,89 +23,86 @@ public class Tester {
         scanner = new Scanner(System.in);
     }
 
-    //Tester osztály egyik kíírató függvénye. A meghívott fg-k törzsében hívjuk meg.
-    // Mindegyik osztálynak kell legyen egy Tester objektuma, hogy ezeket meghívhassa
-    //A caller-t, called-t, parameters-t, függvényhívás előtt beállítottuk. 
-    //Itt csak kikeressük a nevüket és kiíratjuk a doksiban lévő szintax alapján.
-    public void toCall( String func){
+    public void toCall(String func) {
 
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
 
 
-            String caller = map.get(list.get(list.size()-2));
+            String caller = map.get(list.get(list.size() - 2));
 
-            if(caller==null) caller=""; // Ha null, mert pl a tester a hívó akkor nem írunk ki semmit balra.
+            if (caller == null) caller = ""; // Ha null, mert pl a tester a hívó akkor nem írunk ki semmit balra.
 
 
-         String called = map.get(list.get(list.size()-1));
+            String called = map.get(list.get(list.size() - 1));
 
-            if(called==null) called="";
+            if (called == null) called = "";
 
-            String parameterString ="";
+            String parameterString = "";
 
-            int i=0;
+            int i = 0;
 
-         for (Object parameter : parameters) {
-             if(map.get(parameter)==null){
-                    parameterString+=parameter.toString();
-             }else{
-                  parameterString+= map.get(parameter);
-             }
-             i++;
-                if(i<parameters.size()){
-                   parameterString+=", ";
-             }
-         }
-            if(caller!="" || called!="") System.out.println(caller + "->" + called + " : " + func + "(" + parameterString + ")");
+            for (Object parameter : parameters) {
+                if (map.get(parameter) == null) {
+                    parameterString += parameter.toString();
+                } else {
+                    parameterString += map.get(parameter);
+                }
+                i++;
+                if (i < parameters.size()) {
+                    parameterString += ", ";
+                }
+            }
+            if (caller != "" || called != "")
+                System.out.println(caller + "->" + called + " : " + func + "(" + parameterString + ")");
 
         }
     }
 
-    public void toCreate(Object o1, Object o2){
+    public void toCreate(Object o1, Object o2) {
 
     }
 
     //Hasonló mint a toCall.
-    public void toReturn(){
+    public void toReturn() {
 
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
 
-        String returnString ="";
+            String returnString = "";
 
-        int i=0;
-        for (Object returnv : returnValue) {
-            if(map.get(returnv)==null){
-                returnString+=returnv.toString();
-            }else{
-                returnString+= map.get(returnv);
+            int i = 0;
+            for (Object returnv : returnValue) {
+                if (map.get(returnv) == null) {
+                    returnString += returnv.toString();
+                } else {
+                    returnString += map.get(returnv);
+                }
+
+                i++;
+                if (i < returnValue.size()) {
+                    returnString += ", ";
+                }
             }
-    
-            i++;
-            if(i<returnValue.size()){
-                returnString+=", ";
-            }
+
+            String fromString = map.get(list.get(list.size() - 1));
+            if (fromString == null) fromString = "";
+            String toString = map.get(list.get(list.size() - 2));
+
+            if (toString == null) {
+                toString = "";
+                if (fromString != "" || toString != "")
+                    System.out.println(toString + "<--" + fromString + " : " + returnString);
+            } else if (fromString != "" || toString != "")
+                System.out.println(fromString + "-->" + toString + " : " + returnString);
+
+            list.remove(list.size() - 1);
+            list.remove(list.size() - 1);
+
         }
-
-        String fromString = map.get(list.get(list.size()-1));
-        if(fromString==null) fromString="";
-        String toString = map.get(list.get(list.size()-2));
-
-        if(toString==null) {
-            toString="";
-            if(fromString!="" || toString!= "")System.out.println(toString + "<--" + fromString + " : " + returnString);
-        }
-        else if(fromString!="" || toString!="") System.out.println(fromString + "-->" + toString + " : " + returnString);
-
-        list.remove(list.size() - 1);
-        list.remove(list.size() - 1);
-
-    }
     }
 
-    
 
     //Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs kész.
-    public void FungalThreadBranching(){
+    public void FungalThreadBranching() {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő inicalizáló lépéseket.
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
@@ -118,21 +115,38 @@ public class Tester {
         System.out.println("Van t1-en spóra?");
         String select = scanner.next();
 
-        if(select.equals("y")){
+        if (select.equals("y")) {
             list.add(null);
             list.add(f);
             MultiThreadTecton t3 = (MultiThreadTecton) getObjectByValue("t3");
             parameters.clear();
             parameters.add(t3);
             f.branchThread(t3); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
-        }else{
+        } else {
             System.out.println(":3");
         }
 
-        
+
     }
 
-    public void init1(){
+
+    public void growingNewMushroom() {
+        init5();
+
+        FungalThread f = (FungalThread) getObjectByValue("f");
+        Tecton t3 = (SingleThreadTecton) getObjectByValue("t3");
+
+        list.add(null);
+        list.add(f);
+        parameters.clear();
+        parameters.add(t3);
+
+        f.growMushroom(t3);
+
+    }
+
+
+    public void init1() {
 
         map.clear();
 
@@ -183,7 +197,7 @@ public class Tester {
         m.setThread(f);//19
 
         SlowingSpore s = new SlowingSpore(this);//20
-        
+
         List<Spore> spores = new ArrayList<>();
         spores.add(s);
         t3.setSpores(spores);//22
@@ -206,14 +220,14 @@ public class Tester {
         map.put(t3, "t3");
         map.put(t4, "t4");
         map.put(t5, "t5");
-        map.put(i,"i");
+        map.put(i, "i");
         map.put(s, "s");
         map.put(s2, "s2");
 
     }
 
     //Diagram 2-nek felel meg.
-    public void init2(){
+    public void init2() {
         // A kommunikációs diagrammnak megfelelő sorrendben és módon inicializáljuk az objektumokat.
         // Ehhez implementálni kellett pár setter-t.
         map.clear();
@@ -287,7 +301,7 @@ public class Tester {
     }
 
     //Diagram 3-nak felel meg.
-    public void init3(){
+    public void init3() {
 
         map.clear();
 
@@ -296,7 +310,7 @@ public class Tester {
         MultiThreadTecton t1 = new MultiThreadTecton(this);//1. 
         MultiThreadTecton t2 = new MultiThreadTecton(this);//2.
         MultiThreadTecton t3 = new MultiThreadTecton(this);//3.
-        
+
         List<Tecton> t1Neighbors = new ArrayList<>();
         t1Neighbors.add(t2);
         t1.setNeighbors(t1Neighbors);//4.
@@ -328,7 +342,7 @@ public class Tester {
         spores.add(s);
         m.setSpores(spores);//16.
         m.setShootedSporesCount(9);//17.
-        
+
         //Végül betesszük a map-be, hogy elő tudjuk őket szedni, hogy meghívjuk a függvényeiket
         map.put(f, "f");
         map.put(m, "m");
