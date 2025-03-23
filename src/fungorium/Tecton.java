@@ -181,7 +181,7 @@ public abstract class Tecton {
      */
     public boolean isNeighbor(Tecton t) {
         //meghívja a tester kiíró függvényét
-        this.t.toCall("cut");
+        this.t.toCall("isNeighbor");
         if (neighbors.contains(t)) {
 
             this.t.returnValue.clear();
