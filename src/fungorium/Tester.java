@@ -6,7 +6,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-//Tester osztély a teszteléshez.
+
+/**
+ * A Tester osztály célja szimulált műveletek végrehajtása objektumok
+ * és függvények között, kifejezetten szekvencia diagramokban
+ * és belső kezelési logikákban.
+ *
+ * Az osztály többek között tartalmaz metódusokat függvényhívások
+ * szimulálására, objektumok létrehozására és visszatérési értékek
+ * megjelenítésére.
+ *
+ * A metódusok egy részében belső adatszerkezeteket használ, például
+ * a map, list és parameters adattagokat, amelyek a manipulált objektumok
+ * tárolását és visszakeresését segítik elő.
+ *
+ * Használati célok:
+ * - Virtuális hívási láncok és objektumműveletek szimulálása.
+ * - Folyamatok vizualizációja tesztelési forgatókönyvekben.
+ * - Speciális adatkezelési logikák és algoritmusok tesztelése.
+ *
+ * Az osztály az input kezelésére scanner objektumot is alkalmaz.
+ */
 public class Tester {
     public Map<Object, String> map; // Ebben tároljuk a kulcs-érték párokat. kulcs=objektum érték=név. 1:1
                                     // megfeleltetés.
@@ -15,6 +35,12 @@ public class Tester {
     public Scanner scanner;
     public List<Object> list;//tároljuk az objektum hívások láncát
 
+
+    /**
+     * A Tester osztály konstruktora.
+     * Példányosítja és inicializálja az osztályhoz tartozó összes adatstruktúrát,
+     * valamint egy szkenner objektumot az input kezelésére.
+     */
     public Tester() {
         map = new HashMap<>();
         parameters = new ArrayList<>();
@@ -23,15 +49,12 @@ public class Tester {
         scanner = new Scanner(System.in);
     }
 
-    // Tester osztály egyik kíírató függvénye. A meghívott fg-k törzsében hívjuk
-    // meg.
-    // Mindegyik osztálynak kell legyen egy Tester objektuma, hogy ezeket
-    // meghívhassa
-    // A caller-t, called-t, parameters-t, függvényhívás előtt beállítottuk.
-    // Itt csak kikeressük a nevüket és kiíratjuk a doksiban lévő szintax alapján.
+
     /**
-     * 
-     * @param func
+     * Egy függvény meghívását szimuláló metódus, amely kiírja a hívó és a hívott objektum nevét,
+     * valamint a meghívott függvény nevét és paramétereit a megfelelő szintaxisban.
+     *
+     * @param func A meghívott függvény neve.
      */
     public void toCall(String func) {
 
@@ -74,12 +97,14 @@ public class Tester {
         }
     }
 
-    
+
     /**
-     * mikor létrehozunk egy új objektumot, átatdjuk hogy ki hozta létr, hogy melyik objektumot hozta létre, és ennek nevét
-     * @param caller
-     * @param called
-     * @param name
+     * Egy új objektum létrehozását szimuláló metódus, amely kiírja a hívó objektum nevét,
+     * a létrehozott objektum nevét, valamint az "új létrehozás" szintaxisát.
+     *
+     * @param caller A hívó objektum, amely létrehozza az új objektumot.
+     * @param called Az újonnan létrehozott objektum, amelyhez nevet rendelünk.
+     * @param name Az újonnan létrehozott objektum neve.
      */
     public void toCreate(Object caller, Object called, String name) {
         String callerName = map.get(caller);
@@ -88,7 +113,26 @@ public class Tester {
         System.out.println(callerName + "-->" + name + " :  <<create>>");
     }
 
-    // Hasonló mint a toCall.
+
+    /**
+     * A toReturn metódus a hívási lánc feldolgozására és a visszatérési értékek kijelzésére szolgál.
+     *
+     * Ez a metódus kiírja a hívó objektum és a hívott objektum nevét, valamint a visszatérési
+     * értékeket. A hívásokat a list nevű adattag szerinti láncban dolgozza fel.
+     *
+     * Működése során:
+     * - Létrehoz egy visszatérési értékeket tartalmazó sztringet.
+     * - Ellenőrzi a visszatérési értékek meglétét és kezelését a map adattagban tárolt objektumok
+     *   szerint.
+     * - Ellenőrzi a hívó és hívott objektumok nevét, és ezek alapján formázza az eredményt.
+     * - A hívási láncból eltávolítja a feldolgozott objektumokat.
+     *
+     * A metódus belső logikája alapján:
+     * - Ha egy objektum nincs a map-ban, az nem létrehozott, és közvetlenül a visszatérési értéket
+     *   használja fel.
+     * - Ha az objektum benne van a map-ban, annak nevét használja a kiíráskor.
+     * - A hívási lánc utolsó két objektumára végzi a kiértékelést és eltávolítást.
+     */
     public void toReturn() {
 
         if (!list.isEmpty()) {
@@ -143,7 +187,22 @@ public class Tester {
     }
 
 
-    //olyan fonálrészek eltávolítása, melyek nincsenek kapcsolatban ugyanolyan fajból származó gombafonállal
+    /**
+     * A delete_Unnecessary_Threads metódus feladata a fölösleges gombafonalak eltávolításának
+     * szimulálása. Az alábbiak szerint működik:
+     *
+     * 1. Inicializálja a kiindulási állapotot az `init2()` metódus meghívásával.
+     * 2. A szekvencia diagram szintaxisának megfelelően kiírja az érintett objektumok és
+     *    kapcsolódó metódusok nevét.
+     * 3. Megkeresi az "f" nevű gombafonal objektumot a `getObjectByValue()` függvény segítségével.
+     * 4. Az objektumot hozzáadja egy listához további feldolgozáshoz.
+     * 5. Kiüríti a paramétereket, ezzel biztosítva a tiszta működést.
+     * 6. Meghívja a `deleteUnnecessaryThreads()` függvényt a gombafonal objektum esetében,
+     *    amely végrehajtja a fölösleges szálak eltávolításához szükséges logikát.
+     *
+     * A metódus célja a megfelelő belső logika feldolgozásának szimulációja a
+     * gombafonalak hatékony kezelése érdekében.
+     */
     public void delete_Unnecessary_Threads() {
         init2();
 
@@ -160,12 +219,26 @@ public class Tester {
         list.add(null);
         list.add(f);
         parameters.clear();
-        //meghívom a gombafonál deleteUnnecessaryThreads függvényét
-        f.deleteUnnecessaryThreads();
 
+        f.deleteUnnecessaryThreads();
     }
 
-    //tekton kettétörése
+
+    /**
+     * A break_tecton metódus feladata a tecton kettétörésének szimulálása.
+     *
+     * A metódus végrehajtási lépései a következők:
+     * - Inicializál egy belső állapotot az init1 metódus segítségével.
+     * - Meghatározott résztvevőket (participant) definiál és kiírja őket.
+     * - Egy "SingleThreadTecton" típusú objektum lekérése a getObjectByValue
+     *   metódussal, amely "t3" névvel azonosítható érték alapján kerül kiválasztásra.
+     * - A listához null értéket és ezt az objektumot adja hozzá.
+     * - A "parameters" lista tartalmának törlése.
+     * - A "SingleThreadTecton" típusú objektum breakTecton metódusának meghívása.
+     *
+     * Ez a metódus feltételezi, hogy a "getObjectByValue", a "list",
+     * a "parameters" és az init1 metódus korábban definiálva lett az osztályban.
+     */
     public void break_tecton() {
         init1();
 
@@ -186,12 +259,23 @@ public class Tester {
         list.add(null);
         list.add(t3);
         parameters.clear();
-        //meghívom a tekton breakTecton metódusát
-        t3.breakTecton();
 
+        t3.breakTecton();
     }
 
-    //tekton kettétörése, ha gombaatest van rajta
+
+    /**
+     * A break_tecton_with_mushroom metódus felelőssége a "breakTecton" logika végrehajtása,
+     * ha a tektonon gombatest található.
+     * Először inicializálja a szükséges paramétereket és kiírja a résztvevőket.
+     *
+     * Ezt követően megszerzi a "MultiThreadTecton" típusú objektumot egy előre definiált értékre
+     * hivatkozva. Az objektum begyűjtése után frissíti a listát a megfelelő elemekkel, hozzáadja
+     * az új objektumot, majd kiüríti a paraméterek tárolóját.
+     *
+     * Végül, meghívja a "MultiThreadTecton" breakTecton metódusát, hogy a tektonikus logikát
+     * végrehajtsa.
+     */
     public void break_tecton_with_mushroom(){
         init1();
         System.out.println("participant \"Tester\" as t");
@@ -202,12 +286,24 @@ public class Tester {
         list.add(null);
         list.add(t1);
         parameters.clear();
-        //meghívom a tekton breakTecton metódusát
+
         t1.breakTecton();
     }
 
-    //Absorbing tecton esetén a gombafonalak felszívódása a tektonról
-    public void absorb_form_tecton() {
+
+    /**
+     * Meghívja az aktuális AbsorbingTecton objektum absorb metódusát, amely alapvetően
+     * folyamatelemként működik a rendszerben. Előkészíti a megfelelő résztvevőket
+     * és beállítja az objektumokat ezen folyamat futtatására.
+     *
+     * Előkészítési lépések:
+     * - Rendszer inicializálása az init4 metódussal.
+     * - Tesztfolyamat résztvevőinek kiíratása a konzolra.
+     *
+     * Fő művelet:
+     * - Meghívja a "t3" tekton absorb metódusát, ami a folyamat végrehajtását kezdeményezi.
+     */
+    public void absorb_from_tecton() {
         init4();
 
         System.out.println("participant \"Tester\" as t");
@@ -220,11 +316,22 @@ public class Tester {
         list.add(null);
         list.add(t3);
         parameters.clear();
-        //meghívom a tekton absorb metódusát
+
         t3.absorb();
     }
 
-    //10. spóralövés után a gombatest elpusztulásának tesztesete
+    /**
+     * A mushroom_die metódus egy teszteset implementációja, amely a gomba elpusztulásának
+     * szimulációját írja le a spóralövési folyamat után.
+     *
+     * A metódus inicializálja a szükséges objektumokat, majd interakcióval követi,
+     * hogyan lövi ki a gombatest a spórákat, végül szimulálja az elpusztulási állapotot.
+     *
+     * A teszt során a következő interakciók kerülnek szimulálásra:
+     *  - Tester részvétele.
+     *  - Objektumok létrehozása és inicializálása.
+     *  - A Mushroom entitás shootSpore metódusának hívása.
+     */
     public void mushroom_die(){
         init3();
 
@@ -242,11 +349,27 @@ public class Tester {
         list.add(t1);
         parameters.clear();
         parameters.add(t1);
-        //meghívom a gombatest shootSpore függvéynt
+
         m.shootSpore(t1);
     }
 
-    //a fonál elvágása rovar által
+
+    /**
+     * A cut_fungalthread metódus célja, hogy a rovar által végzett fonál elvágási
+     * folyamatot szimulálja. A metódus előkészíti a szükséges objektumokat,
+     * inicializálja a tesztelési környezetet, és végrehajtja a rovar `cut`
+     * metódusának hívását a megfelelő paraméterekkel.
+     *
+     * A metódus működése a következő fő lépéseken alapul:
+     * 1. Inicializáló metódus meghívása (init4).
+     * 2. Résztvevő entitások konzolra írása
+     *    a szekvencia-diagram nyomon követéséhez.
+     * 3. Az 'Insect' típusú objektum és a 'SingleThreadTecton' objektum
+     *    lefoglalása a megfelelő értékekkel.
+     * 4. Az objektumok paraméterként való előkészítése.
+     * 5. A rovar `cut` metódusának meghívása, amely elvégzi az adott fonálszerkezet
+     *    törését.
+     */
     public void cut_fungalthread(){
         init4();
 
@@ -269,19 +392,29 @@ public class Tester {
 
   
     /**
-     * Use-case-hez tartozó név: Gombafonal elágazása olyan tektonra, ahol van spóra.
-     *                           
+     * A gombafonal elágazásának folyamatát kezeli olyan tektonra, ahol spóra található.
+     *
+     * Ez a metódus a következőkre szolgál:
+     * - A szükséges inicializáló lépéseket végrehajtja.
+     * - Beállítja a résztvevő objektumokat a kommunikációs diagram alapján.
+     * - Meghatározza, hogy van-e spóra egy adott MultiThreadTecton tektonon.
+     * - Ha spóra található, a gombafonal tovább ágazik a megfelelő szomszédos tektonokra.
+     *
+     * A folyamat során a következő logika érvényesül:
+     * - A metódus inicializálja az objektumokat és beállítja az interakciókat.
+     * - Ha az első kiválasztott tekton rendelkezik spórával, a funkció további elágazásokat hajt végre a szomszédos tektonokra.
+     * - Ellenkező esetben értesítést ad arról, hogy nincs spóra az adott tektonon.
      */
     public void fungalThreadBranching() {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő
                  // inicalizáló lépéseket.
-        System.out.println("participant \"Tester\" as \"\""); 
+        System.out.println("participant \"Tester\" as \"\"");
         System.out.println("participant \"f:FungalThread\" as f");
         System.out.println("participant \"t1:MultiThreadTecton\" as t1");
         System.out.println("participant \"t2:MultiThreadTecton\" as t2");
         System.out.println("participant \"t3:MultiThreadTecton\" as t3");
         System.out.println();
-        
+
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
 
@@ -296,7 +429,7 @@ public class Tester {
         if (select.equals("y")) {
             MultiThreadTecton t3 = (MultiThreadTecton) getObjectByValue("t3");//Kicsit mókolni kell, hogy úgy írjon ki, mint a szekvenciadia
             MultiThreadTecton t2 = (MultiThreadTecton) getObjectByValue("t2");//Tehát most a kom. dia.-al ellentétben t3 t1-el is szomszédos, nem csak t2-el
-            List<Tecton> t3Neighbors = new ArrayList<>();//Mivel az a játékszabály, hogy a spórával szomszédos tektonokra mehet tovább 
+            List<Tecton> t3Neighbors = new ArrayList<>();//Mivel az a játékszabály, hogy a spórával szomszédos tektonokra mehet tovább
             t3Neighbors.add(t1);
             t3Neighbors.add(t2);
             t3.setNeighbors(t3Neighbors);
@@ -311,12 +444,23 @@ public class Tester {
         }
     }
 
+
     /**
-     * Use-case-hez tartozó név: Gombafonál sikertelen elágaztatása egyfonalas tektonra, 
-     *                           mert már van rajta.
+     * Ez a metódus egy gombafonal sikertelen elágaztatását szimulálja
+     * egy egyfonalas tektonra, mivel a folyamat akadályba ütközik,
+     * például azért, mert a megadott tekton már foglalt.
+     *
+     * A metódus kezdeti beállításokat végez az init4() meghívásával, majd a konzolon
+     * megjeleníti a szekvenciadiagram megfelelő részeit. Ezt követően a szükséges
+     * objektumokat kiolvassa a megfelelő értékmegadással, és egy
+     * próbálkozást végez az elágaztatás végrehajtására az `branchThread` metódus
+     * meghívásával.
+     *
+     * A szimuláció eredményeképpen demonstrálja, hogy a gombafonal nem tud sikeresen
+     * elágaztatódni arra a konkrét egyfonalas tektonra.
      */
     public void simpleFungalThreadBranchingFalse(){
-        init4(); 
+        init4();
 
         System.out.println("participant \"Tester\" as \"\"");
         System.out.println("participant \"f2:FungalThread\" as f2");
@@ -333,11 +477,21 @@ public class Tester {
         f2.branchThread(t2); 
     }
 
+
     /**
-     * Use-case-hez tartozó név: Gombafonál sikeres elágaztatása tektonra. 
+     * A gombafonal sikeres elágaztatását valósítja meg egy megadott MultiThreadTecton-ra.
+     *
+     * Használati eset:
+     * - A módszer egyik résztvevője egy 'FungalThread' objektum.
+     * - Továbbá tartalmaz egy 'MultiThreadTecton' objektumot, amelyen az elágaztatás történik.
+     *
+     * Funkcionalitás:
+     * - Inicializálja a szükséges környezetet az elágaztatás előtt.
+     * - Kiírja a szekvenciadiagramhoz használható résztvevőket.
+     * - Az FungalThread példány és a MultiThreadTecton példány közötti kapcsolatot alakítja ki az 'branchThread' hívás segítségével.
      */
     public void simpleFungalThreadBranchingTrue(){
-        init1(); 
+        init1();
 
         System.out.println("participant \"Tester\" as \"\"");
         System.out.println("participant \"f:FungalThread\" as f");
@@ -357,8 +511,20 @@ public class Tester {
 
 
     /**
-     * Use-case-hez tartozó név: Sikertelen spóraszórás, mert nem szomszédos a céltekton.
+     * Ez a metódus a gomba (Mushroom) spóraszórási próbálkozását szimulálja egy céltektonra
+     * (SingleThreadTecton), amely nem szomszédos. A megcélzott tekton ebben az esetben
+     * nem elérhető, így a spóraszórás sikertelen.
      *
+     * A metódus:
+     *  - Inicializálja a rendszer releváns objektumait.
+     *  - Szimulációt készít a résztvevők közötti interakciókról.
+     *  - Meghív egy spóraszórási folyamatot, amely egy sikertelen kísérletet demonstrál.
+     *
+     * A megvalósítás specifikusan:
+     *  - Inicializálja az objektumokat az init1() metódus meghívásával.
+     *  - KIíratja a kontextushoz tartozó szekvenciadiagram szereplőit és azokat a környezetet.
+     *  - Interakciót hajt végre a Mushroom osztály shootSpore metódusával, amely hibás működést eredményez,
+     *    mivel a céltekton nem szomszédos.
      */
     public void unevolvedShootSporeFalse(){
         init1();
@@ -366,7 +532,7 @@ public class Tester {
         System.out.println("participant \"Tester\" as \"\"");
         System.out.println("participant \"m:Mushroom\" as m");
         System.out.println("participant \"t2:SingleThreadTecton\" as t2");
-        System.out.println("participant \"t1:MultiThreadTecton\" as t1");//ezen van 
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");//ezen van
         System.out.println("participant \"s2:SpeedSpore\" as s2");//m spórája
         System.out.println();
 
@@ -378,30 +544,85 @@ public class Tester {
         parameters.clear();
         parameters.add(t2);
         m.shootSpore(t2);
-
     }
 
+
     /**
-     * Use-case-hez tartozó név: Első gombatest lehelyezése olyan tektonra,
-     * amelyre le lehet helyezni.
+     * A gomba növesztési folyamatának inicializálását és végrehajtását végzi.
+     *
+     * Ez a metódus meghatározott szereplők definiálását,
+     * valamint az interakciójukat tartalmazza egy bizonyos gomba növesztése kapcsán.
+     *
+     * Feladatok:
+     * 1. A szereplők inicializálása.
+     * 2. A növekedési folyamat adatainak listákba és paraméterekbe való összegyűjtése.
+     * 3. A "growMushroom" metódus meghívása, amely végrehajtja a tényleges növekedési folyamatot.
+     */
+    public void growingNewMushroom() {
+        init5();
+
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println("participant \"s1:SlowingSpore\" as s1");
+        System.out.println("participant \"s2:NoCutSpore\" as s2");
+        System.out.println("participant \"s3:ParalysingSpore\" as s3");
+        System.out.println();
+
+        FungalThread f = (FungalThread) getObjectByValue("f");
+        Tecton t3 = (SingleThreadTecton) getObjectByValue("t3");
+
+        list.add(null);
+        list.add(f);
+        parameters.clear();
+        parameters.add(t3);
+
+        f.growMushroom(t3);
+    }
+
+
+    /**
+     * Az első gombát olyan tectonra helyezi le, amelyre lehelyezhető.
+     *
+     * Ez a metódus inicializálja a szükséges állapotokat, majd kiválasztja azt a
+     * MultiThreadTecton objektumot, amelyikre az első gombát el kell helyezni.
+     * Az objektum hozzáadódik egy listához, és beállításain keresztül az első gomba
+     * lehelyezésre kerül.
      */
     public void putFirstMushroomTrue() {
         init1();
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"t4:MultiThreadTecton\" as t4");
+        System.out.println("participant \"ft:FungalThread\" as ft");
+        System.out.println("participant \"mush:Mushroom\" as mush\n");
+
         MultiThreadTecton t4 = (MultiThreadTecton) getObjectByValue("t4");
         list.add(null);
         list.add(t4);
         parameters.clear();
         t4.putFirstMushroom();
-
     }
 
+
     /**
-     * Use-case-hez tartozó név: Első gombatest lehelyezése egy tektonra,
-     * amelyre nem lehet lehelyezni (AbsorbingTecton).
+     * Az első gombatest elhelyezése egy AbsorbingTecton-ra, amelyre nem lehet
+     * gombatestet lehelyezni. A metódus inicializálja az állapotokat, majd megpróbálja
+     * a "t5" objektumra elhelyezni a gombatestet, amely sikertelen lesz az
+     * AbsorbingTecton jellegének köszönhetően.
      *
+     * A folyamat lépései:
+     * - Az inicializáló metódus lefut (init1).
+     * - A "t5" AbsorbingTecton objektum azonosítása és lekérése az objektumlistából.
+     * - A lista frissítése egy null elem és az AbsorbingTecton hozzáadásával.
+     * - Paraméterlista kiürítése.
+     * - Az AbsorbingTecton putFirstMushroom metódusának meghívása, amely a sikertelen elhelyezési próbálkozást hajtja végre.
      */
     public void putFirstMushroomFalseAbsorb() {
         init1();
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"t5:AbsorbingTecton\" as t5\n");
+
         AbsorbingTecton t5 = (AbsorbingTecton) getObjectByValue("t5");
         list.add(null);
         list.add(t5);
@@ -409,27 +630,57 @@ public class Tester {
         t5.putFirstMushroom();
     }
 
+
+
     /**
-     * Use-case-hez tartozó név: Első gombatest lehelyezése egy tektonra,
-     *                           amelyre nem lehet lehelyezni (van gombatest a tektonon).
+     * A metódus az első gombatest lehelyezését szimulálja egy tektonra olyan esetben,
+     * amikor arra már nem lehet újabb gombatestet lehelyezni, mert már van rajta egy.
      *
+     * A metódus:
+     * - Inicializálja a szükséges állapotot az `init1` meghívásával.
+     * - Lekéri a "t1" tekton objektumot a `getObjectByValue` metódus segítségével.
+     * - A `list` objektumhoz hozzáad egy `null` értéket és a tekton objektumot.
+     * - Tisztítja a felhasznált `parameters` listát.
+     * - Meghívja a `putFirstMushroom` metódust a "t1" tekton objektumon.
+     *
+     * Használatos olyan szituációk tesztelésére, amikor megvizsgáljuk, hogy a művelet
+     * megfelelően kezeli-e azt az esetet, ha már nem helyezhető további gombatest a tektonra.
      */
     public void putFirstMushroomFalseIsMush(){
         init1();
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1\n");
+
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
         list.add(null);
         list.add(t1);
         parameters.clear();
         t1.putFirstMushroom();
-
     }
 
+
     /**
-     * Use-case-hez tartozó név: Fejletlen gombatest spóra szórása olyan tektonra, amelyre tud.
-     *                           
+     * Fejletlen gombatest spóra szórása egy meghatározott SingleThreadTecton-ra, ahova lehetséges.
+     *
+     * Ez a metódus inicializál bizonyos értékeket, lekéri a megfelelő
+     * Mushroom és SingleThreadTecton objektumokat, majd egy spórát juttat
+     * a kiválasztott SingleThreadTecton-ra a Mushroom objektum shootSpore
+     * metódusának segítségével.
+     *
+     * Metódus lépései:
+     * 1. Értékek inicializálása az init1() metódus segítségével.
+     * 2. Mushroom objektum lekérése az aktuális környezetből.
+     * 3. SingleThreadTecton objektum lekérése az aktuális környezetből.
+     * 4. Objektumok regisztrálása az aktuális listában.
+     * 5. Paraméterek beállítása a spóra szórásához.
+     * 6. Spóra szórása a kiválasztott SingleThreadTecton-ra a Mushroom objektum shootSpore() metódusával.
      */
     public void unevolvedShootSporeTrue(){
         init1();
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3\n");
+
         Mushroom m = (Mushroom) getObjectByValue("m");
         SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
         list.add(null);
@@ -440,13 +691,23 @@ public class Tester {
     }
 
 
-    
     /**
-     * Use-case-hez tartozó név: Fejlett gombatest spóra szórása olyan tektonra, amelyre tud.
+     * A fejlett gombatest által végrehajtott spóra szórási művelet.
      *
+     * Ez a metódus egy fejlett gombatest spóraszórási folyamatát hajtja végre egy adott
+     * SingleThreadTecton objektumra, amennyiben az lehetséges.
+     * Először inicializálja a szükséges adatokat, majd lekérdezi
+     * a spóraszóráshoz használt Mushroom és SingleThreadTecton objektumokat.
+     * Ezt követően hozzáadja a szükséges paramétereket, és végrehajtja a gombatest
+     * spóra szórási műveletét az adott célobjektumra.
      */
     public void evolvedShootSporeTrue(){
         init5();
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3\n");
+
         Mushroom m =  (Mushroom) getObjectByValue("m");
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
         list.add(null);
@@ -508,8 +769,9 @@ public class Tester {
     }
 
 
-//első állapot
-    //Diagram 1-nek felel meg
+    /**
+     * 1. Kommunikációs diagram szerinti inicializálás
+     */
     public void init1(){
 
 
@@ -590,7 +852,10 @@ public class Tester {
 
     }
 
-    // Diagram 2-nek felel meg.
+
+    /**
+     * 2. Kommunikációs diagram szerinti inicializálás
+     */
     public void init2() {
         // A kommunikációs diagrammnak megfelelő sorrendben és módon inicializáljuk az
         // objektumokat.
@@ -665,7 +930,10 @@ public class Tester {
 
     }
 
-    // Diagram 3-nak felel meg.
+
+    /**
+     * 3. Kommunikációs diagram szerinti inicializálás
+     */
     public void init3() {
 
         map.clear();
@@ -719,7 +987,10 @@ public class Tester {
         map.put(s, "s");
     }
 
-    //Diagram 4-nek felel meg
+
+    /**
+     * 4. Kommunikációs diagram szerinti inicializálás
+     */
     public void init4() {
         map.clear();
 
@@ -800,7 +1071,10 @@ public class Tester {
         map.put(i, "i");
     }
 
-    //Diagram 5-nek felel meg
+
+    /**
+     * 5. Kommunikációs diagram szerinti inicializálás
+     */
     public void init5() {
         map.clear();
 
@@ -936,6 +1210,13 @@ public class Tester {
     }
 
     // Segéd függvény, hogy a neve alapján elő szedjünk egy objektumot
+
+    /**
+     * Kikeres egy objektumot a megadott érték alapján.
+     *
+     * @param value A keresett érték, amely alapján az objektumot meg kell találni.
+     * @return Az objektum, amely megfelel a megadott értéknek, vagy null, ha nincs ilyen objektum.
+     */
     public Object getObjectByValue(String value) {
         for (Map.Entry<Object, String> entry : map.entrySet()) {
             if (entry.getValue().equals(value)) {
@@ -944,4 +1225,5 @@ public class Tester {
         }
         return null; // Ha nincs ilyen érték, null-t adunk vissza
     }
+
 }

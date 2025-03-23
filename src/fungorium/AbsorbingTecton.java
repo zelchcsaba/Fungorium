@@ -3,24 +3,43 @@ package fungorium;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Az AbsorbingTecton osztály a Tecton leszármazottja, amely olyan speciális viselkedéssel
+ * rendelkezik, hogy nem lehet rá Mushroom objektumot helyezni. Ez az osztály a rajta lévő
+ * FungalThread fonalakkal való műveletek kezelésére összpontosul.
+ */
 public class AbsorbingTecton extends Tecton {
 
     private List<FungalThread> threads;
 
+
     /**
-     * kontruktor
-     * @param t
+     * konstruktor
+     *
+     * @param t tester objektum
      */
     public AbsorbingTecton(Tester t) {
         super(t);
         threads = new ArrayList();
     }
 
+    /**
+     * Nem lehet Mushroomot lehelyezni
+     *
+     * @param mushroom
+     */
     public void setMushroom(Mushroom mushroom) {
     }
 
-    // visszaadja a tektonon található gombatestet
 
+    /**
+     * Visszaad egy Mushroom (gombatest) objektumot, amely az AbsorbingTecton típusú
+     * objektumban található. Mivel az AbsorbingTecton esetében nem lehetséges gombatest
+     * jelenléte, a visszatérési érték mindig null.
+     *
+     * @return null, mivel az AbsorbingTecton nem tartalmaz Mushroom objektumot.
+     */
     public Mushroom getMushroom() {
         // meghívja a tester kiíró függvényét
         this.t.toCall("getMushroom"); // És itt iratjuk a testerrel.
@@ -32,11 +51,22 @@ public class AbsorbingTecton extends Tecton {
         return null;
     }
 
+
+    /**
+     * Beállítja az aktuális objektumhoz tartozó gombafonalak listáját.
+     *
+     * @param list A gombafonalakat tartalmazó lista, amely az objektumhoz kerül hozzárendelésre.
+     */
     public void setThreads(List<FungalThread> list) {
         threads = list;
     }
 
-    // visszaadja azokat a gombafonalakat, amelyek rajta vannak
+
+    /**
+     * Visszaadja az objektumhoz tartozó gombafonalak listáját.
+     *
+     * @return A gombafonalak listája, amely ehhez az objektumhoz tartozik.
+     */
     public List<FungalThread> getThreads() {
         t.toCall("getThreads");
         t.returnValue.clear();
@@ -47,11 +77,40 @@ public class AbsorbingTecton extends Tecton {
         return threads;
     }
 
+
+    /**
+     * Visszaadja az objektumhoz tartozó gombafonalak listáját.
+     *
+     * @return A gombafonalak listája, amely ehhez az objektumhoz tartozik.
+     */
     public List<FungalThread> getThreadsWithoutCout() {
         return threads;
     }
 
-    // fonál felszívódása tektonról
+
+    /**
+     * Ez a metódus felelős az "AbsorbingTecton" típusú objektumhoz tartozó összes
+     * gombafonal (FungalThread) felszívásáért. A felszívás folyamata során az objektumhoz
+     * rendelt fonalakat eltávolítja a tektonról, és törli azokat a fonálrészeket,
+     * amelyek nem kapcsolódnak azonos fajhoz tartozó gombatestekhez.
+     * <p>
+     * A metódus működése:
+     * 1. Meghívja a "toCall" függvényt az aktuális művelet jelzésére.
+     * 2. Iterál az "AbsorbingTecton" objektumhoz tartozó gombafonalak listáján, majd
+     * a következőket hajtja végre:
+     * - Hozzáadja magát és a fonalat egy "list" nevű belső szimulációs tárolóhoz.
+     * - Eltávolítja a gombafonalhoz tartozó tektonról az aktuális objekumot
+     * a "removeTecton" metódus segítségével.
+     * 3. Létrehoz egy átmeneti lista objektumot, amelyhez hozzáadja az összes eredeti
+     * gombafonalat, majd kiüríti az eredeti fonallista tartalmát.
+     * 4. Iterál az átmeneti gombafonalakon, és a következőket hajtja végre:
+     * - Hozzáadja az aktuális objektumot és az adott fonalat ugyanabba a "list"
+     * nevű tárolóba.
+     * - Meghívja a "deleteUnnecessaryThreads" metódust az adott fonál esetében
+     * az irreleváns kapcsolatok eltávolítására.
+     * 5. Az összes végrehajtott művelet után tisztítja az aktuális visszatérési érték
+     * tárolót, majd meghívja a "toReturn" metódust a végrehajtás szimulációjára.
+     */
     public void absorb() {
 
         t.toCall("absorb");
@@ -84,15 +143,30 @@ public class AbsorbingTecton extends Tecton {
         t.toReturn();
     }
 
-    // false, mert nem lehet Mushroomot lehelyezni
+
+    /**
+     * Nem lehet Mushroom objektumot lehelyezni az aktuális objektumra.
+     *
+     * @param m A Mushroom objektum, amelyet le szeretnének helyezni.
+     * @return false, mivel az aktuális objektumra nem lehet Mushroomot lehelyezni.
+     */
     public boolean putMushroom(Mushroom m) {
         return false;
     }
 
+
+    /**
+     * Ellenőrzi, hogy a megadott FungalThread (gombafonal) már létezik-e valamelyik szomszéd tektonban,
+     * és ennek megfelelően helyezi el a gombafonalat.
+     *
+     * @param f Az a FungalThread objektum, amelyet hozzá szeretnénk adni a tektonhoz.
+     * @return true, ha a megadott FungalThread (gombafonal) létezik az egyik szomszéd tektonban,
+     * false, ha nem található a megadott szomszédságokban.
+     */
     public boolean putThread(FungalThread f) {
         t.toCall("putThread");
         for (Tecton tecton : neighbors) {
-            if(tecton.getThreads().contains(f)){
+            if (tecton.getThreads().contains(f)) {
                 t.returnValue.clear();
                 t.returnValue.add(Boolean.TRUE);
                 t.toReturn();
@@ -105,13 +179,28 @@ public class AbsorbingTecton extends Tecton {
         return false;
     }
 
-    public void addThread(FungalThread f){
-        threads.add(f);
-    } 
 
+    /**
+     * Hozzáad egy új FungalThread (gombafonal) objektumot az AbsorbingTecton
+     * aktuális objektumhoz tartozó gombafonalainak listájához.
+     *
+     * @param f A FungalThread objektum, amelyet hozzá szeretnénk adni az objektumhoz
+     */
+    public void addThread(FungalThread f) {
+        threads.add(f);
+    }
+
+
+    /**
+     * Eltávolítja a Mushroom objektumot az aktuális AbsorbingTecton objektumról.
+     * Az AbsorbingTecton típusú objektumok esetében nem lehetséges Mushroom jelenléte,
+     * ezért a metódus mindig false értékkel tér vissza, jelezve, hogy nem történt eltávolítás.
+     *
+     * @return mindig false, mert az AbsorbingTecton objektumban nem lehetséges Mushroom jelenléte.
+     */
     // false mert nem tud Mushroom nőni rajta, így sose lesz mit kitörölni
     public boolean removeMushroom() {
-        this.t.toCall("removeMushroom"); 
+        this.t.toCall("removeMushroom");
 
         this.t.returnValue.clear();
         this.t.returnValue.add(Boolean.FALSE);
@@ -120,10 +209,16 @@ public class AbsorbingTecton extends Tecton {
         return false;
     }
 
-    // a kapott fonalat kitörli a listájából
+
+    /**
+     * Eltávolítja a megadott gombafonalat az aktuális objektumhoz tartozó listából.
+     *
+     * @param f Az a FungalThread objektum, amelyet el szeretnénk távolítani az aktuális objektumhoz tartozó listából.
+     * @return true, ha a művelet sikeres volt.
+     */
     public boolean removeThread(FungalThread f) {
         // meghívja a tester kiíró függvényét
-        this.t.toCall("removeThread"); 
+        this.t.toCall("removeThread");
 
         this.t.returnValue.clear();
         this.t.returnValue.add(Boolean.TRUE);
@@ -133,7 +228,13 @@ public class AbsorbingTecton extends Tecton {
         return true;
     }
 
-    // false, mert nem lehet gombát rárakni
+
+    /**
+     * Nem lehet az aktuális objektumra Mushroom objektumot lehelyezni.
+     * A metódus minden esetben hamis értékkel tér vissza.
+     *
+     * @return false, mivel az aktuális objektumra nem lehet gombát lehelyezni.
+     */
     public boolean putFirstMushroom() {
         t.toCall("putFirstMushroom");
         this.t.returnValue.clear();
@@ -142,7 +243,14 @@ public class AbsorbingTecton extends Tecton {
         return false;
     }
 
-    // ketté törik a tekton
+
+    /**
+     * A metódus kettétöri az aktuális tekton-t két különálló tekton-ra (t6 és t7).
+     * Az eredeti szomszédságokat és kapcsolódó struktúrákat frissíti a művelet során.
+     * Továbbá kezeli a kapcsolódó bogarak elhelyezkedését és a fonál kapcsolódásokat.
+     *
+     * @return true, ha a tekton sikeresen kettétört.
+     */
     public boolean breakTecton() {
         // meghívja a tester kiíró függvényét
         this.t.toCall("breakTecton");
