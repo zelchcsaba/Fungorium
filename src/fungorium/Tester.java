@@ -385,6 +385,15 @@ public class Tester {
     public void growingNewMushroom() {
         init5();
 
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println("participant \"s1:SlowingSpore\" as s1");
+        System.out.println("participant \"s2:NoCutSpore\" as s2");
+        System.out.println("participant \"s3:ParalysingSpore\" as s3");
+        System.out.println();
+
         FungalThread f = (FungalThread) getObjectByValue("f");
         Tecton t3 = (SingleThreadTecton) getObjectByValue("t3");
 
