@@ -82,21 +82,12 @@ public class Mushroom {
 
             return false;
         }
-<<<<<<< HEAD
-
-=======
         boolean returnV = false;
->>>>>>> 7628e1f02e884f419d71e6a95250e7d9b6ef65e5
         this.t.list.add(this);
         this.t.list.add(t);
         this.t.parameters.clear();
         this.t.parameters.add(spores.get(0));
         this.t.parameters.add(position);
-<<<<<<< HEAD
-        //megnézzük, ha sikerült-e lerakni a spórát
-        if (!t.putSpore(spores.get(0), position)) {
-            
-=======
         if(state == MushroomState.UNEVOLVED){
             returnV = t.putSpore(spores.get(0), position);
         }
@@ -104,7 +95,6 @@ public class Mushroom {
             returnV = t.putEvolvedSpore(spores.get(0), position);
         }
         if (!returnV) {
->>>>>>> 7628e1f02e884f419d71e6a95250e7d9b6ef65e5
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.FALSE);
             this.t.toReturn();

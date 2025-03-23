@@ -51,15 +51,23 @@ public class MultiThreadTecton extends Tecton {
     public boolean putThread(FungalThread f) {
         t.toCall("putThread");
         for (Tecton tecton : neighbors) {
-            t.list.add(this);
-            t.list.add(tecton);
-            t.parameters.clear();
-            //tecton.getThreads();
+            if(tecton.getThreadsWithoutCout().contains(f)){
+                t.returnValue.clear();
+                t.returnValue.add(Boolean.TRUE);
+                t.toReturn();
+                return true;
+            }
         }
-
-        threads.add(f);
-        return true;
+        t.returnValue.clear();
+        t.returnValue.add(Boolean.FALSE);
+        t.toReturn();
+        return false;
     }
+
+    public void addThread(FungalThread f){
+        threads.add(f);
+    } 
+
 
     // lerak gomba ha meg nincs
     public boolean putMushroom(Mushroom m) {

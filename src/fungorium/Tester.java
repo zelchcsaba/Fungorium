@@ -189,9 +189,6 @@ public class Tester {
         t3.absorb();
     }
 
-<<<<<<< HEAD
-    // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. 
-=======
     //10. spóralövés után a gombatest elpusztulásának tesztesete
     public void mushroom_die(){
         init3();
@@ -218,9 +215,9 @@ public class Tester {
         i.cut(t2);
     }
 
-    // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs
-    // kész.
->>>>>>> 70e066c0155224a0a4b3289f98e20bf3278e48d8
+    
+
+    // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. 
     public void fungalThreadBranching() {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő
                  // inicalizáló lépéseket.
@@ -412,9 +409,9 @@ public class Tester {
         fTectons.add(t2);
         f.setTectons(fTectons);// 13.
 
-        t1.putThread(f);// 14.
-        t3.putThread(f);// 15.
-        t2.putThread(f);// 16.
+        t1.addThread(f);// 14.
+        t3.addThread(f);// 15.
+        t2.addThread(f);// 16.
 
         m.setPosition(t1);// 17
         t1.setMushroom(m);// 18
@@ -503,11 +500,11 @@ public class Tester {
         fTectons.add(t6);
         f.setTectons(fTectons); // 15.
 
-        t1.putThread(f); // 16.
-        t2.putThread(f); // 17.
-        t3.putThread(f); // 18.
-        t5.putThread(f); // 19.
-        t6.putThread(f); // 20.
+        t1.addThread(f); // 16.
+        t2.addThread(f); // 17.
+        t3.addThread(f); // 18.
+        t5.addThread(f); // 19.
+        t6.addThread(f); // 20.
 
         m.setPosition(t2); // 21.
         t2.setMushroom(m); // 22.
@@ -558,7 +555,7 @@ public class Tester {
         fTectons.add(t2);
         f.setTectons(fTectons);// 9.
 
-        t2.putThread(f);// 10.
+        t2.addThread(f);// 10.
         m.setPosition(t2);// 11.
         t2.setMushroom(m);// 12.
         m.setThread(f);// 13.
@@ -623,9 +620,9 @@ public class Tester {
         f1Tectons.add(t3);
 
         f1.setTectons(f1Tectons); // 13.
-        t1.putThread(f1); // 14.
-        t2.putThread(f1); // 15.
-        t3.putThread(f1); // 16.
+        t1.addThread(f1); // 14.
+        t2.addThread(f1); // 15.
+        t3.addThread(f1); // 16.
 
         m1.setPosition(t1); // 17.
         t1.setMushroom(m1); // 18.
@@ -639,8 +636,8 @@ public class Tester {
         f2Tectons.add(t5);
 
         f2.setTectons(f2Tectons); // 22.
-        t5.putThread(f2); // 23.
-        t3.putThread(f2); // 24.
+        t5.addThread(f2); // 23.
+        t3.addThread(f2); // 24.
         m2.setPosition(t5); // 25.
         t5.setMushroom(m2); // 26.
         m2.setThread(f2); // 27.
@@ -694,16 +691,16 @@ public class Tester {
         List<Tecton> t3List = new ArrayList<>();
         t3List.add(t3);
         t1.setNeighbors(t3List); // 14.
-        t1.putThread(f); // 15.
+        t1.addThread(f); // 15.
         t1.setMushroom(m); // 16.
         t2.setNeighbors(t3List); // 17.
-        t2.putThread(f); // 18.
+        t2.addThread(f); // 18.
 
         List<Tecton> t3Neighbors = new ArrayList<>();
         t3Neighbors.add(t1);
         t3Neighbors.add(t2);
         t3.setNeighbors(t3Neighbors); // 19.
-        t3.putThread(f); // 20.
+        t3.addThread(f); // 20.
 
         List<Spore> t3Spores = new ArrayList<>();
         t3Spores.add(s1);

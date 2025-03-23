@@ -88,6 +88,8 @@ public abstract class Tecton {
 
     public abstract boolean putThread(FungalThread f);
 
+    public abstract void addThread(FungalThread f); // Csak simán add-olja az f-et nem végez ellenőrzést
+
     public abstract boolean removeMushroom();
 
     public abstract boolean removeThread(FungalThread f);

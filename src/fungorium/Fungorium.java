@@ -19,7 +19,7 @@ public class Fungorium {
             int select = scanner.nextInt();
             switch (select) {
                 case 1:
-                    t.unevolvedShootSpore();
+                    t.unevolvedShootSporeFalse();
                     System.out.println("\n\n");
                     break;
                 case 2:
@@ -67,6 +67,18 @@ public class Fungorium {
                     System.out.println("\n\n");
                 break;
                 case 13:
+                    t.simpleFungalThreadBranchingFalse();
+                    System.out.println("\n\n");
+                break;
+                case 14:
+                    t.simpleFungalThreadBranchingTrue();
+                    System.out.println("\n\n");
+                break;
+                case 15:
+                    t.fungalThreadBranching();
+                    System.out.println("\n\n");
+                break;
+                case 16:
                     loop = false;
                     break;
             }
