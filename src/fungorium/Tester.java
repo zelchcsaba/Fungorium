@@ -153,8 +153,7 @@ public class Tester {
         t3.absorb();
     }
 
-    // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs
-    // kész.
+    // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. 
     public void fungalThreadBranching() {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő
                  // inicalizáló lépéseket.
@@ -181,7 +180,6 @@ public class Tester {
         }
     }
 
-<<<<<<< HEAD
     /**
      * Use-case-hez tartozó név: Gombafonál sikertelen elágaztatása egyfonalas tektonra, 
      *                           mert már van rajta.
@@ -217,32 +215,6 @@ public class Tester {
      *
      */
     public void unevolvedShootSporeFalse(){
-=======
-    public void simpleFungalThreadBranching() {
-        init1();
-        FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
-        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
-
-        System.out.println("Van t2-ön fonál?");
-        String select = scanner.next();
-        if (!select.equals("y")) {
-            t2.setThreads(null);
-        }
-        System.out.println("Van t2 szomszédain már f fonál?");
-        select = scanner.next();
-        if (!select.equals("y")) {
-            SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
-            t3.setThreads(null);
-        }
-        list.add(null);
-        list.add(f);
-        parameters.clear();
-        parameters.add(t2);
-        f.branchThread(t2);
-    }
-
-    public void unevolvedShootSpore() {
->>>>>>> b73af8060b51f294617d69a3932516f16beb143d
         init1();
         Mushroom m = (Mushroom) getObjectByValue("m");
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
@@ -252,14 +224,6 @@ public class Tester {
         parameters.add(t2);
         m.shootSpore(t2);
 
-        System.out.println("t2 céltekton szomszédos?");
-        String select = scanner.next();
-        if (select.equals("y")) {
-            t2.neighbors.add(m.getPosition());
-            m.shootSpore(t2);
-        } else {
-            m.shootSpore(t2);
-        }
     }
 
     /**
