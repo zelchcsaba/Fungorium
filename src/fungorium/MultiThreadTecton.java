@@ -54,15 +54,10 @@ public class MultiThreadTecton extends Tecton {
             t.list.add(this);
             t.list.add(tecton);
             t.parameters.clear();
-
-            tecton.getThreads();
+            //tecton.getThreads();
         }
 
         threads.add(f);
-        t.returnValue.clear();
-
-        t.returnValue.add(Boolean.TRUE);
-        t.toReturn();
         return true;
     }
 
