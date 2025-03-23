@@ -332,7 +332,6 @@ public class Tester {
     /**
      * Use-case-hez tartozó név: Fejletlen gombatest spóra szórása olyan tektonra, amelyre tud.
      *                           
-     *
      */
     public void unevolvedShootSporeTrue(){
         init1();
@@ -345,11 +344,28 @@ public class Tester {
         m.shootSpore(t3);
     }
 
-    //első állapot
+
+    
+    /**
+     * Use-case-hez tartozó név: Fejlett gombatest spóra szórása olyan tektonra, amelyre tud.
+     *
+     */
+    public void evolvedShootSporeTrue(){
+        init5();
+        Mushroom m =  (Mushroom) getObjectByValue("m");
+        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+        list.add(null);
+        list.add(m);
+        parameters.clear();
+        parameters.add(t2);
+        m.shootSpore(t2);
+    }
+
+
+//első állapot
     //Diagram 1-nek felel meg
     public void init1(){
 
-        map.clear();
 
         MultiThreadTecton t1 = new MultiThreadTecton(this);// 1
         SingleThreadTecton t2 = new SingleThreadTecton(this);// 2

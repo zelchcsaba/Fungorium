@@ -26,30 +26,38 @@ public class Fungorium {
                     System.out.println("\n\n");
                     break;
                 case 4:
-                    t.absorb_form_tecton();
+                    t.putFirstMushroomFalseIsMush();
                     System.out.println("\n\n");
                     break;
                 case 5:
-                    t.break_tecton();
+                    t.unevolvedShootSporeTrue();
                     System.out.println("\n\n");
                     break;
                 case 6:
-                    t.delete_Unnecessary_Threads();
+                    t.evolvedShootSporeTrue();
                     System.out.println("\n\n");
                     break;
                 case 7:
-                    t.break_tecton_with_mushroom();
+                    t.absorb_form_tecton();
                     System.out.println("\n\n");
                     break;
                 case 8:
-                    t.mushroom_die();
+                    t.break_tecton();
                     System.out.println("\n\n");
-                break;
+                    break;
                 case 9:
-                    t.cut_fungalthread();
+                    t.delete_Unnecessary_Threads();
+                    System.out.println("\n\n");
+                    break;
+                case 10:
+                    t.break_tecton_with_mushroom();
+                    System.out.println("\n\n");
+                    break;
+                case 11:
+                    //t.mushroom_die();
                     System.out.println("\n\n");
                 break;
-                case 10:
+                case 12:
                     loop = false;
                     break;
             }
