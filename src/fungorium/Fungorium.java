@@ -46,6 +46,10 @@ public class Fungorium {
                     System.out.println("\n\n");
                 break;
                 case 9:
+                    t.cut_fungalthread();
+                    System.out.println("\n\n");
+                break;
+                case 10:
                     loop = false;
                     break;
             }

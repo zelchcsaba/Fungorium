@@ -69,26 +69,36 @@ public class Mushroom {
         return state;
     }
 
-    // To do
+    //kilőjük a spórát tektonra
     public boolean shootSpore(Tecton t) {
+        //meghívjuk a teszter kiíró függvényt
         this.t.toCall("shootSpore");
+        //ha nincs spóránk, amit kilőjünk, akkor nem lőhetünk
         if (spores.isEmpty()) {
+
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.FALSE);
             this.t.toReturn();
+
             return false;
         }
+
         this.t.list.add(this);
         this.t.list.add(t);
         this.t.parameters.clear();
         this.t.parameters.add(spores.get(0));
         this.t.parameters.add(position);
+        //megnézzük, ha sikerült-e lerakni a spórát
         if (!t.putSpore(spores.get(0), position)) {
+            
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.FALSE);
             this.t.toReturn();
+            //ha nem, akkor false-val térünk vissza
             return false;
+
         } else {
+            //ha sikerült a spórát lerkani
             //növeljük a shooted spores countot 1-el
             shootedSporesCount+=1;
             //ha a 10. spórát is kilőtte, akkor a gombatestnek meg kell halnia
@@ -110,6 +120,7 @@ public class Mushroom {
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.TRUE);
             this.t.toReturn();
+            //true értékkel térünk vissza
             return true;
         }
     }
