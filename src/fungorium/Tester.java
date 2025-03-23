@@ -146,7 +146,7 @@ public class Tester {
     //olyan fonálrészek eltávolítása, melyek nincsenek kapcsolatban ugyanolyan fajból származó gombafonállal
     public void delete_Unnecessary_Threads() {
         init2();
-        
+
         System.out.println("participants \"Tester\" as t");
         System.out.println("participants \"f:FungalThread\" as f");
         System.out.println("participants \"t1:MultiThreadTecton\" as t1");
@@ -220,9 +220,6 @@ public class Tester {
         t3.absorb();
     }
 
-<<<<<<< HEAD
-    // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. 
-=======
     //10. spóralövés után a gombatest elpusztulásának tesztesete
     public void mushroom_die(){
         init3();
@@ -263,9 +260,9 @@ public class Tester {
         i.cut(t2);
     }
 
+  
     // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs
     // kész.
->>>>>>> 70e066c0155224a0a4b3289f98e20bf3278e48d8
     public void fungalThreadBranching() {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő
                  // inicalizáló lépéseket.

@@ -19,7 +19,7 @@ public class Fungorium {
             int select = scanner.nextInt();
             switch (select) {
                 case 1:
-                    t.unevolvedShootSpore();
+                    t.unevolvedShootSporeFalse();
                     System.out.println("\n\n");
                     break;
                 case 2:
