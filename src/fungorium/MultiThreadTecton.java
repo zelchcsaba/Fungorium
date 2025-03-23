@@ -75,12 +75,24 @@ public class MultiThreadTecton extends Tecton {
         return false;
     }
 
-    // kitorol gomba ha van
+    //ha van rajta gombatest, akkor ezt töröljük
     public boolean removeMushroom() {
+        this.t.toCall("removeMushroom");
+
         if (mushroom != null) {
             mushroom = null;
+
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+
             return true;
         } else {
+
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+            
             return false;
         }
     }

@@ -89,6 +89,24 @@ public class Mushroom {
             this.t.toReturn();
             return false;
         } else {
+            //növeljük a shooted spores countot 1-el
+            shootedSporesCount+=1;
+            //ha a 10. spórát is kilőtte, akkor a gombatestnek meg kell halnia
+            if(shootedSporesCount==10){
+
+                this.t.list.add(this);
+                this.t.list.add(position);
+                this.t.parameters.clear();
+                //töröljük a tektonról
+                position.removeMushroom();
+
+                this.t.list.add(this);
+                this.t.list.add(thread);
+                this.t.parameters.clear();
+                //töröljük azon gombafonál részeket, amelyekhez nem kapcsolódik gombatest
+                thread.deleteUnnecessaryThreads();
+            }
+
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.TRUE);
             this.t.toReturn();

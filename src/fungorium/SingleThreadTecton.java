@@ -69,10 +69,23 @@ public class SingleThreadTecton extends Tecton {
 
     // ha van rajta mushroom toroljuk
     public boolean removeMushroom() {
+
+        t.toCall("removeMushroom");
+
         if (mushroom != null) {
             mushroom = null;
+
+            t.returnValue.clear();
+            t.returnValue.add(Boolean.TRUE);
+            t.toReturn();
+            
             return true;
         } else {
+
+            t.returnValue.clear();
+            t.returnValue.add(Boolean.FALSE);
+            t.toReturn();
+
             return false;
         }
     }
