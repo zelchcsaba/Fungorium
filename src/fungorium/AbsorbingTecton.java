@@ -7,14 +7,10 @@ public class AbsorbingTecton extends Tecton {
 
     private List<FungalThread> threads;
 
-<<<<<<< HEAD
-    // konstruktor
-=======
     /**
      * kontruktor
      * @param t
      */
->>>>>>> 8d3a54237bb9b94837c55461fda4f72ce800528c
     public AbsorbingTecton(Tester t) {
         super(t);
         threads = new ArrayList();
