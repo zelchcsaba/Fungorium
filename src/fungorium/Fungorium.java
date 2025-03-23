@@ -90,7 +90,7 @@ public class Fungorium {
                     System.out.println("\n\n");
                 break;
                 case 14:
-                    t.absorb_form_tecton();
+                    t.absorb_from_tecton();
                     System.out.println("\n\n");
                 break;
                 case 15:
