@@ -7,17 +7,20 @@ public class AbsorbingTecton extends Tecton {
 
     private List<FungalThread> threads;
 
-    // kontruktor
+    /**
+     * kontruktor
+     * @param t
+     */
     public AbsorbingTecton(Tester t) {
         super(t);
         threads = new ArrayList();
     }
 
-    // setterek getterek
     public void setMushroom(Mushroom mushroom) {
     }
 
     // visszaadja a tektonon található gombatestet
+
     public Mushroom getMushroom() {
         // meghívja a tester kiíró függvényét
         this.t.toCall("getMushroom"); // És itt iratjuk a testerrel.
@@ -51,7 +54,7 @@ public class AbsorbingTecton extends Tecton {
     // fonál felszívódása tektonról
     public void absorb() {
 
-        t.toCall("getThreads");
+        t.toCall("absorb");
 
         for (int i = 0; i < threads.size(); i++) {
 
@@ -91,15 +94,21 @@ public class AbsorbingTecton extends Tecton {
         return true;
     }
 
-    // false mert nem tud Mushroom nőni
+    // false mert nem tud Mushroom nőni rajta, így sose lesz mit kitörölni
     public boolean removeMushroom() {
+        this.t.toCall("removeMushroom"); 
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.FALSE);
+        this.t.toReturn();
+
         return false;
     }
 
     // a kapott fonalat kitörli a listájából
     public boolean removeThread(FungalThread f) {
         // meghívja a tester kiíró függvényét
-        this.t.toCall("removeThread"); // És itt iratjuk a testerrel.
+        this.t.toCall("removeThread"); 
 
         this.t.returnValue.clear();
         this.t.returnValue.add(Boolean.TRUE);
