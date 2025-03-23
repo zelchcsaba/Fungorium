@@ -146,6 +146,15 @@ public class Tester {
     //olyan fonálrészek eltávolítása, melyek nincsenek kapcsolatban ugyanolyan fajból származó gombafonállal
     public void delete_Unnecessary_Threads() {
         init2();
+
+        System.out.println("participants \"Tester\" as t");
+        System.out.println("participants \"f:FungalThread\" as f");
+        System.out.println("participants \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participants \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participants \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participants \"t5:MultiThreadTecton\" as t5");
+        System.out.println("participants \"t6:MultiThreadTecton\" as t6");
+
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         list.add(null);
         list.add(f);
@@ -158,6 +167,19 @@ public class Tester {
     //tekton kettétörése
     public void break_tecton() {
         init1();
+
+        System.out.println("participants \"Tester\" as t");
+        System.out.println("participants \"f:FungalThread\" as f");
+        System.out.println("participants \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participants \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participants \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participants \"t4:MultiThreadTecton\" as t4");
+        System.out.println("participants \"t5:AbsorbingTecton\" as t5");
+        System.out.println("participants \"t6:SingleThreadTecton\" as t6");
+        System.out.println("participants \"t7:SingleThreadTecton\" as t7");
+        System.out.println("participants \"i:Insect\" as i");
+        System.out.println("participants \"s:SlowingSpore\" as s");
+
         SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
         list.add(null);
         list.add(t3);
@@ -170,6 +192,9 @@ public class Tester {
     //tekton kettétörése, ha gombaatest van rajta
     public void break_tecton_with_mushroom(){
         init1();
+        System.out.println("participants \"Tester\" as t");
+        System.out.println("participants \"t1:MultiThreadTecton\" as t1");
+
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
         list.add(null);
         list.add(t1);
@@ -181,6 +206,12 @@ public class Tester {
     //Absorbing tecton esetén a gombafonalak felszívódása a tektonról
     public void absorb_form_tecton() {
         init4();
+
+        System.out.println("participants \"Tester\" as t");
+        System.out.println("participants \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participants \"f1:FungalThread\" as f1");
+        System.out.println("participants \"f2:FungalThread\" as f2");
+
         AbsorbingTecton t3 = (AbsorbingTecton) getObjectByValue("t3");
         list.add(null);
         list.add(t3);
@@ -192,7 +223,14 @@ public class Tester {
     //10. spóralövés után a gombatest elpusztulásának tesztesete
     public void mushroom_die(){
         init3();
+
+        System.out.println("participants \"Tester\" as t");
+        System.out.println("participants \"f:FungalThread\" as f");
+        System.out.println("participants \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participants \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participants \"m:Mushroom\" as m");
         Mushroom m = (Mushroom) getObjectByValue("m");
+
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
         list.add(null);
         list.add(t1);
@@ -205,6 +243,13 @@ public class Tester {
     //a fonál elvágása rovar által
     public void cut_fungalthread(){
         init4();
+
+        System.out.println("participants \"Tester\" as t");
+        System.out.println("participants \"i:Insect\" as i");
+        System.out.println("participants \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participants \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participants \"f1:FungalThread\" as f1");
+
         Insect i = (Insect) getObjectByValue("i");
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
         list.add(null);
@@ -215,9 +260,15 @@ public class Tester {
         i.cut(t2);
     }
 
+<<<<<<< HEAD
     
 
     // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. 
+=======
+  
+    // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs
+    // kész.
+>>>>>>> c674dde584627dc255bfff51f4e51a7b5771d144
     public void fungalThreadBranching() {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő
                  // inicalizáló lépéseket.
