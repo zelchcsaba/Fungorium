@@ -13,7 +13,7 @@ public class Tester {
     public List<Object> parameters; // Paraméterek amiket átadtunk.
     public List<Object> returnValue;
     public Scanner scanner;
-    public List<Object> list;
+    public List<Object> list;//tároljuk az objektum hívások láncát
 
     public Tester() {
         map = new HashMap<>();
@@ -29,15 +29,20 @@ public class Tester {
     // meghívhassa
     // A caller-t, called-t, parameters-t, függvényhívás előtt beállítottuk.
     // Itt csak kikeressük a nevüket és kiíratjuk a doksiban lévő szintax alapján.
+    /**
+     * 
+     * @param func
+     */
     public void toCall(String func) {
 
         if (!list.isEmpty()) {
-
+            //a hívó objektum neve
             String caller = map.get(list.get(list.size() - 2));
 
             if (caller == null)
                 caller = ""; // Ha null, mert pl a tester a hívó akkor nem írunk ki semmit balra.
 
+            //annak az objektumnak a neve, amelynek a függvényét meghívták
             String called = map.get(list.get(list.size() - 1));
 
             if (called == null)
@@ -47,26 +52,39 @@ public class Tester {
 
             int i = 0;
 
+            //a kapott paraméterek neveiből is csinálunk egy String-et
             for (Object parameter : parameters) {
+                //ha nincs benne a map-ben, amelyben az általunk létrehozott objektumokat tároljuk
                 if (map.get(parameter) == null) {
                     parameterString += parameter.toString();
                 } else {
+                    //ha benne van
                     parameterString += map.get(parameter);
                 }
                 i++;
+                //ha még van paraméter a Strng-hez hozzáadunk egy vesszőt
                 if (i < parameters.size()) {
                     parameterString += ", ";
                 }
             }
+            //kiírjuk a konzolra a megfelelő szintaxisban
             if (caller != "" || called != "")
                 System.out.println(caller + "->" + called + " : " + func + "(" + parameterString + ")");
 
         }
     }
 
+    
+    /**
+     * mikor létrehozunk egy új objektumot, átatdjuk hogy ki hozta létr, hogy melyik objektumot hozta létre, és ennek nevét
+     * @param caller
+     * @param called
+     * @param name
+     */
     public void toCreate(Object caller, Object called, String name) {
         String callerName = map.get(caller);
         map.put(called, name);
+        //kiírjuk a megfelelő szintaxisban
         System.out.println(callerName + "-->" + name + " :  <<create>>");
     }
 
@@ -79,28 +97,35 @@ public class Tester {
 
             int i = 0;
 
+            //a kapott visszatérési értékek neveiből csinálunk egy String-et
             for (Object returnv : returnValue) {
+                //ha nincs benne a map-ban, amelyben az általunk létrehozott objektumokat tároljuk
                 if (map.get(returnv) == null) {
-
+                    //ha a visszatérési érték nem null
                     if (returnv != null) {
                         returnString += returnv.toString();
                     } else {
+                        //ha a visszatérési érték null
                         returnString += "";
                     }
 
                 } else {
+                    //ha benne van a map-ben, amelyben az általunk létrehozott objektumokat tároljuk
                     returnString += map.get(returnv);
                 }
 
                 i++;
+                //ha még van visszatérési érték
                 if (i < returnValue.size()) {
                     returnString += ", ";
                 }
             }
 
+            //az objektum amelynek függvénye visszatér
             String fromString = map.get(list.get(list.size() - 1));
             if (fromString == null)
                 fromString = "";
+            //az objektum neve, amelynek függvényébe visszatérünk
             String toString = map.get(list.get(list.size() - 2));
             if (toString == null)
                 toString = "";
@@ -110,56 +135,156 @@ public class Tester {
             } else if (!toString.equals("") && !fromString.equals("")) {
                 System.out.println(fromString + "-->" + toString + " : " + returnString);
             }
+
+            //kivesszük a listából amelyben az objektum hívások láncát tároljuk az utolsó két objektumot
             list.remove(list.size() - 1);
             list.remove(list.size() - 1);
         }
     }
 
+
+    //olyan fonálrészek eltávolítása, melyek nincsenek kapcsolatban ugyanolyan fajból származó gombafonállal
     public void delete_Unnecessary_Threads() {
         init2();
+
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"t5:MultiThreadTecton\" as t5");
+        System.out.println("participant \"t6:MultiThreadTecton\" as t6");
+        System.out.println();
+
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         list.add(null);
         list.add(f);
         parameters.clear();
+        //meghívom a gombafonál deleteUnnecessaryThreads függvényét
         f.deleteUnnecessaryThreads();
 
     }
 
+    //tekton kettétörése
     public void break_tecton() {
         init1();
+
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"t4:MultiThreadTecton\" as t4");
+        System.out.println("participant \"t5:AbsorbingTecton\" as t5");
+        System.out.println("participant \"t6:SingleThreadTecton\" as t6");
+        System.out.println("participant \"t7:SingleThreadTecton\" as t7");
+        System.out.println("participant \"i:Insect\" as i");
+        System.out.println("participant \"s:SlowingSpore\" as s");
+        System.out.println();
+
         SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
         list.add(null);
         list.add(t3);
         parameters.clear();
+        //meghívom a tekton breakTecton metódusát
         t3.breakTecton();
 
     }
 
+    //tekton kettétörése, ha gombaatest van rajta
     public void break_tecton_with_mushroom(){
         init1();
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");
+        System.out.println();
+
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
         list.add(null);
         list.add(t1);
         parameters.clear();
+        //meghívom a tekton breakTecton metódusát
         t1.breakTecton();
     }
 
+    //Absorbing tecton esetén a gombafonalak felszívódása a tektonról
     public void absorb_form_tecton() {
         init4();
+
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"f1:FungalThread\" as f1");
+        System.out.println("participant \"f2:FungalThread\" as f2");
+        System.out.println();
+
         AbsorbingTecton t3 = (AbsorbingTecton) getObjectByValue("t3");
         list.add(null);
         list.add(t3);
         parameters.clear();
+        //meghívom a tekton absorb metódusát
         t3.absorb();
     }
 
-    // Gombafonal elágazása olyan tektonra, ahol van spóra-nak felel meg. Még nincs
-    // kész.
+    //10. spóralövés után a gombatest elpusztulásának tesztesete
+    public void mushroom_die(){
+        init3();
+
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println();
+
+        Mushroom m = (Mushroom) getObjectByValue("m");
+
+        MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
+        list.add(null);
+        list.add(t1);
+        parameters.clear();
+        parameters.add(t1);
+        //meghívom a gombatest shootSpore függvéynt
+        m.shootSpore(t1);
+    }
+
+    //a fonál elvágása rovar által
+    public void cut_fungalthread(){
+        init4();
+
+        System.out.println("participant \"Tester\" as t");
+        System.out.println("participant \"i:Insect\" as i");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"f1:FungalThread\" as f1");
+        System.out.println();
+
+        Insect i = (Insect) getObjectByValue("i");
+        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+        list.add(null);
+        list.add(i);
+        parameters.clear();
+        parameters.add(t2);
+        //meghívom a rovar cut metódusát 
+        i.cut(t2);
+    }
+
+  
+    /**
+     * Use-case-hez tartozó név: Gombafonal elágazása olyan tektonra, ahol van spóra.
+     *
+     */
     public void fungalThreadBranching() {
         init3(); // Megtesszük a diagram 3-nak megfelelő kommunikációs diagramnban levő
                  // inicalizáló lépéseket.
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");
+        System.out.println("participant \"t2:MultiThreadTecton\" as t2");
+        System.out.println("participant \"t3:MultiThreadTecton\" as t3");
+        System.out.println();
+
         FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
         MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
+
         list.add(null);
         list.add(f);
         parameters.clear();
@@ -168,61 +293,119 @@ public class Tester {
 
         System.out.println("Van t1-en spóra?");
         String select = scanner.next();
-
         if (select.equals("y")) {
+            MultiThreadTecton t3 = (MultiThreadTecton) getObjectByValue("t3");//Kicsit mókolni kell, hogy úgy írjon ki, mint a szekvenciadia
+            MultiThreadTecton t2 = (MultiThreadTecton) getObjectByValue("t2");//Tehát most a kom. dia.-al ellentétben t3 t1-el is szomszédos, nem csak t2-el
+            List<Tecton> t3Neighbors = new ArrayList<>();//Mivel az a játékszabály, hogy a spórával szomszédos tektonokra mehet tovább
+            t3Neighbors.add(t1);
+            t3Neighbors.add(t2);
+            t3.setNeighbors(t3Neighbors);
+
             list.add(null);
             list.add(f);
-            MultiThreadTecton t3 = (MultiThreadTecton) getObjectByValue("t3");
             parameters.clear();
             parameters.add(t3);
-            f.branchThread(t3); // Meghívjuk a fg-t. Ctrl+bal klikk a függvényre a folytatásért.
+            f.branchThread(t3); // Meghívjuk a fg-t.
         } else {
             System.out.println("t1-en nincsen spóra");
         }
     }
 
-    public void simpleFungalThreadBranching() {
-        init1();
-        FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
+    /**
+     * Use-case-hez tartozó név: Gombafonál sikertelen elágaztatása egyfonalas tektonra, 
+     *                           mert már van rajta.
+     */
+    public void simpleFungalThreadBranchingFalse(){
+        init4();
+
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"f2:FungalThread\" as f2");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println();
+
+        FungalThread f2 = (FungalThread) getObjectByValue("f2"); // Előszedjük a megfelelő nevű objektumokat.
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
 
-        System.out.println("Van t2-ön fonál?");
-        String select = scanner.next();
-        if (!select.equals("y")) {
-            t2.setThreads(null);
-        }
-        System.out.println("Van t2 szomszédain már f fonál?");
-        select = scanner.next();
-        if (!select.equals("y")) {
-            SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
-            t3.setThreads(null);
-        }
+        list.add(null);
+        list.add(f2);
+        parameters.clear();
+        parameters.add(t2);
+        f2.branchThread(t2); 
+    }
+
+    /**
+     * Use-case-hez tartozó név: Gombafonál sikeres elágaztatása tektonra. 
+     */
+    public void simpleFungalThreadBranchingTrue(){
+        init1();
+
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t4:MultiThreadTecton\" as t4");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3"); //t4 szomszédja
+        System.out.println();
+
+        FungalThread f = (FungalThread) getObjectByValue("f"); // Előszedjük a megfelelő nevű objektumokat.
+        MultiThreadTecton t4 = (MultiThreadTecton) getObjectByValue("t4");
+
         list.add(null);
         list.add(f);
         parameters.clear();
-        parameters.add(t2);
-        f.branchThread(t2);
+        parameters.add(t4);
+        f.branchThread(t4); 
     }
 
-    public void unevolvedShootSpore() {
+
+    /**
+     * Use-case-hez tartozó név: Sikertelen spóraszórás, mert nem szomszédos a céltekton.
+     *
+     */
+    public void unevolvedShootSporeFalse(){
         init1();
+
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println("participant \"t2:SingleThreadTecton\" as t2");
+        System.out.println("participant \"t1:MultiThreadTecton\" as t1");//ezen van
+        System.out.println("participant \"s2:SpeedSpore\" as s2");//m spórája
+        System.out.println();
+
         Mushroom m = (Mushroom) getObjectByValue("m");
         SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+
         list.add(null);
         list.add(m);
         parameters.clear();
         parameters.add(t2);
         m.shootSpore(t2);
 
-        System.out.println("t2 céltekton szomszédos?");
-        String select = scanner.next();
-        if (select.equals("y")) {
-            t2.neighbors.add(m.getPosition());
-            m.shootSpore(t2);
-        } else {
-            m.shootSpore(t2);
-        }
     }
+
+
+    public void growingNewMushroom() {
+        init5();
+
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"f:FungalThread\" as f");
+        System.out.println("participant \"t3:SingleThreadTecton\" as t3");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println("participant \"s1:SlowingSpore\" as s1");
+        System.out.println("participant \"s2:NoCutSpore\" as s2");
+        System.out.println("participant \"s3:ParalysingSpore\" as s3");
+        System.out.println();
+
+        FungalThread f = (FungalThread) getObjectByValue("f");
+        Tecton t3 = (SingleThreadTecton) getObjectByValue("t3");
+
+        list.add(null);
+        list.add(f);
+        parameters.clear();
+        parameters.add(t3);
+
+        f.growMushroom(t3);
+    }
+
+
 
     /**
      * Use-case-hez tartozó név: Első gombatest lehelyezése olyan tektonra,
@@ -282,9 +465,10 @@ public class Tester {
         m.shootSpore(t3);
     }
 
+
+    
     /**
      * Use-case-hez tartozó név: Fejlett gombatest spóra szórása olyan tektonra, amelyre tud.
-     *                           
      *
      */
     public void evolvedShootSporeTrue(){
@@ -299,9 +483,10 @@ public class Tester {
     }
 
 
+//első állapot
+    //Diagram 1-nek felel meg
     public void init1(){
 
-        map.clear();
 
         MultiThreadTecton t1 = new MultiThreadTecton(this);// 1
         SingleThreadTecton t2 = new SingleThreadTecton(this);// 2
@@ -341,9 +526,9 @@ public class Tester {
         fTectons.add(t2);
         f.setTectons(fTectons);// 13.
 
-        t1.putThread(f);// 14.
-        t3.putThread(f);// 15.
-        t2.putThread(f);// 16.
+        t1.addThread(f);// 14.
+        t3.addThread(f);// 15.
+        t2.addThread(f);// 16.
 
         m.setPosition(t1);// 17
         t1.setMushroom(m);// 18
@@ -432,11 +617,11 @@ public class Tester {
         fTectons.add(t6);
         f.setTectons(fTectons); // 15.
 
-        t1.putThread(f); // 16.
-        t2.putThread(f); // 17.
-        t3.putThread(f); // 18.
-        t5.putThread(f); // 19.
-        t6.putThread(f); // 20.
+        t1.addThread(f); // 16.
+        t2.addThread(f); // 17.
+        t3.addThread(f); // 18.
+        t5.addThread(f); // 19.
+        t6.addThread(f); // 20.
 
         m.setPosition(t2); // 21.
         t2.setMushroom(m); // 22.
@@ -487,7 +672,7 @@ public class Tester {
         fTectons.add(t2);
         f.setTectons(fTectons);// 9.
 
-        t2.putThread(f);// 10.
+        t2.addThread(f);// 10.
         m.setPosition(t2);// 11.
         t2.setMushroom(m);// 12.
         m.setThread(f);// 13.
@@ -509,6 +694,7 @@ public class Tester {
         map.put(s, "s");
     }
 
+    //Diagram 4-nek felel meg
     public void init4() {
         map.clear();
 
@@ -551,9 +737,9 @@ public class Tester {
         f1Tectons.add(t3);
 
         f1.setTectons(f1Tectons); // 13.
-        t1.putThread(f1); // 14.
-        t2.putThread(f1); // 15.
-        t3.putThread(f1); // 16.
+        t1.addThread(f1); // 14.
+        t2.addThread(f1); // 15.
+        t3.addThread(f1); // 16.
 
         m1.setPosition(t1); // 17.
         t1.setMushroom(m1); // 18.
@@ -567,8 +753,8 @@ public class Tester {
         f2Tectons.add(t5);
 
         f2.setTectons(f2Tectons); // 22.
-        t5.putThread(f2); // 23.
-        t3.putThread(f2); // 24.
+        t5.addThread(f2); // 23.
+        t3.addThread(f2); // 24.
         m2.setPosition(t5); // 25.
         t5.setMushroom(m2); // 26.
         m2.setThread(f2); // 27.
@@ -589,6 +775,7 @@ public class Tester {
         map.put(i, "i");
     }
 
+    //Diagram 5-nek felel meg
     public void init5() {
         map.clear();
 
@@ -621,16 +808,16 @@ public class Tester {
         List<Tecton> t3List = new ArrayList<>();
         t3List.add(t3);
         t1.setNeighbors(t3List); // 14.
-        t1.putThread(f); // 15.
+        t1.addThread(f); // 15.
         t1.setMushroom(m); // 16.
         t2.setNeighbors(t3List); // 17.
-        t2.putThread(f); // 18.
+        t2.addThread(f); // 18.
 
         List<Tecton> t3Neighbors = new ArrayList<>();
         t3Neighbors.add(t1);
         t3Neighbors.add(t2);
         t3.setNeighbors(t3Neighbors); // 19.
-        t3.putThread(f); // 20.
+        t3.addThread(f); // 20.
 
         List<Spore> t3Spores = new ArrayList<>();
         t3Spores.add(s1);

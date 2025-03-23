@@ -14,12 +14,18 @@ public class SingleThreadTecton extends Tecton {
         thread = null;
     }
 
-    public void setThreads(List<FungalThread> list) {
-        if (list == null) {
-            thread = null;
-        } else {
-            thread = list.get(0);
-        }
+    public void setThreads(List<FungalThread> list){
+        t.toCall("setThreads");
+        t.list.add(this);
+        t.list.add(list);
+        t.parameters.clear();
+        t.parameters.add(this);
+
+        thread = list.getFirst();
+
+        t.returnValue.clear();
+        t.returnValue.add(Boolean.TRUE);
+        t.toReturn();
     }
 
     // visszaadja azokat a gombafonalakat, amelyek rajta vannak
@@ -60,7 +66,11 @@ public class SingleThreadTecton extends Tecton {
 
     // ha nincs meg mushroom rarakjuk
     public boolean putMushroom(Mushroom m) {
-        if (mushroom == null) {
+        t.toCall("putMushroom");
+        t.parameters.clear();
+        t.parameters.add(this);
+
+        if(mushroom == null) {
             mushroom = m;
             return true;
         }
@@ -78,7 +88,7 @@ public class SingleThreadTecton extends Tecton {
             t.returnValue.clear();
             t.returnValue.add(Boolean.TRUE);
             t.toReturn();
-            
+
             return true;
         } else {
 
@@ -121,6 +131,10 @@ public class SingleThreadTecton extends Tecton {
         }
 
     }
+
+    public void addThread(FungalThread f){
+        thread = f;
+    } 
 
     // ha a kapott thread megegyezik az eltarolt threaddel, akkor töröljük
     public boolean removeThread(FungalThread f) {

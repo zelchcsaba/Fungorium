@@ -69,13 +69,17 @@ public class Mushroom {
         return state;
     }
 
-    // To do
+    //kilőjük a spórát tektonra
     public boolean shootSpore(Tecton t) {
+        //meghívjuk a teszter kiíró függvényt
         this.t.toCall("shootSpore");
+        //ha nincs spóránk, amit kilőjünk, akkor nem lőhetünk
         if (spores.isEmpty()) {
+
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.FALSE);
             this.t.toReturn();
+
             return false;
         }
         boolean returnV = false;
@@ -94,8 +98,11 @@ public class Mushroom {
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.FALSE);
             this.t.toReturn();
+            //ha nem, akkor false-val térünk vissza
             return false;
+
         } else {
+            //ha sikerült a spórát lerkani
             //növeljük a shooted spores countot 1-el
             shootedSporesCount+=1;
             //ha a 10. spórát is kilőtte, akkor a gombatestnek meg kell halnia
@@ -117,9 +124,10 @@ public class Mushroom {
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.TRUE);
             this.t.toReturn();
+            //true értékkel térünk vissza
             return true;
         }
-        
+
     }
 
     // allapot beallitas

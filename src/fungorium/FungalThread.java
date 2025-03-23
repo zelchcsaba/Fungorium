@@ -60,8 +60,71 @@ public class FungalThread {
         return true;
     }
 
-    // TO DO majd, most nem kell
+
     public boolean growMushroom(Tecton t) {
+        this.t.toCall("growMushroom");
+
+        this.t.list.add(this);
+        this.t.list.add(t);
+        this.t.parameters.clear();
+
+        t.getSpores();
+
+        boolean allSporesUseThisThread = true;
+        for (Spore s : t.spores) {
+            if(s.getThread() != this) {
+                allSporesUseThisThread = false;
+                break;
+            }
+        }
+
+        if (!allSporesUseThisThread) {
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        }
+
+        Mushroom m = (Mushroom) this.t.getObjectByValue("m");
+        this.t.toCreate(this, m, "m");
+
+        this.t.list.add(this);
+        this.t.list.add(m);
+        this.t.parameters.clear();
+        this.t.parameters.add(t);
+
+        m.setPosition(t);
+
+        this.t.list.add(this);
+        this.t.list.add(m);
+        this.t.parameters.clear();
+        this.t.parameters.add(this);
+
+        m.setThread(this);
+
+        List<FungalThread> thisThread = new ArrayList<>();
+        thisThread.add(this);
+
+        this.t.list.add(this);
+        this.t.list.add(t);
+
+        t.setThreads(thisThread);
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
+
+        this.t.list.add(this);
+        this.t.list.add(t);
+        this.t.parameters.clear();
+        this.t.parameters.add(m);
+
+        t.putMushroom(m);
+
+        this.t.returnValue.clear();
+        this.t.returnValue.add(Boolean.TRUE);
+        this.t.toReturn();
+
         return true;
     }
 
