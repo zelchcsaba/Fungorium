@@ -155,23 +155,103 @@ public abstract class Tecton {
 
     // to do
     public boolean putFirstInsect() {
+        this.t.toCall("putFirstInsect");
         if (i == null) {
+            Insect ins = new Insect(t);
+            this.t.toCreate(this,ins,"i");
+
+            t.list.add(this);
+            t.list.add(ins);
+            t.parameters.clear();
+            t.parameters.add(this);
+            ins.setPosition(this);
+
+            i = ins;
+
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+
             return true;
         } else {
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
             return false;
         }
     }
 
     // to do
-    public boolean putInsect(Insect i, Tecton t) {
-        return true;
+    public boolean putInsect(Insect ins, Tecton t) {
+        this.t.toCall("putInsect");
+
+        this.t.list.add(this);
+        this.t.list.add(t);
+
+        this.t.parameters.clear();
+        this.t.parameters.add(t);
+
+        if(!isNeighbor(t)) {
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        }
+
+        List<FungalThread> list1;
+        List<FungalThread> list2;
+
+        //lekérjük a fonalakat
+        this.t.list.add(this);
+        this.t.list.add(t);
+        this.t.parameters.clear();
+
+        list1 = this.getThreadsWithoutCout();
+
+        this.t.list.add(this);
+        this.t.list.add(t);
+        this.t.parameters.clear();
+
+        list2 = t.getThreads();
+
+        boolean connected=false;
+        for(int idx=0; idx<list1.size();idx++){
+            if(list2.contains(list1.get(idx))){
+                connected=true;
+            }
+        }
+        if(connected) {
+           t.removeInsect();
+           i = ins;
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+            return true;
+        }
+        else {
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        }
     }
 
     public boolean removeInsect() {
+        this.t.toCall("removeInsect");
         if (i != null) {
             i = null;
+
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+
             return true;
         } else {
+
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+
             return false;
         }
     }

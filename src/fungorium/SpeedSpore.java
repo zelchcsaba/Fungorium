@@ -7,7 +7,15 @@ public class SpeedSpore extends Spore {
     }
 
     public void applyEffect(Insect i) {
+        this.t.toCall("applyEffect");
+
+        this.t.list.add(this);
+        this.t.list.add(i);
         i.setState(SporeEffect.SPEEDBOOST);
+
+        this.t.returnValue.clear();
+        this.t.toReturn();
     }
+
 
 }

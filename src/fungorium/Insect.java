@@ -28,7 +28,10 @@ public class Insect {
     }
 
     public void setState(SporeEffect s) {
+        this.t.toCall("setState");
         state = s;
+        this.t.returnValue.clear();
+        this.t.toReturn();
     }
 
     public SporeEffect getState() {
@@ -37,7 +40,33 @@ public class Insect {
 
     // To do
     public boolean move(Tecton t) {
-        return true;
+        this.t.toCall("move");
+
+        this.t.list.add(this);
+        this.t.list.add(t);
+        this.t.parameters.clear();
+        this.t.parameters.add(this);
+        this.t.parameters.add(position);
+        if(t.putInsect(this,position)){
+            this.t.list.add(this);
+            this.t.list.add(t);
+            List<Spore> tSpores = t.getSpores();
+
+            this.t.list.add(this);
+            this.t.list.add(tSpores.getFirst());
+            tSpores.getFirst().applyEffect(this);
+
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.TRUE);
+            this.t.toReturn();
+            return true;
+        }
+        else{
+            this.t.returnValue.clear();
+            this.t.returnValue.add(Boolean.FALSE);
+            this.t.toReturn();
+            return false;
+        }
     }
 
     //elvágja a fonalakat a kijelölt tektonon

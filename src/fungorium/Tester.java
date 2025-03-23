@@ -456,6 +456,57 @@ public class Tester {
         m.shootSpore(t2);
     }
 
+    /***
+     * @Use-case-hez_tartozó_név: Rovar lehelyezése tektonra sikeres
+     *
+     */
+    public void putFirstInsectTrue(){
+        init1();
+        MultiThreadTecton t1 = (MultiThreadTecton) getObjectByValue("t1");
+
+        list.add(null);
+        list.add(t1);
+        parameters.clear();
+        t1.putFirstInsect();
+    }
+
+    /***
+     * @Use-case-hez_tartozó_név: Rovar lehelyezése tektonra sikertelen
+     */
+    public void putFirstInsectFalse(){
+        init6();
+        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+        list.add(null);
+        list.add(t2);
+        parameters.clear();
+        t2.putFirstInsect();
+    }
+
+    public void moveInsectTrue(){
+        init6();
+        SingleThreadTecton t2 = (SingleThreadTecton) getObjectByValue("t2");
+        SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
+        Insect i1 = (Insect) getObjectByValue("i1");
+
+        list.add(null);
+        list.add(i1);
+        parameters.clear();
+        parameters.add(t3);
+        i1.move(t3);
+    }
+    public void moveInsectFalse(){
+        init6();
+        SingleThreadTecton t3 = (SingleThreadTecton) getObjectByValue("t3");
+        MultiThreadTecton t4 = (MultiThreadTecton) getObjectByValue("t4");
+        Insect i2 = (Insect) getObjectByValue("i2");
+
+        list.add(null);
+        list.add(i2);
+        parameters.clear();
+        parameters.add(t3);
+        i2.move(t3);
+    }
+
 
 //első állapot
     //Diagram 1-nek felel meg
@@ -813,6 +864,75 @@ public class Tester {
         map.put(s2, "s2");
         map.put(s3, "s3");
         map.put(s4, "s4");
+    }
+
+    public void init6(){
+
+        SingleThreadTecton t2 = new SingleThreadTecton(this);// 2
+        SingleThreadTecton t3 = new SingleThreadTecton(this);// 3
+        MultiThreadTecton t4 = new MultiThreadTecton(this);// 4
+
+        List<Tecton> t2Neighbors = new ArrayList<>();
+        t2Neighbors.add(t3);
+        t2.setNeighbors(t2Neighbors);// 7.
+
+        List<Tecton> t3Neighbors = new ArrayList<>();
+        t3Neighbors.add(t2);
+        t3Neighbors.add(t4);
+        t3.setNeighbors(t3Neighbors);// 8.
+
+        List<Tecton> t4Neighbors = new ArrayList<>();
+        t4Neighbors.add(t3);
+        t4.setNeighbors(t4Neighbors);// 9.
+
+        FungalThread f = new FungalThread(this);// 11.
+        Mushroom m = new Mushroom(this);// 12.
+
+        List<Tecton> fTectons = new ArrayList<>();
+        fTectons.add(t3);
+        fTectons.add(t2);
+        f.setTectons(fTectons);// 13.
+
+        t3.addThread(f);// 15.
+        t2.addThread(f);// 16.
+
+        m.setPosition(t2);// 17
+        t2.setMushroom(m);// 18
+        m.setThread(f);// 19
+
+
+        // 21 az nincs
+        Insect i1 = new Insect(this);// 23
+        i1.setPosition(t2);// 24
+        t2.setInsect(i1);// 25
+
+        SpeedSpore s2 = new SpeedSpore(this);// 26
+        List<Spore> spores = new ArrayList<>();
+        spores.add(s2);
+
+        s2.setThread(f);// 27
+        t3.setSpores(spores);
+
+        Insect i2 = new Insect(this);
+        i2.setPosition(t4);
+        t4.setInsect(i2);
+
+
+        List<Spore> spores3 = new ArrayList<>();
+        spores3.add(s2);
+        m.setSpores(spores3);
+
+        // Végül betesszük a map-be, hogy elő tudjuk őket szedni, hogy meghívjuk a
+        // függvényeiket
+        map.put(f, "f");
+        map.put(m, "m");
+        map.put(t2, "t2");
+        map.put(t3, "t3");
+        map.put(t4, "t4");
+        map.put(i1, "i1");
+        map.put(i2, "i2");
+        map.put(s2, "s2");
+
     }
 
     // Segéd függvény, hogy a neve alapján elő szedjünk egy objektumot
