@@ -770,6 +770,37 @@ public class Tester {
 
 
     /**
+     * A gomba spórája generálásáért felelős metódus.
+     *
+     * Az alábbi lépéseket hajtja végre:
+     * - Inicializálja a szükséges komponenseket az init1 metódussal.
+     * - Kiírat néhány résztvevő diagram elemet.
+     * - Az getObjectByValue metódus hívásával lekéri a Mushroom és Spore objektumokat.
+     * - Az előkészítő listákat frissíti.
+     * - Meghívja a Mushroom osztály generateSpore metódusát a Spore objektummal.
+     * - Végül futtatja a toReturn metódust a művelet lezárásához.
+     */
+    public void generateSpore() {
+        init1();
+
+        System.out.println("participant \"Tester\" as \"\"");
+        System.out.println("participant \"m:Mushroom\" as m");
+        System.out.println("participant \"s2:SpeedSpore\" as s2");
+
+        Mushroom m = (Mushroom) getObjectByValue("m");
+        Spore s2 = (Spore) getObjectByValue("s2");
+
+        list.add(null);
+        list.add(m);
+        parameters.clear();
+        parameters.add(s2);
+        m.generateSpore(s2);
+
+        toReturn();
+    }
+
+
+    /**
      * 1. Kommunikációs diagram szerinti inicializálás
      */
     public void init1(){
