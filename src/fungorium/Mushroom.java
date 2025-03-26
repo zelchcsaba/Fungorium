@@ -224,9 +224,10 @@ public class Mushroom {
      * @param sp A hozzáadandó spóra objektum.
      * @return true, ha a spóra sikeresen hozzá lett adva.
      */
-    public boolean generateSpore(Spore sp) {
-        this.t.toCall("generateSpore");
-        this.t.toCreate(this, sp, "s2");
+    public boolean generateSpore(Spore sp) { //Még kérdéses, hogy enum-ot, vagy spórát vesz át. 
+        this.t.toCall("generateSpore"); //Az előbbi esetben switch case-ek kellenének.(valószínú így lesz majd később) 
+        String spString = t.map.get(sp);     //Ezért most tfh. a tester létrehozta már a spórát, ezt a gomba csak bele teszi a spórái közé.
+        this.t.toCreate(this, sp, spString);
 
         sp.setThread(this.thread);
         spores.add(sp);

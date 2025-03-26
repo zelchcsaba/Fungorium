@@ -37,7 +37,7 @@ public class SingleThreadTecton extends Tecton {
         t.parameters.clear();
         t.parameters.add(this);
 
-        thread = list.getFirst();
+        thread = list.get(0);
 
         t.returnValue.clear();
         t.returnValue.add(Boolean.TRUE);

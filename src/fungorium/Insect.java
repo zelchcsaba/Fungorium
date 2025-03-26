@@ -94,8 +94,8 @@ public class Insect {
             List<Spore> tSpores = t.getSpores();
 
             this.t.list.add(this);
-            this.t.list.add(tSpores.getFirst());
-            tSpores.getFirst().applyEffect(this);
+            this.t.list.add(tSpores.get(0));
+            tSpores.get(0).applyEffect(this);
 
             this.t.returnValue.clear();
             this.t.returnValue.add(Boolean.TRUE);
