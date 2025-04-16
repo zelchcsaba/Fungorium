@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 /**
  * A Spore osztály egy absztrakt osztály, amely egy általános spóra mechanizmust
@@ -6,19 +6,16 @@ package fungorium;
  * különféle specifikus spóra implementációk számára, amelyek különféle hatásokat
  * alkalmazhatnak rovarokra.
  */
-public abstract class Spore {
+public abstract class Spore implements ISporeController{
 
-    Tester t;
     private FungalThread thread;
-
 
     /**
      * A Spore konstruktora, amely inicializálja a Spore egy példányát a megadott tesztelővel.
      *
      * @param t A Tester példány, amely a spóra különböző tesztelési funkcióit biztosítja.
      */
-    public Spore(Tester t) {
-        this.t = t;
+    public Spore() {
         thread = null;
     }
 

@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 /**
  * A NoCutSpore osztály a Spore absztrakt osztályból származik, és egy specifikus
@@ -13,8 +13,8 @@ public class NoCutSpore extends Spore {
      *
      * @param t A Tester objektum, amely a spóra működésének meghatározásához szükséges.
      */
-    public NoCutSpore(Tester t) {
-        super(t);
+    public NoCutSpore() {
+        super();
     }
 
     /**
@@ -24,7 +24,7 @@ public class NoCutSpore extends Spore {
      * @param i az a rovar, amelyre az effektust alkalmazni kell
      */
     public void applyEffect(Insect i) {
-        i.setState(SporeEffect.NOCUT);
+        i.setState(InsectState.NOCUT);
     }
 
 }

@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 /**
  * A MushroomState a gomba fejlődési állapotainak reprezentálására szolgál.

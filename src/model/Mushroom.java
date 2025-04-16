@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,8 @@ import java.util.List;
  * képes generálni és kilőni egy adott tektonra. A gomba különböző
  * állapotokban lehet, és működéséhez teszter osztályt használ.
  */
-public class Mushroom {
+public class Mushroom implements IMushroomController{
 
-    Tester t;
     private Tecton position;
     private List<Spore> spores;
     private FungalThread thread;
@@ -21,10 +20,8 @@ public class Mushroom {
     /**
      * Létrehozza a Mushroom objektumot.
      *
-     * @param t A teszteléshez használt Tester objektum.
      */
-    public Mushroom(Tester t) {
-        this.t = t;
+    public Mushroom() {
         position = null;
         spores = new ArrayList<>();
         thread = null;
@@ -39,9 +36,6 @@ public class Mushroom {
      * @param position az új pozíciót meghatározó Tecton objektum
      */
     public void setPosition(Tecton position) {
-        this.t.toCall("setPosition");
-        this.t.returnValue.clear();
-        this.t.toReturn();
         this.position = position;
     }
 
@@ -62,9 +56,6 @@ public class Mushroom {
      * @param thread Az új FungalThread objektum, amelyet az osztály szála gyanánt állít be.
      */
     public void setThread(FungalThread thread) {
-        this.t.toCall("setThread");
-        this.t.returnValue.clear();
-        this.t.toReturn();
         this.thread = thread;
     }
 
@@ -147,32 +138,19 @@ public class Mushroom {
      * @return true, ha a spóralövés sikeres volt; false, ha nem sikerült a spórát kilőni.
      */
     public boolean shootSpore(Tecton t) {
-        //meghívjuk a teszter kiíró függvényt
-        this.t.toCall("shootSpore");
         //ha nincs spóránk, amit kilőjünk, akkor nem lőhetünk
         if (spores.isEmpty()) {
 
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.FALSE);
-            this.t.toReturn();
-
             return false;
         }
+        
         boolean returnV = false;
-        this.t.list.add(this);
-        this.t.list.add(t);
-        this.t.parameters.clear();
-        this.t.parameters.add(spores.get(0));
-        this.t.parameters.add(position);
         if (state == MushroomState.UNEVOLVED) {
             returnV = t.putSpore(spores.get(0), position);
         } else {
             returnV = t.putEvolvedSpore(spores.get(0), position);
         }
         if (!returnV) {
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.FALSE);
-            this.t.toReturn();
             //ha nem, akkor false-val térünk vissza
             return false;
 
@@ -183,22 +161,12 @@ public class Mushroom {
             //ha a 10. spórát is kilőtte, akkor a gombatestnek meg kell halnia
             if (shootedSporesCount == 10) {
 
-                this.t.list.add(this);
-                this.t.list.add(position);
-                this.t.parameters.clear();
                 //töröljük a tektonról
                 position.removeMushroom();
 
-                this.t.list.add(this);
-                this.t.list.add(thread);
-                this.t.parameters.clear();
                 //töröljük azon gombafonál részeket, amelyekhez nem kapcsolódik gombatest
                 thread.deleteUnnecessaryThreads();
             }
-
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.TRUE);
-            this.t.toReturn();
             //true értékkel térünk vissza
             return true;
         }
@@ -224,16 +192,11 @@ public class Mushroom {
      * @param sp A hozzáadandó spóra objektum.
      * @return true, ha a spóra sikeresen hozzá lett adva.
      */
-    public boolean generateSpore(Spore sp) { //Még kérdéses, hogy enum-ot, vagy spórát vesz át. 
-        this.t.toCall("generateSpore"); //Az előbbi esetben switch case-ek kellenének.(valószínú így lesz majd később) 
-        String spString = t.map.get(sp);     //Ezért most tfh. a tester létrehozta már a spórát, ezt a gomba csak bele teszi a spórái közé.
-        this.t.toCreate(this, sp, spString);
+    public boolean generateSpore(Spore sp) { //Még kérdéses, hogy enum-ot, vagy spórát vesz át.  
 
         sp.setThread(this.thread);
         spores.add(sp);
 
-        this.t.returnValue.clear();
-        this.t.returnValue.add(Boolean.TRUE);
         return true;
     }
 

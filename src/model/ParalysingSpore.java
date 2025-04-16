@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 /**
  * A ParalysingSpore osztály egy konkrét megvalósítása a Spore absztrakt osztálynak.
@@ -13,8 +13,8 @@ public class ParalysingSpore extends Spore {
      *
      * @param t A Tester példány, amely biztosítja a Spore osztály megfelelő működését
      */
-    public ParalysingSpore(Tester t) {
-        super(t);
+    public ParalysingSpore() {
+        super();
     }
 
     /**
@@ -24,7 +24,7 @@ public class ParalysingSpore extends Spore {
      * @param i Az a rovar (Insect objektum), amelyre a spóra hatását alkalmazni kell.
      */
     public void applyEffect(Insect i) {
-        i.setState(SporeEffect.PARALYZED);
+        i.setState(InsectState.PARALYZED);
     }
 
 }

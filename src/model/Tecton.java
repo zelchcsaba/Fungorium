@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,8 @@ import java.util.List;
  * A Tecton osztály egy absztrakt osztály, amely a játék tektonjait
  * reprezentálja, ezek játékterület alapvető egységei.
  */
-public abstract class Tecton {
+public abstract class Tecton implements ITectonController,ITectonView{
 
-    Tester t;
     protected List<Spore> spores;
     protected List<Tecton> neighbors;
     protected Insect i;
@@ -18,10 +17,8 @@ public abstract class Tecton {
     /**
      * Létrehozza egy Tecton osztály példányát a megfelelő mezők inicializálásával.
      *
-     * @param t A kapcsolódó Tester objektum, amely a Tecton-hoz tartozik.
      */
-    public Tecton(Tester t) {
-        this.t = t;
+    public Tecton() {
         spores = new ArrayList<>();
         neighbors = new ArrayList<>();
         i = null;
@@ -44,10 +41,6 @@ public abstract class Tecton {
      * @return A Tecton-hoz tartozó spórák listája.
      */
     public List<Spore> getSpores() {
-        t.toCall("getSpores");
-        t.returnValue.clear();
-        t.returnValue.addAll(spores);
-        t.toReturn();
         return spores;
     }
 
@@ -62,16 +55,13 @@ public abstract class Tecton {
     }
 
 
+
     /**
      * Visszaadja a Tecton szomszédos objektumainak listáját.
      *
      * @return A szomszédos Tecton objektumokat tartalmazó lista.
      */
     public List<Tecton> getNeighbors() {
-        t.toCall("getNeighbors");
-        this.t.returnValue.clear();
-        this.t.returnValue.addAll(neighbors);
-        this.t.toReturn();
         return neighbors;
     }
 
@@ -82,10 +72,6 @@ public abstract class Tecton {
      * @param i Az új rovar objektum, amelyet a Tecton-hoz rendelünk.
      */
     public void setInsect(Insect i) {
-        t.toCall("setInsect");
-        t.returnValue.clear();
-        t.toReturn();
-
         this.i = i;
     }
 
@@ -110,8 +96,6 @@ public abstract class Tecton {
 
     public abstract List<FungalThread> getThreads();
 
-    public abstract List<FungalThread> getThreadsWithoutCout(); // Ez eskü jól jön
-
     public abstract boolean putMushroom(Mushroom m);
 
     public abstract boolean putThread(FungalThread f);
@@ -122,9 +106,13 @@ public abstract class Tecton {
 
     public abstract boolean removeThread(FungalThread f);
 
-    public abstract boolean breakTecton();
+    public abstract List<Tecton> breakTecton();
 
-    public abstract boolean putFirstMushroom();
+    public abstract boolean putFirstMushroom(FungalThread f, Mushroom m);
+
+    public abstract boolean isConnected(FungalThread f);
+
+    public abstract void absorb();
 
     // -- //
 
@@ -137,17 +125,12 @@ public abstract class Tecton {
      * @return Igaz, ha a művelet sikeres, hamis, ha a Tecton nem szomszédos, és a spóra nem lett hozzáadva.
      */
     public boolean putSpore(Spore sp, Tecton t) {
-        this.t.toCall("putSpore");
         if (!neighbors.contains(t)) {
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.FALSE);
-            this.t.toReturn();
+
             return false;
+
         } else {
             spores.add(sp);
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.TRUE);
-            this.t.toReturn();
             return true;
         }
     }
@@ -160,25 +143,19 @@ public abstract class Tecton {
      * @return Azon Tecton objektumokat tartalmazó lista, amelyek megfelelnek a feltételeknek.
      */
     public List<Tecton> getThreadSection(FungalThread f) {
-        // meghívja a tester kiíró függvényét
-        this.t.toCall("getThreadSection");
 
         List<Tecton> tectons = new ArrayList<>();
 
         // végigmegy a szomzsédokon, és lekéri a threads tömbjüket, ha ebben benne van
         // f, akkor hozzáadja a tectons listához
         for (int i = 0; i < neighbors.size(); i++) {
-            List<FungalThread> list = neighbors.get(i).getThreadsWithoutCout();
+            List<FungalThread> list = neighbors.get(i).getThreads();
             if (list != null) {
                 if (list.contains(f)) {
                     tectons.add(neighbors.get(i));
                 }
             }
         }
-
-        this.t.returnValue.clear();
-        this.t.returnValue.addAll(tectons);
-        this.t.toReturn();
 
         return tectons;
     }
@@ -193,29 +170,15 @@ public abstract class Tecton {
      * false, ha az inicializálatlan állapot vagy más okok miatt nem lehetett műveletet végrehajtani.
      */
     // to do
-    public boolean putFirstInsect() {
-        this.t.toCall("putFirstInsect");
+    public boolean putFirstInsect(Insect ins) {
         if (i == null) {
-            Insect ins = new Insect(t);
-            this.t.toCreate(this,ins,"i");
 
-            t.list.add(this);
-            t.list.add(ins);
-            t.parameters.clear();
-            t.parameters.add(this);
             ins.setPosition(this);
 
             i = ins;
 
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.TRUE);
-            this.t.toReturn();
-
             return true;
         } else {
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.FALSE);
-            this.t.toReturn();
             return false;
         }
     }
@@ -229,18 +192,8 @@ public abstract class Tecton {
      * @return Igaz, ha a rovar sikeresen behelyezésre került, hamis, ha a behelyezés sikertelen.
      */
     public boolean putInsect(Insect ins, Tecton t) {
-        this.t.toCall("putInsect");
-
-        this.t.list.add(this);
-        this.t.list.add(t);
-
-        this.t.parameters.clear();
-        this.t.parameters.add(t);
 
         if(!isNeighbor(t)) {
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.FALSE);
-            this.t.toReturn();
             return false;
         }
 
@@ -248,16 +201,8 @@ public abstract class Tecton {
         List<FungalThread> list2;
 
         //lekérjük a fonalakat
-        this.t.list.add(this);
-        this.t.list.add(t);
-        this.t.parameters.clear();
 
-        list1 = this.getThreadsWithoutCout();
-
-        this.t.list.add(this);
-        this.t.list.add(t);
-        this.t.parameters.clear();
-
+        list1 = this.getThreads();
         list2 = t.getThreads();
 
         boolean connected=false;
@@ -269,15 +214,9 @@ public abstract class Tecton {
         if(connected) {
            t.removeInsect();
            i = ins;
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.TRUE);
-            this.t.toReturn();
             return true;
         }
         else {
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.FALSE);
-            this.t.toReturn();
             return false;
         }
     }
@@ -289,21 +228,10 @@ public abstract class Tecton {
      * @return true, ha a rovar sikeresen eltávolításra került, false, ha nem volt eltávolítandó rovar
      */
     public boolean removeInsect() {
-        this.t.toCall("removeInsect");
         if (i != null) {
             i = null;
-
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.TRUE);
-            this.t.toReturn();
-
             return true;
         } else {
-
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.FALSE);
-            this.t.toReturn();
-
             return false;
         }
     }
@@ -316,19 +244,10 @@ public abstract class Tecton {
      * @return true, ha a megadott Tecton szomszédos a hívó Tecton-nal, false különben.
      */
     public boolean isNeighbor(Tecton t) {
-        //meghívja a tester kiíró függvényét
-        this.t.toCall("isNeighbor");
         if (neighbors.contains(t)) {
-
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.TRUE);
-            this.t.toReturn();
 
             return true;
         } else {
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.TRUE);
-            this.t.toReturn();
 
             return false;
         }
@@ -344,14 +263,7 @@ public abstract class Tecton {
      */
     public boolean addNeighbor(List<Tecton> tlist) {
 
-        // meghívja a tester kiíró függvényét
-        this.t.toCall("addNeighbor");
-
         neighbors.addAll(tlist);
-
-        this.t.returnValue.clear();
-        this.t.returnValue.add(Boolean.TRUE);
-        this.t.toReturn();
 
         return true;
     }
@@ -364,12 +276,7 @@ public abstract class Tecton {
      * @return Igaz értéket ad vissza, ha a szomszéd sikeresen eltávolításra került.
      */
     public boolean removeNeighbor(Tecton t) {
-        this.t.toCall("removeNeighbor");
         neighbors.remove(t);
-
-        this.t.returnValue.clear();
-        this.t.returnValue.add(Boolean.TRUE);
-        this.t.toReturn();
 
         return true;
     }
@@ -384,29 +291,17 @@ public abstract class Tecton {
      * @return Igaz (true), ha a spóra hozzáadása sikeres volt, hamis (false), ha nem.
      */
     public boolean putEvolvedSpore(Spore sp, Tecton t) {
-        this.t.toCall("putEvolvedSpore");
         if (!neighbors.contains(t)) {
             for (int i = 0; i < neighbors.size(); i++) {
-                this.t.list.add(this);
-                this.t.list.add(neighbors.get(i));
-                this.t.parameters.clear();
                 if (neighbors.get(i).getNeighbors().contains(t)) {
                     spores.add(sp);
-                    this.t.returnValue.clear();
-                    this.t.returnValue.add(Boolean.TRUE);
-                    this.t.toReturn();
                     return true;
                 }
             }
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.FALSE);
-            this.t.toReturn();
+
             return false;
         } else {
             spores.add(sp);
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.TRUE);
-            this.t.toReturn();
             return true;
         }
     }

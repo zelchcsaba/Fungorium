@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +16,9 @@ public class SingleThreadTecton extends Tecton {
     /**
      * Egy új SingleThreadTecton példányt hoz létre a megadott Tester példánnyal.
      *
-     * @param t A Tester példány, amely kapcsolódik az új SingleThreadTecton objektumhoz.
      */
-    public SingleThreadTecton(Tester t) {
-        super(t);
+    public SingleThreadTecton() {
+        super();
         mushroom = null;
         thread = null;
     }
@@ -31,17 +30,9 @@ public class SingleThreadTecton extends Tecton {
      * @param list A beállítani kívánt gombafonalak listája.
      */
     public void setThreads(List<FungalThread> list) {
-        t.toCall("setThreads");
-        t.list.add(this);
-        t.list.add(list);
-        t.parameters.clear();
-        t.parameters.add(this);
 
         thread = list.get(0);
 
-        t.returnValue.clear();
-        t.returnValue.add(Boolean.TRUE);
-        t.toReturn();
     }
 
 
@@ -52,20 +43,14 @@ public class SingleThreadTecton extends Tecton {
      */
     public List<FungalThread> getThreads() {
 
-        t.toCall("getThreads");
         // berakom egy listába a fonalat
         ArrayList<FungalThread> list = new ArrayList<>();
         if (thread == null) {
-            t.returnValue.clear();
-            t.toReturn();
             return null;
         } else {
             list.add(thread);
         }
 
-        t.returnValue.clear();
-        t.returnValue.addAll(list);
-        t.toReturn();
         return list;
     }
 
@@ -87,11 +72,6 @@ public class SingleThreadTecton extends Tecton {
      */
     public Mushroom getMushroom() {
         // meghívja a tester kiíró függvényét
-        this.t.toCall("getMushroom");
-
-        this.t.returnValue.clear();
-        this.t.returnValue.add(mushroom);
-        this.t.toReturn();
 
         return mushroom;
     }
@@ -104,9 +84,6 @@ public class SingleThreadTecton extends Tecton {
      * @return igaz, ha sikerült a gombatestet ráhelyezni, hamis, ha már volt rajta egy másik gombatest
      */
     public boolean putMushroom(Mushroom m) {
-        t.toCall("putMushroom");
-        t.parameters.clear();
-        t.parameters.add(this);
 
         if (mushroom == null) {
             mushroom = m;
@@ -114,35 +91,6 @@ public class SingleThreadTecton extends Tecton {
         }
         return false;
     }
-
-
-    /**
-     * Eltávolítja a tektonról a hozzá kapcsolt gombatestet, ha az létezik.
-     *
-     * @return true, ha sikeresen eltávolította a gombát, false, ha nem volt hozzá tartozó gombatest.
-     */
-    public boolean removeMushroom() {
-
-        t.toCall("removeMushroom");
-
-        if (mushroom != null) {
-            mushroom = null;
-
-            t.returnValue.clear();
-            t.returnValue.add(Boolean.TRUE);
-            t.toReturn();
-
-            return true;
-        } else {
-
-            t.returnValue.clear();
-            t.returnValue.add(Boolean.FALSE);
-            t.toReturn();
-
-            return false;
-        }
-    }
-
 
     /**
      * Ha nincs egy fonal se rajta és van szomszédos tekton, akkor lehet fonalat helyezni rá.
@@ -154,45 +102,41 @@ public class SingleThreadTecton extends Tecton {
      * false, ha a feltételek nem teljesültek (pl.: már van rajta fonal, vagy "f" nem található a szomszédok között).
      */
     public boolean putThread(FungalThread f) {
-        t.toCall("putThread");
         if (thread == null && !neighbors.isEmpty()) {
             for (Tecton tecton : neighbors) {
-                List<FungalThread> threads = tecton.getThreadsWithoutCout();
+                List<FungalThread> threads = tecton.getThreads();
                 if (threads != null) { // Csak akkor iterálj, ha nem null
                     for (FungalThread fungals : threads) {
                         if (fungals != null && fungals.equals(f)) {
                             thread = f;
-                            t.returnValue.clear();
-                            t.returnValue.add(Boolean.TRUE);
-                            t.toReturn();
                             return true;
                         }
                     }
                 }
             }
-            thread = f;
-            t.returnValue.clear();
-            t.returnValue.add(Boolean.FALSE);
-            t.toReturn();
             return false;
         } else {
-            t.returnValue.clear();
-            t.returnValue.add(Boolean.FALSE);
-            t.toReturn();
             return false;
         }
     }
 
-
     /**
-     * Egy FungalThread típusú gombafonal hozzáadása a tektonhoz.
+     * Eltávolítja a tektonról a hozzá kapcsolt gombatestet, ha az létezik.
      *
-     * @param f A hozzáadni kívánt gombafonal (FungalThread objektum).
+     * @return true, ha sikeresen eltávolította a gombát, false, ha nem volt hozzá tartozó gombatest.
      */
-    public void addThread(FungalThread f) {
-        thread = f;
-    }
+    public boolean removeMushroom() {
 
+
+        if (mushroom != null) {
+            mushroom = null;
+
+            return true;
+        } else {
+
+            return false;
+        }
+    }
 
     /**
      * Törli a megadott gombafonalat, ha megegyezik a tárolt gombafonallal.
@@ -201,44 +145,10 @@ public class SingleThreadTecton extends Tecton {
      * @return Igaz értéket ad vissza, ha a törlés sikeres.
      */
     public boolean removeThread(FungalThread f) {
-        // meghívja a tester kiíró függvényét
-        this.t.toCall("removeThread");
-
-        this.t.returnValue.clear();
-        this.t.returnValue.add(Boolean.TRUE);
-        this.t.toReturn();
 
         thread = null;
         return true;
     }
-
-
-    /**
-     * Ellenőrzi, hogy van-e gomba (mushroom) az aktuális tektonon (tecton).
-     * Ha nincs gomba, a metódus sikeres végrehajtás esetén true értékkel tér vissza.
-     *
-     * @return true, ha nincs gomba az aktuális tektonon, különben false.
-     */
-    public boolean putFirstMushroom() {
-        return mushroom == null;
-    }
-
-
-    /**
-     * Visszaadja a tektonhoz tartozó gombafonalak listáját, a kiíratás mellőzésével.
-     *
-     * @return A tektonhoz tartozó gombafonalak listája, ha van; egyébként null.
-     */
-    public List<FungalThread> getThreadsWithoutCout() {
-        ArrayList<FungalThread> list = new ArrayList<>();
-        if (thread == null) {
-            return null;
-        } else {
-            list.add(thread);
-        }
-        return list;
-    }
-
 
     /**
      * A tekton kettétörését végző metódus, amely két új tekton objektumot hoz létre,
@@ -258,18 +168,15 @@ public class SingleThreadTecton extends Tecton {
      * @return true, ha a tekton sikeresen kettétörött, false, ha a tektonon
      * található gomba miatt a művelet nem hajtható végre.
      */
-    public boolean breakTecton() {
-        // meghívja a tester kiíró függvényét
-        this.t.toCall("breakTecton");
-
-        if (mushroom == null) {
+    public List<Tecton> breakTecton() {
+        List<Tecton> ret = new ArrayList<>();
 
             // létrejön a két új tekton
-            Tecton t6 = new SingleThreadTecton(t);
-            Tecton t7 = new SingleThreadTecton(t);
+            Tecton t6 = new SingleThreadTecton();
+            Tecton t7 = new SingleThreadTecton();
 
-            t.toCreate(this, t6, "t6");
-            t.toCreate(this, t7, "t7");
+            ret.add(t6);
+            ret.add(t7);
 
             // ez lesz a töréspont a tektonon
             int centre = neighbors.size() / 2;
@@ -281,10 +188,6 @@ public class SingleThreadTecton extends Tecton {
             }
             neighborList.add(t7);
 
-            this.t.list.add(this);
-            this.t.list.add(t6);
-            this.t.parameters.clear();
-            this.t.parameters.addAll(neighborList);
             // beállítom a t6 szomszédait
             t6.addNeighbor(neighborList);
             neighborList.clear();
@@ -295,10 +198,6 @@ public class SingleThreadTecton extends Tecton {
                 neighborList.add(neighbors.get(i));
             }
 
-            this.t.list.add(this);
-            this.t.list.add(t7);
-            this.t.parameters.clear();
-            this.t.parameters.addAll(neighborList);
             // beállítom a t7 szomszédait
             t7.addNeighbor(neighborList);
             neighborList.clear();
@@ -309,17 +208,7 @@ public class SingleThreadTecton extends Tecton {
             neighborList.add(t6);
             for (int i = 0; i < centre; i++) {
 
-                this.t.list.add(this);
-                this.t.list.add(neighbors.get(i));
-                this.t.parameters.clear();
-                this.t.parameters.addAll(neighborList);
-
                 neighbors.get(i).addNeighbor(neighborList);
-
-                this.t.list.add(this);
-                this.t.list.add(neighbors.get(i));
-                this.t.parameters.clear();
-                this.t.parameters.add(this);
 
                 neighbors.get(i).removeNeighbor(this);
             }
@@ -329,56 +218,77 @@ public class SingleThreadTecton extends Tecton {
             neighborList.add(t7);
             for (int i = centre; i < neighbors.size(); i++) {
 
-                this.t.list.add(this);
-                this.t.list.add(neighbors.get(i));
-                this.t.parameters.clear();
-                this.t.parameters.addAll(neighborList);
-
                 neighbors.get(i).addNeighbor(neighborList);
-
-                this.t.list.add(this);
-                this.t.list.add(neighbors.get(i));
-                this.t.parameters.clear();
-                this.t.parameters.add(this);
 
                 neighbors.get(i).removeNeighbor(this);
             }
 
-            this.t.list.add(this);
-            this.t.list.add(t6);
-            this.t.parameters.clear();
-            this.t.parameters.add(i);
             // a tektonon levő bogarat ráhelyezem a t6-ra
             t6.setInsect(i);
-
-            this.t.list.add(this);
-            this.t.list.add(i);
-            this.t.parameters.clear();
-            this.t.parameters.add(t6);
             // beállítom a bogár pozícióját
             i.setPosition(t6);
 
-            this.t.list.add(this);
-            this.t.list.add(i);
-            this.t.parameters.clear();
-            this.t.parameters.add(t6);
             // kitörlöm a tektont a fonálról
             thread.removeTecton(this);
 
             // ha keletkezett olyan fonálrész, amely a kettétörés során már nem kapcsolódik
             // gombatesthez ezt eltávolítom
-            System.out.println("deleteUnnecessaryThreads");
+            
+            thread.deleteUnnecessaryThreads();
 
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.TRUE);
-            this.t.toReturn();
+            return ret;
+    }
+
+    /**
+     * Lerakja az első gombatestet a tektonon, amennyiben az még nem létezik.
+     * A módszer ellenőrzi, hogy már létezik-e gombatest a tektonon.
+     * Ha nem, létrehoz egy új gombatestet és egy új gombafonalat,
+     * majd azokat megfelelően beállítja és hozzáadja a tekton adatszerkezetéhez.
+     * Ha azonban már van gombatest, akkor a művelet nem hajtható végre, és visszaad egy hamis értéket.
+     *
+     * @return true, ha az első gombatest sikeresen lerakásra kerül; false, ha már létezik gombatest.
+     */
+    public boolean putFirstMushroom(FungalThread f, Mushroom m) {
+        if (mushroom == null && thread == null) {
+
+            mushroom = m;
+            mushroom.setPosition(this);
+            mushroom.setThread(f);
+            
+            thread = f;
+            f.addTecton(this);
 
             return true;
-        } else {
-            this.t.returnValue.clear();
-            this.t.returnValue.add(Boolean.FALSE);
-            this.t.toReturn();
+        }
+        return false;
+    }
+
+    public void absorb(){}
+
+    public boolean isConnected(FungalThread f){
+        if(mushroom!=null && mushroom.getThread() == f){
+            return true;
+        }else{
             return false;
+        } 
+    }
+
+    public boolean canPutMushroom(){
+        if(mushroom == null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Egy FungalThread típusú gombafonal hozzáadása a tektonhoz.
+     *
+     * @param f A hozzáadni kívánt gombafonal (FungalThread objektum).
+     */
+    public void addThread(FungalThread f) {
+        if(thread == null){
+            thread = f;
         }
     }
 

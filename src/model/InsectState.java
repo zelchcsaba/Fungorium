@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 /**
  * A SporeEffect enum a különböző spóra hatásokat reprezentálja,
@@ -12,10 +12,11 @@ package fungorium;
  * - NOCUT: A rovar képtelenné válik fonalak elvágására.
  * - NORMAL: Nincs spóra hatás, a rovar normál állapotban van.
  */
-public enum SporeEffect {
+public enum InsectState {
     SPEEDBOOST,
     SLOWED,
     PARALYZED,
     NOCUT,
-    NORMAL
+    NORMAL,
+    DIVIDED
 }

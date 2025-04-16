@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 /**
  * A SpeedSpore osztály a Spore absztrakt osztály leszármazottja.
@@ -12,8 +12,8 @@ public class SpeedSpore extends Spore {
      *
      * @param t Az a Tester objektum, amelyet a SpeedSpore fog használni.
      */
-    public SpeedSpore(Tester t) {
-        super(t);
+    public SpeedSpore() {
+        super();
     }
 
     /**
@@ -23,14 +23,7 @@ public class SpeedSpore extends Spore {
      * @param i A rovar (Insect), amelyre a hatást alkalmazni kell.
      */
     public void applyEffect(Insect i) {
-        this.t.toCall("applyEffect");
-
-        this.t.list.add(this);
-        this.t.list.add(i);
-        i.setState(SporeEffect.SPEEDBOOST);
-
-        this.t.returnValue.clear();
-        this.t.toReturn();
+        i.setState(InsectState.SPEEDBOOST);
     }
 
 

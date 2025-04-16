@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,24 +13,23 @@ public class AbsorbingTecton extends Tecton {
 
     private List<FungalThread> threads;
 
-
     /**
      * konstruktor
      *
      * @param t tester objektum
      */
-    public AbsorbingTecton(Tester t) {
-        super(t);
+    public AbsorbingTecton() {
+        super();
         threads = new ArrayList();
     }
+
 
     /**
      * Nem lehet Mushroomot lehelyezni
      *
      * @param mushroom
      */
-    public void setMushroom(Mushroom mushroom) {
-    }
+    public void setMushroom(Mushroom mushroom) {}
 
 
     /**
@@ -41,12 +40,6 @@ public class AbsorbingTecton extends Tecton {
      * @return null, mivel az AbsorbingTecton nem tartalmaz Mushroom objektumot.
      */
     public Mushroom getMushroom() {
-        // meghívja a tester kiíró függvényét
-        this.t.toCall("getMushroom"); // És itt iratjuk a testerrel.
-
-        this.t.returnValue.clear();
-        this.t.returnValue.add(null);
-        this.t.toReturn();
         // absorbing tektonon nem lehet gombatest, ezért a visszatérési érték null
         return null;
     }
@@ -68,25 +61,9 @@ public class AbsorbingTecton extends Tecton {
      * @return A gombafonalak listája, amely ehhez az objektumhoz tartozik.
      */
     public List<FungalThread> getThreads() {
-        t.toCall("getThreads");
-        t.returnValue.clear();
-        t.returnValue.addAll(threads);
-
-        t.toReturn();
-
+        //visszaadja a fonalakat
         return threads;
     }
-
-
-    /**
-     * Visszaadja az objektumhoz tartozó gombafonalak listáját.
-     *
-     * @return A gombafonalak listája, amely ehhez az objektumhoz tartozik.
-     */
-    public List<FungalThread> getThreadsWithoutCout() {
-        return threads;
-    }
-
 
     /**
      * Ez a metódus felelős az "AbsorbingTecton" típusú objektumhoz tartozó összes
@@ -113,16 +90,9 @@ public class AbsorbingTecton extends Tecton {
      */
     public void absorb() {
 
-        t.toCall("absorb");
-
         for (int i = 0; i < threads.size(); i++) {
-
-            this.t.list.add(this);
-            this.t.list.add(threads.get(i));
-            this.t.parameters.clear();
-            this.t.parameters.add(this);
-            // levesszük róla a fonalakat
-            threads.get(i).removeTecton(this);
+        // levesszük róla a fonalakat
+        threads.get(i).removeTecton(this);
         }
 
         List<FungalThread> fungal = new ArrayList<>();
@@ -130,19 +100,11 @@ public class AbsorbingTecton extends Tecton {
         threads.clear();
 
         for (int i = 0; i < fungal.size(); i++) {
-            this.t.list.add(this);
-            this.t.list.add(fungal.get(i));
-            this.t.parameters.clear();
             // töröljük azon fonálrészeket, amelyek nem kapcsolódnak ugyanolyan fajból
             // származó gombatesthez
             fungal.get(i).deleteUnnecessaryThreads();
         }
-
-        t.returnValue.clear();
-
-        t.toReturn();
     }
-
 
     /**
      * Nem lehet Mushroom objektumot lehelyezni az aktuális objektumra.
@@ -154,7 +116,6 @@ public class AbsorbingTecton extends Tecton {
         return false;
     }
 
-
     /**
      * Ellenőrzi, hogy a megadott FungalThread (gombafonal) már létezik-e valamelyik szomszéd tektonban,
      * és ennek megfelelően helyezi el a gombafonalat.
@@ -164,32 +125,13 @@ public class AbsorbingTecton extends Tecton {
      * false, ha nem található a megadott szomszédságokban.
      */
     public boolean putThread(FungalThread f) {
-        t.toCall("putThread");
         for (Tecton tecton : neighbors) {
             if (tecton.getThreads().contains(f)) {
-                t.returnValue.clear();
-                t.returnValue.add(Boolean.TRUE);
-                t.toReturn();
                 return true;
             }
         }
-        t.returnValue.clear();
-        t.returnValue.add(Boolean.FALSE);
-        t.toReturn();
         return false;
     }
-
-
-    /**
-     * Hozzáad egy új FungalThread (gombafonal) objektumot az AbsorbingTecton
-     * aktuális objektumhoz tartozó gombafonalainak listájához.
-     *
-     * @param f A FungalThread objektum, amelyet hozzá szeretnénk adni az objektumhoz
-     */
-    public void addThread(FungalThread f) {
-        threads.add(f);
-    }
-
 
     /**
      * Eltávolítja a Mushroom objektumot az aktuális AbsorbingTecton objektumról.
@@ -200,15 +142,8 @@ public class AbsorbingTecton extends Tecton {
      */
     // false mert nem tud Mushroom nőni rajta, így sose lesz mit kitörölni
     public boolean removeMushroom() {
-        this.t.toCall("removeMushroom");
-
-        this.t.returnValue.clear();
-        this.t.returnValue.add(Boolean.FALSE);
-        this.t.toReturn();
-
         return false;
     }
-
 
     /**
      * Eltávolítja a megadott gombafonalat az aktuális objektumhoz tartozó listából.
@@ -217,32 +152,9 @@ public class AbsorbingTecton extends Tecton {
      * @return true, ha a művelet sikeres volt.
      */
     public boolean removeThread(FungalThread f) {
-        // meghívja a tester kiíró függvényét
-        this.t.toCall("removeThread");
-
-        this.t.returnValue.clear();
-        this.t.returnValue.add(Boolean.TRUE);
-        this.t.toReturn();
-
         threads.remove(f);
         return true;
     }
-
-
-    /**
-     * Nem lehet az aktuális objektumra Mushroom objektumot lehelyezni.
-     * A metódus minden esetben hamis értékkel tér vissza.
-     *
-     * @return false, mivel az aktuális objektumra nem lehet gombát lehelyezni.
-     */
-    public boolean putFirstMushroom() {
-        t.toCall("putFirstMushroom");
-        this.t.returnValue.clear();
-        this.t.returnValue.add(Boolean.FALSE);
-        this.t.toReturn();
-        return false;
-    }
-
 
     /**
      * A metódus kettétöri az aktuális tekton-t két különálló tekton-ra (t6 és t7).
@@ -251,16 +163,15 @@ public class AbsorbingTecton extends Tecton {
      *
      * @return true, ha a tekton sikeresen kettétört.
      */
-    public boolean breakTecton() {
-        // meghívja a tester kiíró függvényét
-        this.t.toCall("breakTecton");
+    public List<Tecton> breakTecton() {
 
+        List<Tecton> ret = new ArrayList<>();
         // létrejön a két új tekton
-        Tecton t6 = new AbsorbingTecton(t);
-        Tecton t7 = new AbsorbingTecton(t);
+        Tecton t6 = new AbsorbingTecton();
+        Tecton t7 = new AbsorbingTecton();
 
-        t.toCreate(this, t6, "t6");
-        t.toCreate(this, t7, "t7");
+        ret.add(t6);
+        ret.add(t7);
 
         // ez lesz a töréspont a tektonon
         int centre = neighbors.size() / 2;
@@ -272,10 +183,6 @@ public class AbsorbingTecton extends Tecton {
         }
         neighborList.add(t7);
 
-        this.t.list.add(this);
-        this.t.list.add(t6);
-        this.t.parameters.clear();
-        this.t.parameters.addAll(neighborList);
         // beállítom a t6 szomszédait
         t6.addNeighbor(neighborList);
         neighborList.clear();
@@ -286,31 +193,17 @@ public class AbsorbingTecton extends Tecton {
             neighborList.add(neighbors.get(i));
         }
 
-        this.t.list.add(this);
-        this.t.list.add(t7);
-        this.t.parameters.clear();
-        this.t.parameters.addAll(neighborList);
         // beállítom a t7 szomszédait
         t7.addNeighbor(neighborList);
         neighborList.clear();
 
         // a jelenlegi tekton szomszédait beállítom, hozzáadva szomszédsági listájukhoz
         // a megfelelő létrejött tektont
-        // valamint kivéve a kettétötött tektont
+        // valamint kivéve a kettétörött tektont
         neighborList.add(t6);
         for (int i = 0; i < centre; i++) {
 
-            this.t.list.add(this);
-            this.t.list.add(neighbors.get(i));
-            this.t.parameters.clear();
-            this.t.parameters.addAll(neighborList);
-
             neighbors.get(i).addNeighbor(neighborList);
-
-            this.t.list.add(this);
-            this.t.list.add(neighbors.get(i));
-            this.t.parameters.clear();
-            this.t.parameters.add(this);
 
             neighbors.get(i).removeNeighbor(this);
         }
@@ -320,39 +213,17 @@ public class AbsorbingTecton extends Tecton {
         neighborList.add(t7);
         for (int i = centre; i < neighbors.size(); i++) {
 
-            this.t.list.add(this);
-            this.t.list.add(neighbors.get(i));
-            this.t.parameters.clear();
-            this.t.parameters.addAll(neighborList);
-
             neighbors.get(i).addNeighbor(neighborList);
-
-            this.t.list.add(this);
-            this.t.list.add(neighbors.get(i));
-            this.t.parameters.clear();
-            this.t.parameters.add(this);
 
             neighbors.get(i).removeNeighbor(this);
         }
 
-        this.t.list.add(this);
-        this.t.list.add(t6);
-        this.t.parameters.clear();
-        this.t.parameters.add(i);
         // a tektonon levő bogarat ráhelyezem a t6-ra
         t6.setInsect(i);
 
-        this.t.list.add(this);
-        this.t.list.add(i);
-        this.t.parameters.clear();
-        this.t.parameters.add(t6);
         // beállítom a bogár pozícióját
         i.setPosition(t6);
 
-        this.t.list.add(this);
-        this.t.list.add(i);
-        this.t.parameters.clear();
-        this.t.parameters.add(t6);
         // kitörlöm a tektont a fonálról
         for (int i = 0; i < threads.size(); i++) {
             threads.get(i).removeTecton(this);
@@ -360,13 +231,36 @@ public class AbsorbingTecton extends Tecton {
 
         // ha keletkezett olyan fonálrész, amely a kettétörés során már nem kapcsolódik
         // gombatesthez ezt eltávolítom
-        System.out.println("deleteUnnecessaryThreads");
+        for(int i=0; i< threads.size(); i++){
+            threads.get(i).deleteUnnecessaryThreads();
+        }
 
-        this.t.returnValue.clear();
-        this.t.returnValue.add(Boolean.TRUE);
-        this.t.toReturn();
-
-        return true;
+        return ret;
     }
+
+     /**
+     * Nem lehet az aktuális objektumra Mushroom objektumot lehelyezni.
+     * A metódus minden esetben hamis értékkel tér vissza.
+     *
+     * @return false, mivel az aktuális objektumra nem lehet gombát lehelyezni.
+     */
+    public boolean putFirstMushroom(FungalThread f, Mushroom m) {
+        return false;
+    }
+
+    public boolean isConnected(FungalThread f){
+        return false;
+    }
+
+    /**
+     * Hozzáad egy új FungalThread (gombafonal) objektumot az AbsorbingTecton
+     * aktuális objektumhoz tartozó gombafonalainak listájához.
+     *
+     * @param f A FungalThread objektum, amelyet hozzá szeretnénk adni az objektumhoz
+     */
+    public void addThread(FungalThread f) {
+        threads.add(f);
+    }
+
 
 }

@@ -1,4 +1,4 @@
-package fungorium;
+package model;
 
 /**
  * A SlowingSpore osztály egy konkrét megvalósítása a Spore absztrakt osztálynak.
@@ -11,8 +11,8 @@ public class SlowingSpore extends Spore {
      *
      * @param t A teszteléshez használt Tester példány
      */
-    public SlowingSpore(Tester t) {
-        super(t);
+    public SlowingSpore() {
+        super();
     }
 
     /**
@@ -21,7 +21,7 @@ public class SlowingSpore extends Spore {
      * @param i Az a rovar, amelynek az állapotát a SporeEffect.SLOWED értékre állítja.
      */
     public void applyEffect(Insect i) {
-        i.setState(SporeEffect.SLOWED);
+        i.setState(InsectState.SLOWED);
     }
 
 }
