@@ -88,7 +88,7 @@ public abstract class Tecton implements ITectonController,ITectonView{
 
     // -- Absztrakt Metódusok -- //
 
-    public abstract void setMushroom(Mushroom mushroom);
+    public abstract boolean setMushroom(Mushroom mushroom);
 
     public abstract Mushroom getMushroom();
 

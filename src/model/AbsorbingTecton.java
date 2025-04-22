@@ -29,7 +29,9 @@ public class AbsorbingTecton extends Tecton {
      *
      * @param mushroom
      */
-    public void setMushroom(Mushroom mushroom) {}
+    public boolean setMushroom(Mushroom mushroom) {
+        return false;
+    }
 
 
     /**

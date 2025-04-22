@@ -30,7 +30,7 @@ public class MultiThreadTecton extends Tecton {
      *
      * @param mushroom A gombatest, amelyet hozzá kell rendelni.
      */
-    public void setMushroom(Mushroom mushroom) {
+    public boolean setMushroom(Mushroom mushroom) {
         this.mushroom = mushroom;
     }
 
