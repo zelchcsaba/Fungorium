@@ -189,7 +189,7 @@ public class Controller {
                     m.setState(EVOLVED);
                     m.setThread(f);
                     m.setPosition(t);
-                    mushroomAssociation mAssociation = new mushroomAssociation();
+                    MushroomAssociation mAssociation = new MushroomAssociation();
                     mAssociation.setMushroom(m);
                     mAssociation.setAge(6);
                     fplayer.addMushroomAssociation(mAssociation);
@@ -256,6 +256,42 @@ public class Controller {
                 }
             break;
             }
+
+            case "cut":{ //<Rovarnév> <Tektonnév>
+                if (!(currentPlayer instanceof InsectPlayer)) { // Ebbe nem vagyok biztos, hogy szép e így, vagy, hogy egyáltalán kell e
+                    System.out.println("A 'cut' parancs csak rovarász játékosoknak engedélyezett!");
+                    return;
+                }
+
+                // Paraméterek kinyerése
+                String insectName = command[1];
+                String tectonName = command[2];
+                
+                // Megfelelő objektumok előszedése
+                Tecton tecton = (Tecton)objects.get(tectonName);
+                Insect insect = (Insect)objects.get(insectName);
+
+                // Segéd objektumok
+                InsectPlayer insectPlayer = (InsectPlayer) currentPlayer;
+                InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
+                
+                // Az ő rovarával akar vágni?
+                if (insectAssociation == null) {
+                    System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
+                    return;
+                }
+                // Tud vágni?
+                if (insectAssociation.getCut()) {
+                    System.out.println("Ez a rovar már vágott ebben a körben.");
+                    return;
+                }
+
+                // Vágás
+                insect.cut(tecton);
+                insectAssociation.setCut(true);
+            break;
+            }
+
         }
     }
     public void setCurrentPlayer(){
