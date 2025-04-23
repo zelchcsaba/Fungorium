@@ -1,27 +1,26 @@
 package controller;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.IInsectController;
 
 public class InsectPlayer extends Player {
-    private List<insectAssotiation> insects;
+    private List<InsectAssociation> insects;
 
     public InsectPlayer(){
         insects = new ArrayList<>();
     }
 
-    public List<insectAssotiation> getInsects(){
+    public List<InsectAssociation> getInsects(){
         return insects;
     }
 
     public void addInsect(IInsectController i){
-        insectAssotiation iAssoc = new insectAssotiation();
+        InsectAssociation iAssoc = new InsectAssociation();
         iAssoc.setInsect(i);
         insects.add(iAssoc);
     }
 
-    public insectAssotiation getInsectAt(int i){
+    public InsectAssociation getInsectAt(int i){
         return insects.get(i);
     }
 
@@ -29,11 +28,18 @@ public class InsectPlayer extends Player {
         insects.remove(i);
     }
 
-    public void removeInsect(insectAssotiation i){
+    public void removeInsect(InsectAssociation i){
         insects.remove(i);
     }
 
     public int getInsectSize(){
         return insects.size();
+    }
+
+    public InsectAssociation getInsectAssociation(IInsectController insect){
+        for (InsectAssociation insectAssociation : insects) {
+            if(insectAssociation.getInsect().equals(insect)) return insectAssociation;
+        }
+        return null;
     }
 }

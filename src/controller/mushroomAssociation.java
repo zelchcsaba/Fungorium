@@ -1,11 +1,11 @@
 package controller;
 import model.IMushroomController;
 
-public class mushroomAssotiation {
+public class MushroomAssociation {
     private IMushroomController mushroom;
     private int age;
 
-    public mushroomAssotiation(){
+    public MushroomAssociation(){
         mushroom = null;
         age = 0;
     }

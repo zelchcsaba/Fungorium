@@ -7,7 +7,7 @@ import model.IMushroomController;
 public class FungusPlayer extends Player {
     private IFungalThreadController fungalThread;
     private boolean branchThread;
-    private List<mushroomAssotiation> mushrooms;
+    private List<mushroomAssociation> mushrooms;
 
     public FungusPlayer(){
         fungalThread = null;
@@ -31,17 +31,21 @@ public class FungusPlayer extends Player {
         branchThread = b;
     }
 
-    public List<mushroomAssotiation> getMushrooms(){
+    public List<mushroomAssociation> getMushrooms(){
         return mushrooms;
     }
 
     public void addMushroom(IMushroomController m){
-        mushroomAssotiation mAssoc = new mushroomAssotiation();
+        mushroomAssociation mAssoc = new mushroomAssociation();
         mAssoc.setMushroom(m);
         mushrooms.add(mAssoc);
     }
 
-    public mushroomAssotiation getMushroomAt(int i){
+    public void addMushroomAssociation(mushroomAssociation ma){
+        mushrooms.add(ma);
+    }
+
+    public mushroomAssociation getMushroomAt(int i){
         return mushrooms.get(i);
     }
 
@@ -49,7 +53,7 @@ public class FungusPlayer extends Player {
         mushrooms.remove(i);
     }
 
-    public void removeMushroom(mushroomAssotiation m){
+    public void removeMushroom(mushroomAssociation m){
         mushrooms.remove(m);
     }
 

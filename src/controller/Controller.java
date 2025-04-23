@@ -8,16 +8,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.lang.reflect.Field;
-
 import model.*;
+import static model.MushroomState.*;
 import view.IView;
 import view.View;
-
-import java.util.HashMap;
 
 
 public class Controller {
@@ -86,6 +85,48 @@ public class Controller {
             break;
             }
 
+            case "createSpore":{//<Spórafajta> <Tektonnév> <Fonálnév>
+		        //  Paraméterek kinyerése
+			    String type = command[1]; 
+			    String tectonName = command[2];
+			    String fungalName = command[3];
+
+			    // Megfelelő objektum inicializálása
+                Spore spore;
+			    switch(type){
+                    case "SlowingSpore":
+                        spore = new SlowingSpore();
+                    break;
+                    case "SpeedSpore":
+                        spore = new SpeedSpore();
+                    break;
+                    case "ParalysingSpore":
+                        spore = new ParalysingSpore();
+                    break;
+                    case "NoCutSpore":
+                        spore = new NoCutSpore();
+                    break;
+                    case "DividingSpore":
+                        spore = new DividingSpore();
+                    break;
+                    default:
+                        System.out.println("helytelen parancs");
+                    return;
+                }
+
+			    // Asszociációk beállítása
+                Tecton tecton = (Tecton)objects.get(tectonName);
+                tecton.addSpore(spore);
+
+                FungalThread fungal = (FungalThread)objects.get(fungalName);
+                spore.setThread(fungal);
+
+                // Konténerbe bele
+                String name = getNewSporeName();
+                objects.put(name, spore);
+                break;
+            }	
+
             case "setNeighbors":{
                 Tecton t = (Tecton)objects.get(command[1]);
                 List<Tecton> neighborList= new ArrayList<>();
@@ -141,6 +182,125 @@ public class Controller {
                     System.out.println("Sikertelen");
                 }
                 break;
+            }
+
+            case "createEvolvedMushroom":{ // <Tektonnév> <Fonálnév> <Játékosnév>
+                // Paraméterek kinyerése
+                String tectonName = command[1];
+                String fungalName = command[2];
+                String playerName = command[3];
+
+                Tecton t = (Tecton)objects.get(tectonName);
+                FungalThread f = (FungalThread)objects.get(fungalName);
+                FungusPlayer fplayer = (FungusPlayer)objects.get(playerName);
+
+                Mushroom m = new Mushroom();
+
+                if(t.setMushroom(m)){
+                    m.setState(EVOLVED);
+                    m.setThread(f);
+                    m.setPosition(t);
+                    MushroomAssociation mAssociation = new MushroomAssociation();
+                    mAssociation.setMushroom(m);
+                    mAssociation.setAge(6);
+                    fplayer.addMushroomAssociation(mAssociation);
+                    String name = getNewMushroomName();
+                    objects.put(name, m);
+                }else{
+                    System.out.println("Sikertelen");
+                }
+                break;
+            }
+
+            case "createInsect":{ // <Tektonnév> <Játékosnév>
+		        // Paraméterek kinyerése
+    		    String tectonName = command[1];
+   	    	    String playerName = command[2];
+
+		        // Megfelelő objektum inicializálása
+			    Insect insect = new Insect();
+
+			    // Asszociációk beállítása
+                Tecton tecton = (Tecton)objects.get(tectonName);
+    		    insect.setPosition(tecton);
+                tecton.setInsect(insect);
+
+                InsectPlayer iPlayer = (InsectPlayer)objects.get(playerName);
+		        iPlayer.addInsect(insect);
+
+			    //Konténerbe bele
+                String name = getNewInsectName();
+                objects.put(name, insect);
+            break;
+            }
+            
+            case "createFungusPlayers":{//<Játékosnév><Játékosnév><Játékosnév><Játékosnév>
+		        // Ellenőrizzük a parancs helyességét
+                if(command.length>5 || command.length!=fungusPlayerCount+1){
+                    System.out.println("túl sok paraméter");
+                    return;
+                }
+
+		        // Objektumok incializálása
+                for(int i = 0; i<command.length; i++){
+                    FungusPlayer fPlayer = new FungusPlayer(); 
+                    String name = command[i];
+                    objects.put(name, fPlayer);
+                    fungusPlayers.add(fPlayer);
+                }
+            break;
+            }
+
+            case "createInsectPlayers":{//<Játékosnév><Játékosnév><Játékosnév><Játékosnév>
+		        // Ellenőrizzük a parancs helyességét
+                if(command.length>5 || command.length!=insectPlayerCount+1){
+                    System.out.println("túl sok paraméter");
+                    return;
+                }
+
+		        // Objektumok incializálása
+                for(int i = 0; i<command.length; i++){
+                    InsectPlayer iPlayer = new InsectPlayer(); 
+                    String name = command[i];
+                    objects.put(name, iPlayer);
+                    insectPlayers.add(iPlayer);
+                }
+            break;
+            }
+
+            case "cut":{ //<Rovarnév> <Tektonnév>
+                if (!(currentPlayer instanceof InsectPlayer)) { // Ebbe nem vagyok biztos, hogy szép e így, vagy, hogy egyáltalán kell e
+                    System.out.println("A 'cut' parancs csak rovarász játékosoknak engedélyezett!");
+                    return;
+                }
+
+                // Paraméterek kinyerése
+                String insectName = command[1];
+                String tectonName = command[2];
+                
+                // Megfelelő objektumok előszedése
+                Tecton tecton = (Tecton)objects.get(tectonName);
+                Insect insect = (Insect)objects.get(insectName);
+
+                // Segéd objektumok
+                InsectPlayer insectPlayer = (InsectPlayer) currentPlayer;
+                InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
+                
+                // Az ő rovarával akar vágni?
+                if (insectAssociation == null) {
+                    System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
+                    return;
+                }
+                // Tud vágni?
+                if (insectAssociation.getCut()) {
+                    System.out.println("Ez a rovar már vágott ebben a körben.");
+                    return;
+                }
+
+                // Vágás
+                insect.cut(tecton);
+                insectAssociation.setCut(true);
+            break;
             }
 
             case "saveResult":{

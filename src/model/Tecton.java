@@ -135,6 +135,16 @@ public abstract class Tecton implements ITectonController,ITectonView{
         }
     }
 
+     /**
+     * Spóra hozzáadása a listához.
+     *
+     * @param sp A Spore objektum, amelyet hozzá kívánunk adni.
+     */
+    public void addSpore(Spore sp){
+        spores.add(sp);
+    }
+
+
     /**
      * Visszaadja azon Tecton-ok listáját, amelyek szomszédosak a jelenlegi Tecton-nal,
      * és amelyek threads listájában megtalálható az adott FungalThread objektum.
