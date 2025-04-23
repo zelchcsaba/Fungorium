@@ -12,6 +12,10 @@ public class Player {
         return points;
     }
 
+    public void addPoint(){
+        points++;
+    }
+
     public void setName(String name){
         this.name = name;
     }
