@@ -1,12 +1,12 @@
 package controller;
 import model.IInsectController;
 
-public class insectAssotiation {
+public class insectAssociation {
     private IInsectController insect;
     private boolean moved;
     private boolean cut;
 
-    public insectAssotiation(){
+    public insectAssociation(){
         insect = null;
         moved=false;
         cut = false;
