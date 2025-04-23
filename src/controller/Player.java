@@ -1,6 +1,6 @@
 package controller;
 
-public class Player {
+public  class Player {
     private int points;
     private String name;
 

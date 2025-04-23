@@ -1,6 +1,17 @@
 package controller;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.lang.reflect.Field;
 
 import model.*;
 import view.IView;
@@ -132,6 +143,86 @@ public class Controller {
                 break;
             }
 
+            case "saveResult":{
+                try{
+                    writeObjectsToFile(objects, new FileWriter("result.txt"));
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+                break;
+            }
+
+            case "setShotSpores":{
+                Mushroom m = (Mushroom) objects.get(command[1]);
+
+                int shotSporesCount = Integer.parseInt(command[2]);
+                m.setShootedSporesCount(shotSporesCount);
+                break;
+            }
+
+            case "setMushroomAge":{
+                Mushroom m = (Mushroom) objects.get(command[1]);
+
+                int newAge = Integer.parseInt(command[2]);
+                //Nem tudom mi a faszt kéne a mushroomAssotiation-el
+                //Ha az age nagyobb mint 6 evolvolni is kell???
+                break;
+            }
+
+            case "stepGameRound":{
+                int r = Integer.parseInt(command[1]);
+                round += r;
+                break;
+            }
+
+            case "evolve":{
+                Mushroom m = (Mushroom) objects.get(command[1]);
+                boolean returnV = m.evolve();
+                if(!returnV){
+                    System.out.println("Sikertelen!");
+                }
+                break;
+            }
+
+            case "divide":{
+                Insect insect = (Insect) objects.get(command[1]);
+
+                Insect insect2 = insect.divide();
+                //Itt csináljak null vizsgálatot, mert a divide sosem fog null-al visszatérni???
+
+                objects.put(getNewInsectName(), insect2);
+                break;
+            }
+
+            case "closeStep":{
+                setCurrentPlayer();
+                break;
+            }
+
+            case "shootSpore":{
+                Mushroom m = (Mushroom) objects.get(command[1]);
+                Tecton t = (Tecton) objects.get(command[2]);
+                boolean returnV = m.shootSpore(t);
+                if(!returnV){
+                    System.out.println("Sikertelen!");
+                }
+                break;
+            }
+
+            case "putFirstInsect":{
+                Tecton t = (Tecton) objects.get(command[1]);
+                Insect insect = new Insect();
+                boolean returnV = t.putFirstInsect(insect);
+                if(returnV){
+                    objects.put(getNewInsectName(), insect);
+                    //TODO: Hozzá kéne adni a játékoshoz a rovart
+                }else{
+                    System.out.println("Sikertelen!");
+                }
+                break;
+            }
+
+
         }
     }
     public void setCurrentPlayer(){
@@ -216,4 +307,74 @@ public class Controller {
             return 0;
         }
     }
+
+    private void writeObjectsToFile(Map<String, Object> objects, Writer writer) throws IOException {
+        BufferedWriter bw = new BufferedWriter(writer);
+        Map<Object, String> reverseLookup = new HashMap<>();
+        Map<String, Object> sortedObjects = new TreeMap<>(objects); // ABC sorrend az objektumnevekre
+
+        // 1. Objektumok listája
+        bw.write("-begin-\n");
+        for (Map.Entry<String, Object> entry : sortedObjects.entrySet()) {
+            String name = entry.getKey();
+            String type = entry.getValue().getClass().getSimpleName();
+            bw.write(type + " " + name + "\n");
+            reverseLookup.put(entry.getValue(), name);
+        }
+        bw.write("—\n");
+
+        // 2. Attribútumok
+        for (Map.Entry<String, Object> entry : sortedObjects.entrySet()) {
+            String name = entry.getKey();
+            Object obj = entry.getValue();
+            Class<?> clazz = obj.getClass();
+
+            bw.write(name + "\n");
+
+            // Rendezett mezők
+            Field[] fields = clazz.getDeclaredFields();
+            Arrays.sort(fields, Comparator.comparing(Field::getName));
+
+            for (Field field : fields) {
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(obj);
+                    bw.write(field.getName());
+
+                    if (value == null) {
+                        bw.write(" -\n");
+                    } else if (value instanceof Collection<?> col) {
+                        if (col.isEmpty()) {
+                            bw.write(" -\n");
+                        } else {
+                            List<String> names = new ArrayList<>();
+                            for (Object item : col) {
+                                names.add(reverseLookup.get(item));
+                            }
+                            Collections.sort(names);
+                            for (String n : names) {
+                                bw.write(" " + n);
+                            }
+                            bw.write("\n");
+                        }
+                    } else if (reverseLookup.containsKey(value)) {
+                        bw.write(" " + reverseLookup.get(value) + "\n");
+                    } else if (value.getClass().isEnum()) {
+                        bw.write(" " + ((Enum<?>) value).name() + "\n");
+                    } else {
+                        bw.write(" " + value + "\n");
+                    }
+
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Nem tudom elérni a mezőt: " + field.getName(), e);
+                }
+            }
+
+            bw.write("\n");
+        }
+
+        bw.write("-end-\n");
+        bw.flush();
+    }
+
 }
