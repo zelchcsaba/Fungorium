@@ -32,6 +32,7 @@ public class MultiThreadTecton extends Tecton {
      */
     public boolean setMushroom(Mushroom mushroom) {
         this.mushroom = mushroom;
+        return true;
     }
 
 

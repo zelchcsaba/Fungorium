@@ -27,6 +27,7 @@ public class KeepThreadTecton extends Tecton {
      */
     public boolean setMushroom(Mushroom mushroom) {
         this.mushroom = mushroom;
+        return true
     }
 
 
