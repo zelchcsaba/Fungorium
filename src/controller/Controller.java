@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.lang.reflect.Field;
 import model.*;
+import static model.InsectState.*;  // InsectState.NORMAL helyett lehet írni simán, hogy NORMAL
 import static model.MushroomState.*;
 import view.IView;
 import view.View;
-
 
 public class Controller {
     private int round;
@@ -383,7 +383,74 @@ public class Controller {
             }
 
 
+            case "move":{ //<Rovarnév> <Tektonnév>
+                if (!(currentPlayer instanceof InsectPlayer)) { // Ebbe nem vagyok biztos, hogy szép e így, vagy, hogy egyáltalán kell e
+                    System.out.println("A 'move' parancs csak rovarász játékosoknak engedélyezett!");
+                    return;
+                }
+
+                // Paraméterek kinyerése
+                String insectName = command[1];
+                String tectonName = command[2];
+                
+                // Megfelelő objektumok előszedése
+                Tecton tecton = (Tecton)objects.get(tectonName);
+                Insect insect = (Insect)objects.get(insectName);
+
+                // Segéd objektumok
+                List<Spore> spores = tecton.getSpores();
+                InsectPlayer insectPlayer = (InsectPlayer) currentPlayer;
+                InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
+                
+                // Az ő rovarával akar lépni?
+                if (insectAssociation == null) {
+                    System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
+                    return;
+                }
+                // Tud lépni?
+                if (insectAssociation.getMoved()) {
+                    System.out.println("Ez a rovar már lépett ebben a körben.");
+                    return;
+                }
+
+                // Lesz evés?
+                boolean eat = false;
+                if(!spores.isEmpty()) eat = true;
+
+                // Lépés
+                if(insect.move(tecton)){
+                    insectAssociation.setMoved(true);
+                    if (eat) {
+                        Spore spore = spores.getFirst();
+                        objects.remove(spore);
+                        spores.removeFirst();
+                        insectPlayer.addPoint();
+                    }
+                }
+
+                // Kapott effekt hatása
+                if(insect.getState().equals(DIVIDED)){ // létrejön egy új rovar
+                    Insect otherInsect = insect.divide();
+                    if(otherInsect !=null){
+                        String name = getNewInsectName();
+                        objects.put(name, otherInsect);
+                        insectPlayer.addInsect(otherInsect);
+                    }
+                }
+                if(insect.getState().equals(SPEEDBOOST)){ // mintha nem is lépett volna
+                    insectAssociation.setMoved(false);
+                }
+                if(insect.getState().equals(NOCUT) || insect.getState().equals(PARALYZED)){ // nocut = mintha már vágott volna
+                    insectAssociation.setCut(true);                                       // paralyzed = mintha már vágott és lépett is volna (az utóbbi igaz is)      
+                }
+                // normal-t és slowed-et nem kell kezelni sztem
+            }
+            
+            case "turnOnRandom":{
+                randomize = true;
+            }
         }
+
     }
     public void setCurrentPlayer(){
         int indexCurrentPlayer = -1;
