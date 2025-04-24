@@ -448,10 +448,12 @@ public class Controller {
             
             case "turnOnRandom":{
                 randomize = true;
+                break;
             }
 
             case "turnOffRandom":{
                 randomize = false;
+                break;
             }
 
             case "generateSpore":{ // <Gombatest név> <Spórafajta>
