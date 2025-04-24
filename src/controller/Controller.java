@@ -449,6 +449,171 @@ public class Controller {
             case "turnOnRandom":{
                 randomize = true;
             }
+
+            case "turnOffRandom":{
+                randomize = false;
+            }
+
+            case "generateSpore":{ // <Gombatest név> <Spórafajta>
+
+                // Parancsok feldolgozása
+                String mushroomName = command[1];
+                String sporeType = command[2];
+
+                // Gombatest lekérdezése
+                Mushroom mushroom;
+                if(objects.containsKey(mushroomName)){
+                    mushroom = (Mushroom) objects.get(mushroomName);
+                }
+                else {
+                    System.out.println("Helytelen parancs! - Nincs ilyen nevű gombatest");
+                    return;
+                }
+
+
+                //Spóra létrehozása, majd beállítása típusnak megfelelően
+                Spore spore;
+
+                switch(sporeType){
+                    case "SlowingSpore":
+                        spore = new SlowingSpore();
+                        break;
+                    case "SpeedSpore":
+                        spore = new SpeedSpore();
+                        break;
+                    case "ParalysingSpore":
+                        spore = new ParalysingSpore();
+                        break;
+                    case "NoCutSpore":
+                        spore = new NoCutSpore();
+                        break;
+                    case "DividingSpore":
+                        spore = new DividingSpore();
+                        break;
+                    default:
+                        System.out.println("Helytelen parancs! - Nincs ilyen Spóratípus");
+                        return;
+                }
+
+                // Fonál beállítása a spórának
+                spore.setThread(mushroom.getThread());
+
+                // Spóra beállítása
+                mushroom.generateSpore(spore);
+
+                // Konténerbe bele
+                objects.put(getNewSporeName(), spore );
+
+                break;
+            }
+
+            case "setMaxRound":{ // <Pozitív egész>
+                int n = Integer.parseInt(command[1]);
+
+                if(maxRound > 0){ maxRound = n; } // Max kör beállítása
+                else {
+                    System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
+                }
+
+                break;
+            }
+
+            case "setInsectPlayerCount" : { // <Pozitív egész>
+                int n = Integer.parseInt(command[1]);
+
+                if(insectPlayerCount > 0){ insectPlayerCount = n; } // Rovarászok számának beállítása
+                else {
+                    System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
+                }
+                break;
+            }
+
+            case "absorb" : { // <Tektonnév>
+                String tectonName = command[1];
+                Tecton tecton;
+
+                if(objects.containsKey(tectonName)){
+                    tecton = (Tecton) objects.get(tectonName);
+                }
+                else {
+                    System.out.println("Helytelen parancs! - Nincs ilyen nevű tekton");
+                    return;
+                }
+
+                if(tecton instanceof AbsorbingTecton){
+                    tecton.absorb();
+                }
+                else {
+                    System.out.println("A megadott tekton nem Absorbingtecton típusú");
+                    return;
+                }
+
+                break;
+            }
+
+            case "timeCheck" : {
+                    for(Object o : objects.values()){   // Bejárjuk az objektumok listáját, és az összes FungalThread típusú
+                        if(o instanceof FungalThread){  // objektumnak meghívjuk a timeCheck metódusát.
+                            ((FungalThread) o).timeCheck();
+                        }
+                    }
+                break;
+            }
+
+            case "branchThread" : { // <Fonal név>  <Tektonnév>
+
+                // Parancsok feldolgozása
+                String threadName = command[1];
+                String tectonName = command[2];
+
+                // Megfelelő objektumok beállítása
+                FungalThread thread;
+                Tecton tecton;
+
+                if(objects.containsKey(threadName) && objects.containsKey(tectonName)){
+                    thread = (FungalThread) objects.get(threadName);
+                    tecton = (Tecton) objects.get(tectonName);
+                }
+                else{
+                    System.out.println("Helytelen parancs! - Hibás fonál- vagy tektonnév");
+                    return;
+                }
+
+                // Ha sikertelen akkor kiírja
+                if(!thread.branchThread(tecton)){
+                    System.out.println("Sikertelen");
+                }
+
+                break;
+            }
+
+            case "eatInsect" : { // <Fonal név>  <Rovarnév>
+                String threadName = command[1];
+                String insectName = command[2];
+
+                // Megfelelő objektumok beállítása
+                FungalThread thread;
+                Insect insect;
+
+                if(objects.containsKey(threadName) && objects.containsKey(insectName)){
+                    thread = (FungalThread) objects.get(threadName);
+                    insect = (Insect) objects.get(insectName);
+                }
+                else{
+                    System.out.println("Helytelen parancs! - Hibás fonál- vagy rovarnév");
+                    return;
+                }
+
+                // Ha sikertelen, akkor kiírja, egyébként kivesszi a rovart az objectsből
+                if(!thread.eatInsect(insect)){
+                    System.out.println("Sikertelen");
+                }
+                else {
+                    objects.remove(insectName, insect);
+                }
+
+                break;
+            }
         }
 
     }
