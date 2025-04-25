@@ -324,8 +324,13 @@ public class Controller {
                 Mushroom m = (Mushroom) objects.get(command[1]);
 
                 int newAge = Integer.parseInt(command[2]);
-                //Nem tudom mi a faszt kéne a mushroomAssotiation-el
-                //Ha az age nagyobb mint 6 evolvolni is kell???
+                for(int i =0; i < fungusPlayers.size(); i++){
+                    for(MushroomAssociation mushroomAss : fungusPlayers.get(i).getMushrooms()){
+                        if(mushroomAss.getMushroom() == m){
+                            mushroomAss.setAge(newAge);
+                        }
+                    }
+                }
                 break;
             }
 
@@ -348,9 +353,20 @@ public class Controller {
                 Insect insect = (Insect) objects.get(command[1]);
 
                 Insect insect2 = insect.divide();
-                //Itt csináljak null vizsgálatot, mert a divide sosem fog null-al visszatérni???
+                if(insect2 != null){
+                    objects.put(getNewInsectName(), insect2);
+                   
+                    for(InsectPlayer iPlayer : insectPlayers){
+                        for(InsectAssociation insectA : iPlayer.getInsects()){
+                            if(insectA.getInsect() == insect){
+                                iPlayer.addInsect(insect2);
+                            }
+                        }
+                    }
 
-                objects.put(getNewInsectName(), insect2);
+                }else{
+                    System.out.println("Sikertelen!");
+                }
                 break;
             }
 
@@ -360,8 +376,25 @@ public class Controller {
             }
 
             case "shootSpore":{
+                 //Meg kell találni a gomba playerét, és meg kell nézni hogy a currentPlayer az-e
+                
                 Mushroom m = (Mushroom) objects.get(command[1]);
                 Tecton t = (Tecton) objects.get(command[2]);
+
+                FungusPlayer mushroomPlayer = null;
+                for(FungusPlayer fPlayer : fungusPlayers){
+                    for(MushroomAssociation mushroomA : fPlayer.getMushrooms()){
+                        if(mushroomA.getMushroom() == m){
+                            mushroomPlayer = fPlayer;
+                        }
+                    }
+                }
+
+                if(mushroomPlayer != currentPlayer){
+                    System.out.println("Ez nem a te gombad!");
+                    return;
+                }
+                
                 boolean returnV = m.shootSpore(t);
                 if(!returnV){
                     System.out.println("Sikertelen!");
@@ -373,12 +406,15 @@ public class Controller {
                 Tecton t = (Tecton) objects.get(command[1]);
                 Insect insect = new Insect();
                 boolean returnV = t.putFirstInsect(insect);
+
                 if(returnV){
                     objects.put(getNewInsectName(), insect);
-                    //TODO: Hozzá kéne adni a játékoshoz a rovart
+                    InsectPlayer iPlayer = (InsectPlayer) currentPlayer;
+                    iPlayer.addInsect(insect);
+                    setCurrentPlayer();
                 }else{
                     System.out.println("Sikertelen!");
-                }
+                }    
                 break;
             }
 
@@ -516,7 +552,6 @@ public class Controller {
                 else {
                     System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
                 }
-
                 break;
             }
 
@@ -661,8 +696,126 @@ public class Controller {
     }
 
     public void initRound(){
-        
+        round++;
+
+        if(round < maxRound){
+            for(FungusPlayer fungPlayer : fungusPlayers){
+                fungPlayer.getThread().timeCheck();
+            }
+
+            for(InsectPlayer insPlayer : insectPlayers){
+                for(InsectAssociation insectA : insPlayer.getInsects()){
+                    InsectState state = insectA.getInsect().getState();
+
+                    if(state == SLOWED){
+                        insectA.setMoved(false);
+                        insectA.setCut(true);
+                        insectA.getInsect().setState(NORMAL);
+                    }else if(state == PARALYZED){
+                        insectA.setMoved(false);
+                        insectA.setCut(false);
+                        insectA.getInsect().setState(NORMAL);
+                    }else if(state == NOCUT){
+                        insectA.setMoved(true);
+                        insectA.setCut(false);
+                        insectA.getInsect().setState(NORMAL);
+                    }else if(state == DIVIDED){
+                
+                        insectA.getInsect().setState(NORMAL);
+                    }else if(state == SPEEDBOOST){
+                        insectA.getInsect().setState(NORMAL);
+                    }
+                }
+            }
+
+
+            for(FungusPlayer fungPlayer : fungusPlayers){
+                fungPlayer.setBranchThread(false);
+
+                for(MushroomAssociation mushA : fungPlayer.getMushrooms()){
+                    mushA.increaseAge();
+                    if(mushA.getAge() >= 5){
+                        mushA.getMushroom().evolve();
+                    }
+
+                    if(round % 2 == 0){
+                        Spore spore = null;
+                        if(randomize){
+                            int randNum = randomize(5);
+
+                            switch(randNum){
+                                case 0:{
+                                    spore = new SlowingSpore();
+                                    break;
+                                }
+                                case 1:{
+                                    spore = new SpeedSpore();
+                                    break;
+                                }
+                                case 2:{
+                                    spore = new ParalysingSpore();
+                                    break;
+                                }
+                                case 3:{
+                                    spore = new NoCutSpore();
+                                    break;
+                                }
+                                case 4:{
+                                    spore = new DividingSpore();
+                                    break;
+                                }
+
+                            }
+
+                        }else{
+                            spore = new SpeedSpore();
+                        }
+
+                        //Hmmm jajjaj
+                        spore.setThread(fungPlayer.getThread());
+
+                        mushA.getMushroom().generateSpore(spore);
+
+                    }
+
+                }
+            }
+
+            if(round % 4 == 0){
+                for(ITectonController tecton : tList){
+                    tecton.absorb();
+                }
+
+                tList.get(randomize(tList.size())).breakTecton();
+            }
+
+        }else{
+            FungusPlayer fWinner;
+            InsectPlayer iWinner;
+            int fMaxPoint = 0;
+            int iMaxPoint = 0;
+            for(FungusPlayer fPlayer : fungusPlayers){
+                if(fPlayer.getPoints() > fMaxPoint){
+                    fWinner = fPlayer;
+                    fMaxPoint = fPlayer.getPoints();
+                }
+                System.out.println(fPlayer.getName() + "-" + fPlayer.getPoints());
+            }
+
+            for(InsectPlayer iPlayer : insectPlayers){
+                if(iPlayer.getPoints() > iMaxPoint){
+                    iWinner = iPlayer;
+                    iMaxPoint = iPlayer.getPoints();
+                }
+                System.out.println(iPlayer.getName() + "-" + iPlayer.getPoints());
+            }
+
+            System.out.println("Nyertesek: " + fWinner.getName() + " " + iWinner.getName());
+        }
+
     }
+
+    
     public String getNewMushroomName(){
         mushroomCount++;
         String name = "m"+mushroomCount;
