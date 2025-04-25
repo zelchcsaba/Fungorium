@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.lang.reflect.Field;
 import model.*;
 import static model.InsectState.*;  // InsectState.NORMAL helyett lehet írni simán, hogy NORMAL
 import static model.MushroomState.*;
@@ -271,19 +271,7 @@ public class Controller {
             break;
             }
 
-            case "cut":{ //<Rovarnév> <Tektonnév>
-
-
-
-                //ezt javitani
-                //+ezt csak akkor lehet kiadni ha nem 0. k0rben vagyunk
-
-
-                if (!(currentPlayer instanceof InsectPlayer)) { // Ebbe nem vagyok biztos, hogy szép e így, vagy, hogy egyáltalán kell e
-                    System.out.println("A 'cut' parancs csak rovarász játékosoknak engedélyezett!");
-                    return;
-                }
-
+            case "cut":{ //<Rovarnév> <Tektonnév>                
                 // Paraméterek kinyerése
                 String insectName = command[1];
                 String tectonName = command[2];
@@ -292,11 +280,25 @@ public class Controller {
                 Tecton tecton = (Tecton)objects.get(tectonName);
                 Insect insect = (Insect)objects.get(insectName);
 
+                // Ő következik?
+                InsectPlayer insectPlayer = null;
+                for(InsectPlayer iPlayer : insectPlayers){
+                    for(InsectAssociation insectA : iPlayer.getInsects()){
+                        if(insectA.getInsect() == insect){
+                            insectPlayer = iPlayer;
+                        }
+                    }
+                }
+
+                if(insectPlayer != currentPlayer){
+                    System.out.println("Ez nem a te rovarad!");
+                    return;
+                }
+
                 // Segéd objektumok
-                InsectPlayer insectPlayer = (InsectPlayer) currentPlayer;
                 InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
                 
-                // Az ő rovarával akar vágni?
+                // Az ő rovarával akar vágni? (lehet fölösleges)
                 if (insectAssociation == null) {
                     System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
                     return;
@@ -459,13 +461,7 @@ public class Controller {
                 break;
             }
 
-
             case "move":{ //<Rovarnév> <Tektonnév>
-                if (!(currentPlayer instanceof InsectPlayer)) { // Ebbe nem vagyok biztos, hogy szép e így, vagy, hogy egyáltalán kell e
-                    System.out.println("A 'move' parancs csak rovarász játékosoknak engedélyezett!");
-                    return;
-                }
-
                 // Paraméterek kinyerése
                 String insectName = command[1];
                 String tectonName = command[2];
@@ -474,16 +470,31 @@ public class Controller {
                 Tecton tecton = (Tecton)objects.get(tectonName);
                 Insect insect = (Insect)objects.get(insectName);
 
+                // Ő következik?
+                InsectPlayer insectPlayer = null;
+                for(InsectPlayer iPlayer : insectPlayers){
+                    for(InsectAssociation insectA : iPlayer.getInsects()){
+                        if(insectA.getInsect() == insect){
+                            insectPlayer = iPlayer;
+                        }
+                    }
+                }
+
+                if(insectPlayer != currentPlayer){
+                    System.out.println("Ez nem a te rovarad!");
+                    return;
+                }
+                
                 // Segéd objektumok
                 List<Spore> spores = tecton.getSpores();
-                InsectPlayer insectPlayer = (InsectPlayer) currentPlayer;
                 InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
                 
-                // Az ő rovarával akar lépni?
+                // Az ő rovarával akar lépni? (lehet fölösleges)
                 if (insectAssociation == null) {
                     System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
                     return;
                 }
+
                 // Tud lépni?
                 if (insectAssociation.getMoved()) {
                     System.out.println("Ez a rovar már lépett ebben a körben.");
@@ -589,7 +600,7 @@ public class Controller {
             case "setMaxRound":{ // <Pozitív egész>
                 int n = Integer.parseInt(command[1]);
 
-                if(maxRound > 0){ maxRound = n; } // Max kör beállítása
+                if(n > 0){ maxRound = n; } // Max kör beállítása
                 else {
                     System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
                 }
@@ -600,7 +611,7 @@ public class Controller {
             case "setInsectPlayerCount" : { // <Pozitív egész>
                 int n = Integer.parseInt(command[1]);
 
-                if(insectPlayerCount > 0){ insectPlayerCount = n; } // Rovarászok számának beállítása
+                if(n > 0){ insectPlayerCount = n; } // Rovarászok számának beállítása
                 else {
                     System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
                 }
@@ -625,11 +636,8 @@ public class Controller {
             }
 
             case "timeCheck" : {
-                //itt jo lenne nem instanceof
-                    for(Object o : objects.values()){   // Bejárjuk az objektumok listáját, és az összes FungalThread típusú
-                        if(o instanceof FungalThread){  // objektumnak meghívjuk a timeCheck metódusát.
-                            ((FungalThread) o).timeCheck();
-                        }
+                    for(FungusPlayer fp : fungusPlayers){   // Bejárjuk az Gombászok, és az összes fonáljára
+                        fp.getThread().timeCheck();         // meghívjuk a timeCheck metódusát.
                     }
                 break;
             }
@@ -653,6 +661,19 @@ public class Controller {
                     return;
                 }
 
+                // Megnézzük, hogy annak a játékosnak a fonalával akarunk lépni amelyik most van soron
+                FungusPlayer mushroomPlayer = null;
+                for(FungusPlayer fPlayer : fungusPlayers){
+                    if(fPlayer.getThread() == thread){
+                        mushroomPlayer = fPlayer;
+                    }
+                }
+
+                if(mushroomPlayer != currentPlayer){
+                    System.out.println("Ez nem a te gombad!");
+                    return;
+                }
+
                 // Ha sikertelen akkor kiírja
                 if(!thread.branchThread(tecton)){
                     System.out.println("Sikertelen");
@@ -662,9 +683,6 @@ public class Controller {
             }
 
             case "eatInsect" : { // <Fonal név>  <Rovarnév>
-
-                //ugyanugy a currentplayere-e a fonal?
-
                 String threadName = command[1];
                 String insectName = command[2];
 
@@ -678,6 +696,19 @@ public class Controller {
                 }
                 else{
                     System.out.println("Helytelen parancs! - Hibás fonál- vagy rovarnév");
+                    return;
+                }
+
+                // Megnézzük, hogy annak a játékosnak a fonalával akarunk lépni amelyik most van soron
+                FungusPlayer mushroomPlayer = null;
+                for(FungusPlayer fPlayer : fungusPlayers){
+                    if(fPlayer.getThread() == thread){
+                        mushroomPlayer = fPlayer;
+                    }
+                }
+
+                if(mushroomPlayer != currentPlayer){
+                    System.out.println("Ez nem a te gombad!");
                     return;
                 }
 
