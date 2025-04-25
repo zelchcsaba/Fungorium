@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.lang.reflect.Field;
 import model.*;
 import static model.InsectState.*;  // InsectState.NORMAL helyett lehet írni simán, hogy NORMAL
 import static model.MushroomState.*;
@@ -269,23 +269,7 @@ public class Controller {
             break;
             }
 
-<<<<<<< HEAD
             case "cut":{ //<Rovarnév> <Tektonnév>                
-=======
-            case "cut":{ //<Rovarnév> <Tektonnév>
-
-
-
-                //ezt javitani
-                //+ezt csak akkor lehet kiadni ha nem 0. k0rben vagyunk
-
-
-                if (!(currentPlayer instanceof InsectPlayer)) { // Ebbe nem vagyok biztos, hogy szép e így, vagy, hogy egyáltalán kell e
-                    System.out.println("A 'cut' parancs csak rovarász játékosoknak engedélyezett!");
-                    return;
-                }
-
->>>>>>> c9ab6f024629aa3b3d37d7b7ad2e86fc555bfadb
                 // Paraméterek kinyerése
                 String insectName = command[1];
                 String tectonName = command[2];
