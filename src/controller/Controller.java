@@ -567,9 +567,9 @@ public class Controller {
                 if (insect.move(tecton)) {
                     insectAssociation.setMoved(true);
                     if (eat) {
-                        Spore spore = spores.getFirst();
+                        Spore spore = spores.get(0);
                         objects.remove(spore);
-                        spores.removeFirst();
+                        spores.remove(0);
                         insectPlayer.addPoint();
                     }
                 }
