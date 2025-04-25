@@ -596,6 +596,7 @@ public class Controller {
             }
 
             case "timeCheck" : {
+                //itt jo lenne nem instanceof
                     for(Object o : objects.values()){   // Bejárjuk az objektumok listáját, és az összes FungalThread típusú
                         if(o instanceof FungalThread){  // objektumnak meghívjuk a timeCheck metódusát.
                             ((FungalThread) o).timeCheck();
@@ -605,7 +606,7 @@ public class Controller {
             }
 
             case "branchThread" : { // <Fonal név>  <Tektonnév>
-
+                //meg kell nezni, hogy a currentplayer jatekose-e
                 // Parancsok feldolgozása
                 String threadName = command[1];
                 String tectonName = command[2];
@@ -632,6 +633,9 @@ public class Controller {
             }
 
             case "eatInsect" : { // <Fonal név>  <Rovarnév>
+
+                //ugyanugy a currentplayere-e a fonal?
+
                 String threadName = command[1];
                 String insectName = command[2];
 
@@ -740,7 +744,7 @@ public class Controller {
                 fungPlayer.setBranchThread(false);
 
                 for(MushroomAssociation mushA : fungPlayer.getMushrooms()){
-                    mushA.increaseAge();
+                    mushA.setAge(mushA.getAge()+1);
                     if(mushA.getAge() >= 5){
                         mushA.getMushroom().evolve();
                     }
@@ -771,6 +775,10 @@ public class Controller {
                                     spore = new DividingSpore();
                                     break;
                                 }
+                                default:{
+                                    spore = new SpeedSpore();
+                                    break;
+                                }
 
                             }
 
@@ -779,7 +787,7 @@ public class Controller {
                         }
 
                         //Hmmm jajjaj
-                        spore.setThread(fungPlayer.getThread());
+                        spore.setThread((FungalThread)fungPlayer.getThread());
 
                         mushA.getMushroom().generateSpore(spore);
 
@@ -797,8 +805,8 @@ public class Controller {
             }
 
         }else{
-            FungusPlayer fWinner;
-            InsectPlayer iWinner;
+            FungusPlayer fWinner=null;
+            InsectPlayer iWinner=null;
             int fMaxPoint = 0;
             int iMaxPoint = 0;
             for(FungusPlayer fPlayer : fungusPlayers){
@@ -816,8 +824,9 @@ public class Controller {
                 }
                 System.out.println(iPlayer.getName() + "-" + iPlayer.getPoints());
             }
-
-            System.out.println("Nyertesek: " + fWinner.getName() + " " + iWinner.getName());
+            if(!(fWinner==null) || !(iWinner==null)){
+                System.out.println("Nyertesek: " + fWinner.getName() + " " + iWinner.getName());
+            }
         }
 
     }
