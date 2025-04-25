@@ -324,8 +324,13 @@ public class Controller {
                 Mushroom m = (Mushroom) objects.get(command[1]);
 
                 int newAge = Integer.parseInt(command[2]);
-                //Nem tudom mi a faszt kéne a mushroomAssotiation-el
-                //Ha az age nagyobb mint 6 evolvolni is kell???
+                for(int i =0; i < fungusPlayers.size(); i++){
+                    for(MushroomAssociation mushroomAss : fungusPlayers.get(i).getMushrooms()){
+                        if(mushroomAss.getMushroom() == m){
+                            mushroomAss.setAge(newAge);
+                        }
+                    }
+                }
                 break;
             }
 
@@ -348,9 +353,20 @@ public class Controller {
                 Insect insect = (Insect) objects.get(command[1]);
 
                 Insect insect2 = insect.divide();
-                //Itt csináljak null vizsgálatot, mert a divide sosem fog null-al visszatérni???
+                if(insect2 != null){
+                    objects.put(getNewInsectName(), insect2);
+                   
+                    for(InsectPlayer iPlayer : insectPlayers){
+                        for(InsectAssociation insectA : iPlayer.getInsects()){
+                            if(insectA.getInsect() == insect){
+                                iPlayer.addInsect(insect2);
+                            }
+                        }
+                    }
 
-                objects.put(getNewInsectName(), insect2);
+                }else{
+                    System.out.println("Sikertelen!");
+                }
                 break;
             }
 
@@ -360,8 +376,25 @@ public class Controller {
             }
 
             case "shootSpore":{
+                 //Meg kell találni a gomba playerét, és meg kell nézni hogy a currentPlayer az-e
+                
                 Mushroom m = (Mushroom) objects.get(command[1]);
                 Tecton t = (Tecton) objects.get(command[2]);
+
+                FungusPlayer mushroomPlayer = null;
+                for(FungusPlayer fPlayer : fungusPlayers){
+                    for(MushroomAssociation mushroomA : fPlayer.getMushrooms()){
+                        if(mushroomA.getMushroom() == m){
+                            mushroomPlayer = fPlayer;
+                        }
+                    }
+                }
+
+                if(mushroomPlayer != currentPlayer){
+                    System.out.println("Ez nem a te gombad!");
+                    return;
+                }
+                
                 boolean returnV = m.shootSpore(t);
                 if(!returnV){
                     System.out.println("Sikertelen!");
@@ -373,12 +406,15 @@ public class Controller {
                 Tecton t = (Tecton) objects.get(command[1]);
                 Insect insect = new Insect();
                 boolean returnV = t.putFirstInsect(insect);
+
                 if(returnV){
                     objects.put(getNewInsectName(), insect);
-                    //TODO: Hozzá kéne adni a játékoshoz a rovart
+                    InsectPlayer iPlayer = (InsectPlayer) currentPlayer;
+                    iPlayer.addInsect(insect);
+                    setCurrentPlayer();
                 }else{
                     System.out.println("Sikertelen!");
-                }
+                }    
                 break;
             }
 

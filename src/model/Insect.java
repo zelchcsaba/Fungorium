@@ -122,12 +122,13 @@ public class Insect implements IInsectController{
     }
 
     public Insect divide(){
-        Insect i = new Insect();
+        Insect i = null;
         List<Tecton> tlist = position.getNeighbors();
         boolean attached = false;
         int j=0;
         while(j<tlist.size() && attached == false){
             if(tlist.get(j).getInsect() == null){
+                i = new Insect();
                 i.setPosition(tlist.get(j));
                 tlist.get(j).setInsect(i);
                 attached = true;
