@@ -560,7 +560,7 @@ public class Controller {
             case "setMaxRound":{ // <Pozitív egész>
                 int n = Integer.parseInt(command[1]);
 
-                if(maxRound > 0){ maxRound = n; } // Max kör beállítása
+                if(n > 0){ maxRound = n; } // Max kör beállítása
                 else {
                     System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
                 }
@@ -571,7 +571,7 @@ public class Controller {
             case "setInsectPlayerCount" : { // <Pozitív egész>
                 int n = Integer.parseInt(command[1]);
 
-                if(insectPlayerCount > 0){ insectPlayerCount = n; } // Rovarászok számának beállítása
+                if(n > 0){ insectPlayerCount = n; } // Rovarászok számának beállítása
                 else {
                     System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
                 }
@@ -596,10 +596,8 @@ public class Controller {
             }
 
             case "timeCheck" : {
-                    for(Object o : objects.values()){   // Bejárjuk az objektumok listáját, és az összes FungalThread típusú
-                        if(o instanceof FungalThread){  // objektumnak meghívjuk a timeCheck metódusát.
-                            ((FungalThread) o).timeCheck();
-                        }
+                    for(FungusPlayer fp : fungusPlayers){   // Bejárjuk az Gombászok, és az összes fonáljára
+                        fp.getThread().timeCheck();         // meghívjuk a timeCheck metódusát.
                     }
                 break;
             }
@@ -620,6 +618,19 @@ public class Controller {
                 }
                 else{
                     System.out.println("Helytelen parancs! - Hibás fonál- vagy tektonnév");
+                    return;
+                }
+
+                // Megnézzük, hogy annak a játékosnak a fonalával akarunk lépni amelyik most van soron
+                FungusPlayer mushroomPlayer = null;
+                for(FungusPlayer fPlayer : fungusPlayers){
+                    if(fPlayer.getThread() == thread){
+                        mushroomPlayer = fPlayer;
+                    }
+                }
+
+                if(mushroomPlayer != currentPlayer){
+                    System.out.println("Ez nem a te gombad!");
                     return;
                 }
 
@@ -645,6 +656,19 @@ public class Controller {
                 }
                 else{
                     System.out.println("Helytelen parancs! - Hibás fonál- vagy rovarnév");
+                    return;
+                }
+
+                // Megnézzük, hogy annak a játékosnak a fonalával akarunk lépni amelyik most van soron
+                FungusPlayer mushroomPlayer = null;
+                for(FungusPlayer fPlayer : fungusPlayers){
+                    if(fPlayer.getThread() == thread){
+                        mushroomPlayer = fPlayer;
+                    }
+                }
+
+                if(mushroomPlayer != currentPlayer){
+                    System.out.println("Ez nem a te gombad!");
                     return;
                 }
 
