@@ -21,10 +21,10 @@ setMaxRound 5
 end
 act
 branchThread f1 t2
-shootSpore m t3
+shootSpore m1 t3
 closestep
-move i t1
-cut i t2
+move i1 t1
+cut i1 t2
 closestep
 end 
 saveResult
