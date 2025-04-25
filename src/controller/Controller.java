@@ -331,6 +331,13 @@ public class Controller {
                 break;
             }
             case "act":{
+                if(!fungusPlayers.isEmpty()){
+                    currentPlayer = fungusPlayers.get(0);
+                }else if(!insectPlayers.isEmpty()){
+                    currentPlayer = insectPlayers.get(0);
+                }else{
+                    System.out.println("Nincs jatekos");
+                }
                 break;
             }
 
@@ -875,6 +882,7 @@ public class Controller {
                     fungusPlayer.addMushroom(mushroom);
                     fungusPlayer.setThread(thread);
                     currentPlayer.addPoint();
+                    setCurrentPlayer();
                 } else {
                     System.out.println("Helytelen parancs! - Jelenlegi játékos nem FungusPlayer típusú.");
                     return;

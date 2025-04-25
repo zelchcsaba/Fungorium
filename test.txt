@@ -3,24 +3,28 @@ turnOffRandom
 createTecton MultiThreadTecton
 createTecton MultiThreadTecton
 createTecton SingleThreadTecton
-createTecton AbsorbingTecton
+createTecton SingleThreadTecton
 setNeighbors t1 t2 t3
 setNeighbors t2 t4 t1
 setNeighbors t3 t1 t4
 setNeighbors t4 t3 t2
-setFungalPlayerCount 2
-setInsectPlayerCount 2
-createFungusPlayers fplayer1 fplayer2
-createInsectPlayers iplayer1 iplayer2
+setFungusPlayerCount 1
+setInsectPlayerCount 1
+createFungusPlayers fplayer
+createInsectPlayers iplayer
+createShortLifeThread t1 fplayer
+createMushroom t1 f1 fplayer
+createInsect t2 iplayer
+generateSpore m1 SlowingSpore
+stepGameRound 1
 setMaxRound 5
 end
 act
-putFirstMushroom ShortLifeThread t1
-putFirstMushroom LongLifeThread t4
-putFirstMushroom LongLifeThread t1
-putFirsMushroom LongLifeThread t2
-putFirstInsect t3
-putFirstInsect t3
-putFirstInsect t1
-end
+branchThread f1 t2
+shootSpore m t3
+closestep
+move i t1
+cut i t2
+closestep
+end 
 saveResult
