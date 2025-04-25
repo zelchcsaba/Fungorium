@@ -269,6 +269,9 @@ public class Controller {
             break;
             }
 
+<<<<<<< HEAD
+            case "cut":{ //<Rovarnév> <Tektonnév>                
+=======
             case "cut":{ //<Rovarnév> <Tektonnév>
 
 
@@ -282,6 +285,7 @@ public class Controller {
                     return;
                 }
 
+>>>>>>> c9ab6f024629aa3b3d37d7b7ad2e86fc555bfadb
                 // Paraméterek kinyerése
                 String insectName = command[1];
                 String tectonName = command[2];
@@ -290,11 +294,25 @@ public class Controller {
                 Tecton tecton = (Tecton)objects.get(tectonName);
                 Insect insect = (Insect)objects.get(insectName);
 
+                // Ő következik?
+                InsectPlayer insectPlayer = null;
+                for(InsectPlayer iPlayer : insectPlayers){
+                    for(InsectAssociation insectA : iPlayer.getInsects()){
+                        if(insectA.getInsect() == insect){
+                            insectPlayer = iPlayer;
+                        }
+                    }
+                }
+
+                if(insectPlayer != currentPlayer){
+                    System.out.println("Ez nem a te rovarad!");
+                    return;
+                }
+
                 // Segéd objektumok
-                InsectPlayer insectPlayer = (InsectPlayer) currentPlayer;
                 InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
                 
-                // Az ő rovarával akar vágni?
+                // Az ő rovarával akar vágni? (lehet fölösleges)
                 if (insectAssociation == null) {
                     System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
                     return;
@@ -430,13 +448,7 @@ public class Controller {
                 break;
             }
 
-
             case "move":{ //<Rovarnév> <Tektonnév>
-                if (!(currentPlayer instanceof InsectPlayer)) { // Ebbe nem vagyok biztos, hogy szép e így, vagy, hogy egyáltalán kell e
-                    System.out.println("A 'move' parancs csak rovarász játékosoknak engedélyezett!");
-                    return;
-                }
-
                 // Paraméterek kinyerése
                 String insectName = command[1];
                 String tectonName = command[2];
@@ -445,16 +457,31 @@ public class Controller {
                 Tecton tecton = (Tecton)objects.get(tectonName);
                 Insect insect = (Insect)objects.get(insectName);
 
+                // Ő következik?
+                InsectPlayer insectPlayer = null;
+                for(InsectPlayer iPlayer : insectPlayers){
+                    for(InsectAssociation insectA : iPlayer.getInsects()){
+                        if(insectA.getInsect() == insect){
+                            insectPlayer = iPlayer;
+                        }
+                    }
+                }
+
+                if(insectPlayer != currentPlayer){
+                    System.out.println("Ez nem a te rovarad!");
+                    return;
+                }
+                
                 // Segéd objektumok
                 List<Spore> spores = tecton.getSpores();
-                InsectPlayer insectPlayer = (InsectPlayer) currentPlayer;
                 InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
                 
-                // Az ő rovarával akar lépni?
+                // Az ő rovarával akar lépni? (lehet fölösleges)
                 if (insectAssociation == null) {
                     System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
                     return;
                 }
+
                 // Tud lépni?
                 if (insectAssociation.getMoved()) {
                     System.out.println("Ez a rovar már lépett ebben a körben.");
