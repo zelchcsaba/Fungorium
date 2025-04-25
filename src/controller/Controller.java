@@ -1,5 +1,7 @@
 package controller;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -672,6 +674,44 @@ public class Controller {
                 }
 
                 break;
+            }
+            case "assert":{ //<Elvártkimenetfájlnév> 
+                // összehasonlítandó fájlok nevei
+                String resultFile = "result.txt"; // Elmentett állapotot tartalmazza
+                String expectedFile = command[1]; // Tesztesethez megadott fájlnév, a felhasználó adja meg, ezzel kell egyeznie a result.txt-nek
+
+                try (
+                BufferedReader resultReader = new BufferedReader(new FileReader(resultFile));
+                BufferedReader expectedReader = new BufferedReader(new FileReader(expectedFile));
+                ) {
+                    // Éppen olvasott sorok
+                    String resultLine;
+                    String expectedLine;   
+                    
+                    int lineNumber = 1;
+                    boolean success = true;
+
+                    while ((resultLine = resultReader.readLine()) != null && (expectedLine = expectedReader.readLine()) != null){
+                        System.out.println("r: " + resultLine); // Lehet ilyen sok mindent nem kéne kíírni, egyelőre jó lesz így debugolás miatt is
+                        System.out.println("e: " + expectedLine);
+
+                        if (!resultLine.equals(expectedLine)) {
+                            System.out.println("Eltérés található a(z) " + lineNumber + ". sorban.");
+                            success = false;
+                            break;
+                        }
+
+                        lineNumber++;
+                    }
+
+                    if (success) {
+                        System.out.println("Sikeres teszt: minden sor egyezik.");
+                    } else {
+                        System.out.println("Sikertelen teszt.");
+                    }
+                }catch (IOException e) {
+                    System.out.println("Hiba a fájlok olvasása közben: " + e.getMessage());
+                }
             }
         }
 
