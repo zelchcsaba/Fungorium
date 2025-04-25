@@ -1,4 +1,5 @@
 package controller;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -38,7 +39,7 @@ public class Controller {
     private int fungusPlayerCount;
     private int insectPlayerCount;
 
-    public Controller(){
+    public Controller() {
         round = 0;
         objects = new HashMap<>();
         maxRound = 5;
@@ -56,91 +57,95 @@ public class Controller {
         tList = new ArrayList<>();
     }
 
-    public void processCmd(String cmd){
+    public void processCmd(String cmd) {
         String[] command = cmd.split(" ");
-        switch(command[0]){
+        switch (command[0]) {
 
-            case "createTecton":{
+            case "createTecton": {
                 int type = randomize(4);
                 ITectonController t;
-                switch(type){
+                switch (type) {
                     case 0:
                         t = new MultiThreadTecton();
-                    break;
+                        break;
                     case 1:
                         t = new SingleThreadTecton();
-                    break;
+                        break;
                     case 2:
                         t = new AbsorbingTecton();
-                    break;
+                        break;
                     case 3:
                         t = new KeepThreadTecton();
-                    break;
+                        break;
                     default:
                         t = new MultiThreadTecton();
-                    break;
+                        break;
                 }
 
                 String name = getNewTectonName();
                 objects.put(name, t);
                 tList.add(t);
-            break;
+                break;
             }
 
-            case "createSpore":{//<Spórafajta> <Tektonnév> <Fonálnév>
-		        //  Paraméterek kinyerése
-			    String type = command[1]; 
-			    String tectonName = command[2];
-			    String fungalName = command[3];
 
-			    // Megfelelő objektum inicializálása
+            case "createSpore": {//<Spórafajta> <Tektonnév> <Fonálnév>
+                //  Paraméterek kinyerése
+                String type = command[1];
+                String tectonName = command[2];
+                String fungalName = command[3];
+
+                // Megfelelő objektum inicializálása
                 Spore spore;
-			    switch(type){
+                switch (type) {
                     case "SlowingSpore":
                         spore = new SlowingSpore();
-                    break;
+                        break;
                     case "SpeedSpore":
                         spore = new SpeedSpore();
-                    break;
+                        break;
                     case "ParalysingSpore":
                         spore = new ParalysingSpore();
-                    break;
+                        break;
                     case "NoCutSpore":
                         spore = new NoCutSpore();
-                    break;
+                        break;
                     case "DividingSpore":
                         spore = new DividingSpore();
-                    break;
+                        break;
                     default:
                         System.out.println("helytelen parancs");
-                    return;
+                        return;
                 }
 
-			    // Asszociációk beállítása
-                Tecton tecton = (Tecton)objects.get(tectonName);
+                // Asszociációk beállítása
+                Tecton tecton = (Tecton) objects.get(tectonName);
                 tecton.addSpore(spore);
 
-                FungalThread fungal = (FungalThread)objects.get(fungalName);
+                FungalThread fungal = (FungalThread) objects.get(fungalName);
                 spore.setThread(fungal);
 
                 // Konténerbe bele
                 String name = getNewSporeName();
                 objects.put(name, spore);
                 break;
-            }	
+            }
 
-            case "setNeighbors":{
-                Tecton t = (Tecton)objects.get(command[1]);
-                List<Tecton> neighborList= new ArrayList<>();
-                for(int i=2; i<command.length;i++){
-                    neighborList.add((Tecton)objects.get(command[i]));
+
+            case "setNeighbors": {
+                Tecton t = (Tecton) objects.get(command[1]);
+                List<Tecton> neighborList = new ArrayList<>();
+                for (int i = 2; i < command.length; i++) {
+                    neighborList.add((Tecton) objects.get(command[i]));
                 }
                 t.setNeighbors(neighborList);
-            break;
+                break;
             }
 
-            case "createShortLifeThread":{
+
+            case "createShortLifeThread": {
                 FungalThread f = new ShortLifeThread();
+<<<<<<< HEAD
                 Tecton t = (Tecton)objects.get(command[1]);
                 List<Tecton> tlist = new ArrayList<>();
                 List<FungalThread> flist = new ArrayList<>();
@@ -152,15 +157,25 @@ public class Controller {
                 t.setThreads(flist);
                 
                 FungusPlayer fplayer =(FungusPlayer)objects.get(command[2]);
+=======
+
+                List<Tecton> tlist = new ArrayList<>();
+                tlist.add((Tecton) objects.get(command[1]));
+                f.setTectons(tlist);
+
+                FungusPlayer fplayer = (FungusPlayer) objects.get(command[2]);
+>>>>>>> e6c04e77e80e786adfe26dd1c7a55ee80fa771bb
                 fplayer.setThread(f);
 
                 String name = getNewThreadName();
                 objects.put(name, f);
-            break;
+                break;
             }
-            
-            case "createLongLifeThread":{
+
+
+            case "createLongLifeThread": {
                 FungalThread f = new LongLifeThread();
+<<<<<<< HEAD
                 Tecton t = (Tecton)objects.get(command[1]);
                 
                 List<Tecton> tlist = new ArrayList<>();
@@ -169,48 +184,55 @@ public class Controller {
                 tlist.add(t);
                 flist.add(f);
 
+=======
+
+                List<Tecton> tlist = new ArrayList<>();
+                tlist.add((Tecton) objects.get(command[1]));
+>>>>>>> e6c04e77e80e786adfe26dd1c7a55ee80fa771bb
                 f.setTectons(tlist);
                 t.setThreads(flist);
 
-                FungusPlayer fplayer =(FungusPlayer)objects.get(command[2]);
+                FungusPlayer fplayer = (FungusPlayer) objects.get(command[2]);
                 fplayer.setThread(f);
 
                 String name = getNewThreadName();
                 objects.put(name, f);
-            break;
+                break;
             }
 
-            case "createMushroom":{
+
+            case "createMushroom": {
                 Mushroom m = new Mushroom();
-                Tecton t = (Tecton)objects.get(command[1]);
-                FungalThread f = (FungalThread)objects.get(command[2]);
-                FungusPlayer fplayer = (FungusPlayer)objects.get(command[3]);
+                Tecton t = (Tecton) objects.get(command[1]);
+                FungalThread f = (FungalThread) objects.get(command[2]);
+                FungusPlayer fplayer = (FungusPlayer) objects.get(command[3]);
 
                 m.setThread(f);
                 m.setPosition(t);
-                if(t.setMushroom(m)){
+                if (t.setMushroom(m)) {
                     fplayer.addMushroom(m);
                     String name = getNewMushroomName();
                     objects.put(name, m);
-                }else{
+                } else {
                     System.out.println("Sikertelen");
                 }
                 break;
             }
 
-            case "createEvolvedMushroom":{ // <Tektonnév> <Fonálnév> <Játékosnév>
+
+            case "createEvolvedMushroom": { // <Tektonnév> <Fonálnév> <Játékosnév>
                 // Paraméterek kinyerése
                 String tectonName = command[1];
                 String fungalName = command[2];
                 String playerName = command[3];
 
-                Tecton t = (Tecton)objects.get(tectonName);
-                FungalThread f = (FungalThread)objects.get(fungalName);
-                FungusPlayer fplayer = (FungusPlayer)objects.get(playerName);
+                Tecton t = (Tecton) objects.get(tectonName);
+                FungalThread f = (FungalThread) objects.get(fungalName);
+                FungusPlayer fplayer = (FungusPlayer) objects.get(playerName);
 
                 Mushroom m = new Mushroom();
 
-                if(t.setMushroom(m)){
+                if (t.setMushroom(m)) {
                     m.setState(EVOLVED);
                     m.setThread(f);
                     m.setPosition(t);
@@ -220,95 +242,111 @@ public class Controller {
                     fplayer.addMushroomAssociation(mAssociation);
                     String name = getNewMushroomName();
                     objects.put(name, m);
-                }else{
+                } else {
                     System.out.println("Sikertelen");
                 }
                 break;
             }
 
-            case "createInsect":{ // <Tektonnév> <Játékosnév>
-		        // Paraméterek kinyerése
-    		    String tectonName = command[1];
-   	    	    String playerName = command[2];
 
-		        // Megfelelő objektum inicializálása
-			    Insect insect = new Insect();
+            case "createInsect": { // <Tektonnév> <Játékosnév>
+                // Paraméterek kinyerése
+                String tectonName = command[1];
+                String playerName = command[2];
 
-			    // Asszociációk beállítása
-                Tecton tecton = (Tecton)objects.get(tectonName);
-    		    insect.setPosition(tecton);
+                // Megfelelő objektum inicializálása
+                Insect insect = new Insect();
+
+                // Asszociációk beállítása
+                Tecton tecton = (Tecton) objects.get(tectonName);
+                insect.setPosition(tecton);
                 tecton.setInsect(insect);
 
-                InsectPlayer iPlayer = (InsectPlayer)objects.get(playerName);
-		        iPlayer.addInsect(insect);
+                InsectPlayer iPlayer = (InsectPlayer) objects.get(playerName);
+                iPlayer.addInsect(insect);
 
-			    //Konténerbe bele
+                //Konténerbe bele
                 String name = getNewInsectName();
                 objects.put(name, insect);
-            break;
+                break;
             }
-            
-            case "createFungusPlayers":{//<Játékosnév><Játékosnév><Játékosnév><Játékosnév>
-		        // Ellenőrizzük a parancs helyességét
-                if(command.length>5 || command.length!=fungusPlayerCount+1){
+
+
+            case "createFungusPlayers": {//<Játékosnév><Játékosnév><Játékosnév><Játékosnév>
+                // Ellenőrizzük a parancs helyességét
+                if (command.length > 5 || command.length != fungusPlayerCount + 1) {
                     System.out.println("túl sok paraméter");
                     return;
                 }
 
+<<<<<<< HEAD
 		        // Objektumok incializálása
                 for(int i = 1; i<command.length; i++){
                     FungusPlayer fPlayer = new FungusPlayer(); 
+=======
+                // Objektumok incializálása
+                for (int i = 0; i < command.length; i++) {
+                    FungusPlayer fPlayer = new FungusPlayer();
+>>>>>>> e6c04e77e80e786adfe26dd1c7a55ee80fa771bb
                     String name = command[i];
                     objects.put(name, fPlayer);
                     fungusPlayers.add(fPlayer);
                 }
-            break;
+                break;
             }
 
-            case "createInsectPlayers":{//<Játékosnév><Játékosnév><Játékosnév><Játékosnév>
-		        // Ellenőrizzük a parancs helyességét
-                if(command.length>5 || command.length!=insectPlayerCount+1){
+
+            case "createInsectPlayers": {//<Játékosnév><Játékosnév><Játékosnév><Játékosnév>
+                // Ellenőrizzük a parancs helyességét
+                if (command.length > 5 || command.length != insectPlayerCount + 1) {
                     System.out.println("túl sok paraméter");
                     return;
                 }
 
+<<<<<<< HEAD
 		        // Objektumok incializálása
                 for(int i = 1; i<command.length; i++){
                     InsectPlayer iPlayer = new InsectPlayer(); 
+=======
+                // Objektumok incializálása
+                for (int i = 0; i < command.length; i++) {
+                    InsectPlayer iPlayer = new InsectPlayer();
+>>>>>>> e6c04e77e80e786adfe26dd1c7a55ee80fa771bb
                     String name = command[i];
                     objects.put(name, iPlayer);
                     insectPlayers.add(iPlayer);
                 }
-            break;
+                break;
             }
 
-            case "cut":{ //<Rovarnév> <Tektonnév>                
+
+            case "cut": { //<Rovarnév> <Tektonnév>
                 // Paraméterek kinyerése
                 String insectName = command[1];
                 String tectonName = command[2];
-                
+
                 // Megfelelő objektumok előszedése
-                Tecton tecton = (Tecton)objects.get(tectonName);
-                Insect insect = (Insect)objects.get(insectName);
+                Tecton tecton = (Tecton) objects.get(tectonName);
+                Insect insect = (Insect) objects.get(insectName);
 
                 // Ő következik?
                 InsectPlayer insectPlayer = null;
-                for(InsectPlayer iPlayer : insectPlayers){
-                    for(InsectAssociation insectA : iPlayer.getInsects()){
-                        if(insectA.getInsect() == insect){
+                for (InsectPlayer iPlayer : insectPlayers) {
+                    for (InsectAssociation insectA : iPlayer.getInsects()) {
+                        if (insectA.getInsect() == insect) {
                             insectPlayer = iPlayer;
                         }
                     }
                 }
 
-                if(insectPlayer != currentPlayer){
+                if (insectPlayer != currentPlayer) {
                     System.out.println("Ez nem a te rovarad!");
                     return;
                 }
 
                 // Segéd objektumok
                 InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
-                
+
                 // Az ő rovarával akar vágni? (lehet fölösleges)
                 if (insectAssociation == null) {
                     System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
@@ -323,49 +361,72 @@ public class Controller {
                 // Vágás
                 insect.cut(tecton);
                 insectAssociation.setCut(true);
-            break;
+                break;
             }
 
-            case "saveResult":{
-                try{
+
+            case "saveResult": {
+                try {
                     writeObjectsToFile(objects, new FileWriter("result.txt"));
-                }catch(IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
             }
 
-            case "arrange":{
+
+            case "arrange": {
                 break;
             }
-            case "end":{
+
+
+            case "end": {
                 break;
             }
-            case "act":{
-                if(!fungusPlayers.isEmpty()){
+
+
+            case "act": {
+                if (!fungusPlayers.isEmpty()) {
                     currentPlayer = fungusPlayers.get(0);
-                }else if(!insectPlayers.isEmpty()){
+                } else if (!insectPlayers.isEmpty()) {
                     currentPlayer = insectPlayers.get(0);
-                }else{
+                } else {
                     System.out.println("Nincs jatekos");
                 }
                 break;
             }
 
-            case "runTest":{
+
+            case "runTest": {
                 String fileName = command[1];
 
-                try{
+                try {
                     BufferedReader br = new BufferedReader(new FileReader(fileName));
                     String comm;
-                    while((comm = br.readLine()) != null){
+                    while ((comm = br.readLine()) != null) {
                         System.out.println(comm);
                         processCmd(comm);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            }
+
+            // uaz mint az előző, csak a szemantika más, ezt azért használjunk, hogy felépítsünk egy kezdő pályát
+            case "loadInit":{ //<InitFájlneve>
+                String fileName = command[1];
+                try{
+                    BufferedReader br = new BufferedReader(new FileReader(fileName));
+                    String line;
+                    while((line = br.readLine()) != null){
+                        processCmd(line); // Parancs végrehajtása
+                        System.out.println(line); // kiírjuk milyen parancsot hajtottunk végre 
                     }
                 }catch(IOException e){
                     e.printStackTrace();
                 }
-
                 break;
             }
 
@@ -377,13 +438,14 @@ public class Controller {
                 break;
             }
 
-            case "setMushroomAge":{
+
+            case "setMushroomAge": {
                 Mushroom m = (Mushroom) objects.get(command[1]);
 
                 int newAge = Integer.parseInt(command[2]);
-                for(int i =0; i < fungusPlayers.size(); i++){
-                    for(MushroomAssociation mushroomAss : fungusPlayers.get(i).getMushrooms()){
-                        if(mushroomAss.getMushroom() == m){
+                for (int i = 0; i < fungusPlayers.size(); i++) {
+                    for (MushroomAssociation mushroomAss : fungusPlayers.get(i).getMushrooms()) {
+                        if (mushroomAss.getMushroom() == m) {
                             mushroomAss.setAge(newAge);
                         }
                     }
@@ -391,75 +453,85 @@ public class Controller {
                 break;
             }
 
-            case "stepGameRound":{
+
+            case "stepGameRound": {
                 int r = Integer.parseInt(command[1]);
                 round += r;
                 break;
             }
 
-            case "evolve":{
+
+            case "evolve": {
                 Mushroom m = (Mushroom) objects.get(command[1]);
                 boolean returnV = m.evolve();
-                if(!returnV){
+                if (!returnV) {
                     System.out.println("Sikertelen!");
                 }
                 break;
             }
 
-            case "divide":{
+
+            case "divide": {
                 Insect insect = (Insect) objects.get(command[1]);
 
                 Insect insect2 = insect.divide();
-                if(insect2 != null){
+                if (insect2 != null) {
                     objects.put(getNewInsectName(), insect2);
-                   
-                    for(InsectPlayer iPlayer : insectPlayers){
-                        for(InsectAssociation insectA : iPlayer.getInsects()){
-                            if(insectA.getInsect() == insect){
+
+                    for (InsectPlayer iPlayer : insectPlayers) {
+                        for (InsectAssociation insectA : iPlayer.getInsects()) {
+                            if (insectA.getInsect() == insect) {
                                 iPlayer.addInsect(insect2);
                             }
                         }
                     }
 
-                }else{
+                } else {
                     System.out.println("Sikertelen!");
                 }
                 break;
             }
 
+<<<<<<< HEAD
             case "closestep":{
+=======
+
+            case "closeStep": {
+>>>>>>> e6c04e77e80e786adfe26dd1c7a55ee80fa771bb
                 setCurrentPlayer();
                 break;
             }
 
-            case "shootSpore":{
-                 //Meg kell találni a gomba playerét, és meg kell nézni hogy a currentPlayer az-e
-                
+
+            case "shootSpore": {
+                //Meg kell találni a gomba playerét, és meg kell nézni hogy a currentPlayer az-e
+
                 Mushroom m = (Mushroom) objects.get(command[1]);
                 Tecton t = (Tecton) objects.get(command[2]);
 
                 FungusPlayer mushroomPlayer = null;
-                for(FungusPlayer fPlayer : fungusPlayers){
-                    for(MushroomAssociation mushroomA : fPlayer.getMushrooms()){
-                        if(mushroomA.getMushroom() == m){
+                for (FungusPlayer fPlayer : fungusPlayers) {
+                    for (MushroomAssociation mushroomA : fPlayer.getMushrooms()) {
+                        if (mushroomA.getMushroom() == m) {
                             mushroomPlayer = fPlayer;
                         }
                     }
                 }
 
-                if(mushroomPlayer != currentPlayer){
+                if (mushroomPlayer != currentPlayer) {
                     System.out.println("Ez nem a te gombad!");
                     return;
                 }
-                
+
                 boolean returnV = m.shootSpore(t);
-                if(!returnV){
+                if (!returnV) {
                     System.out.println("Sikertelen!");
                 }
                 break;
             }
 
-            case "putFirstInsect":{
+
+            case "putFirstInsect": {
 
                 //itt csak ha kor 0
                 //csak ha egy insectplayer
@@ -468,45 +540,46 @@ public class Controller {
                 Insect insect = new Insect();
                 boolean returnV = t.putFirstInsect(insect);
 
-                if(returnV){
+                if (returnV) {
                     objects.put(getNewInsectName(), insect);
                     InsectPlayer iPlayer = (InsectPlayer) currentPlayer;
                     iPlayer.addInsect(insect);
                     setCurrentPlayer();
-                }else{
+                } else {
                     System.out.println("Sikertelen!");
-                }    
+                }
                 break;
             }
 
-            case "move":{ //<Rovarnév> <Tektonnév>
+
+            case "move": { //<Rovarnév> <Tektonnév>
                 // Paraméterek kinyerése
                 String insectName = command[1];
                 String tectonName = command[2];
-                
+
                 // Megfelelő objektumok előszedése
-                Tecton tecton = (Tecton)objects.get(tectonName);
-                Insect insect = (Insect)objects.get(insectName);
+                Tecton tecton = (Tecton) objects.get(tectonName);
+                Insect insect = (Insect) objects.get(insectName);
 
                 // Ő következik?
                 InsectPlayer insectPlayer = null;
-                for(InsectPlayer iPlayer : insectPlayers){
-                    for(InsectAssociation insectA : iPlayer.getInsects()){
-                        if(insectA.getInsect() == insect){
+                for (InsectPlayer iPlayer : insectPlayers) {
+                    for (InsectAssociation insectA : iPlayer.getInsects()) {
+                        if (insectA.getInsect() == insect) {
                             insectPlayer = iPlayer;
                         }
                     }
                 }
 
-                if(insectPlayer != currentPlayer){
+                if (insectPlayer != currentPlayer) {
                     System.out.println("Ez nem a te rovarad!");
                     return;
                 }
-                
+
                 // Segéd objektumok
                 List<Spore> spores = tecton.getSpores();
                 InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
-                
+
                 // Az ő rovarával akar lépni? (lehet fölösleges)
                 if (insectAssociation == null) {
                     System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
@@ -521,10 +594,10 @@ public class Controller {
 
                 // Lesz evés?
                 boolean eat = false;
-                if(!spores.isEmpty()) eat = true;
+                if (!spores.isEmpty()) eat = true;
 
                 // Lépés
-                if(insect.move(tecton)){
+                if (insect.move(tecton)) {
                     insectAssociation.setMoved(true);
                     if (eat) {
                         Spore spore = spores.getFirst();
@@ -535,34 +608,37 @@ public class Controller {
                 }
 
                 // Kapott effekt hatása
-                if(insect.getState().equals(DIVIDED)){ // létrejön egy új rovar
+                if (insect.getState().equals(DIVIDED)) { // létrejön egy új rovar
                     Insect otherInsect = insect.divide();
-                    if(otherInsect !=null){
+                    if (otherInsect != null) {
                         String name = getNewInsectName();
                         objects.put(name, otherInsect);
                         insectPlayer.addInsect(otherInsect);
                     }
                 }
-                if(insect.getState().equals(SPEEDBOOST)){ // mintha nem is lépett volna
+                if (insect.getState().equals(SPEEDBOOST)) { // mintha nem is lépett volna
                     insectAssociation.setMoved(false);
                 }
-                if(insect.getState().equals(NOCUT) || insect.getState().equals(PARALYZED)){ // nocut = mintha már vágott volna
+                if (insect.getState().equals(NOCUT) || insect.getState().equals(PARALYZED)) { // nocut = mintha már vágott volna
                     insectAssociation.setCut(true);                                       // paralyzed = mintha már vágott és lépett is volna (az utóbbi igaz is)      
                 }
                 // normal-t és slowed-et nem kell kezelni sztem
             }
-            
-            case "turnOnRandom":{
+
+
+            case "turnOnRandom": {
                 randomize = true;
                 break;
             }
 
-            case "turnOffRandom":{
+
+            case "turnOffRandom": {
                 randomize = false;
                 break;
             }
 
-            case "generateSpore":{ // <Gombatest név> <Spórafajta>
+
+            case "generateSpore": { // <Gombatest név> <Spórafajta>
 
                 // Parancsok feldolgozása
                 String mushroomName = command[1];
@@ -570,10 +646,9 @@ public class Controller {
 
                 // Gombatest lekérdezése
                 Mushroom mushroom;
-                if(objects.containsKey(mushroomName)){
+                if (objects.containsKey(mushroomName)) {
                     mushroom = (Mushroom) objects.get(mushroomName);
-                }
-                else {
+                } else {
                     System.out.println("Helytelen parancs! - Nincs ilyen nevű gombatest");
                     return;
                 }
@@ -582,7 +657,7 @@ public class Controller {
                 //Spóra létrehozása, majd beállítása típusnak megfelelően
                 Spore spore;
 
-                switch(sporeType){
+                switch (sporeType) {
                     case "SlowingSpore":
                         spore = new SlowingSpore();
                         break;
@@ -610,15 +685,18 @@ public class Controller {
                 mushroom.generateSpore(spore);
 
                 // Konténerbe bele
-                objects.put(getNewSporeName(), spore );
+                objects.put(getNewSporeName(), spore);
 
                 break;
             }
 
-            case "setMaxRound":{ // <Pozitív egész>
+
+            case "setMaxRound": { // <Pozitív egész>
                 int n = Integer.parseInt(command[1]);
 
-                if(n > 0){ maxRound = n; } // Max kör beállítása
+                if (n > 0) {
+                    maxRound = n;
+                } // Max kör beállítása
                 else {
                     System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
                 }
@@ -626,24 +704,27 @@ public class Controller {
                 break;
             }
 
-            case "setInsectPlayerCount" : { // <Pozitív egész>
+
+            case "setInsectPlayerCount": { // <Pozitív egész>
                 int n = Integer.parseInt(command[1]);
 
-                if(n >= 0){ insectPlayerCount = n; } // Rovarászok számának beállítása
+                if (n >= 0) {
+                    insectPlayerCount = n;
+                } // Rovarászok számának beállítása
                 else {
                     System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
                 }
                 break;
             }
 
-            case "absorb" : { // <Tektonnév>
+
+            case "absorb": { // <Tektonnév>
                 String tectonName = command[1];
                 Tecton tecton;
 
-                if(objects.containsKey(tectonName)){
+                if (objects.containsKey(tectonName)) {
                     tecton = (Tecton) objects.get(tectonName);
-                }
-                else {
+                } else {
                     System.out.println("Helytelen parancs! - Nincs ilyen nevű tekton");
                     return;
                 }
@@ -653,15 +734,22 @@ public class Controller {
                 break;
             }
 
-            case "timeCheck" : {
-                    for(FungusPlayer fp : fungusPlayers){   // Bejárjuk az Gombászok, és az összes fonáljára
-                        fp.getThread().timeCheck();         // meghívjuk a timeCheck metódusát.
-                    }
+
+            case "timeCheck": {
+                for (FungusPlayer fp : fungusPlayers) {   // Bejárjuk az Gombászok, és az összes fonáljára
+                    fp.getThread().timeCheck();         // meghívjuk a timeCheck metódusát.
+                }
                 break;
             }
 
+<<<<<<< HEAD
             case "branchThread" : { // <Fonal név>  <Tektonnév>
                 
+=======
+
+            case "branchThread": { // <Fonal név>  <Tektonnév>
+                //meg kell nezni, hogy a currentplayer jatekose-e
+>>>>>>> e6c04e77e80e786adfe26dd1c7a55ee80fa771bb
                 // Parancsok feldolgozása
                 String threadName = command[1];
                 String tectonName = command[2];
@@ -670,36 +758,41 @@ public class Controller {
                 FungalThread thread=null;
                 Tecton tecton=null;
 
-                if(objects.containsKey(threadName) && objects.containsKey(tectonName)){
+                if (objects.containsKey(threadName) && objects.containsKey(tectonName)) {
                     thread = (FungalThread) objects.get(threadName);
                     tecton = (Tecton) objects.get(tectonName);
+<<<<<<< HEAD
                 }else{
+=======
+                } else {
+>>>>>>> e6c04e77e80e786adfe26dd1c7a55ee80fa771bb
                     System.out.println("Helytelen parancs! - Hibás fonál- vagy tektonnév");
                     return;
                 }
 
                 // Megnézzük, hogy annak a játékosnak a fonalával akarunk lépni amelyik most van soron
                 FungusPlayer mushroomPlayer = null;
-                for(FungusPlayer fPlayer : fungusPlayers){
-                    if(fPlayer.getThread() == thread){
+                for (FungusPlayer fPlayer : fungusPlayers) {
+                    if (fPlayer.getThread() == thread) {
                         mushroomPlayer = fPlayer;
                     }
                 }
 
-                if(mushroomPlayer != currentPlayer){
+                if (mushroomPlayer != currentPlayer) {
                     System.out.println("Ez nem a te gombad!");
                     return;
                 }
 
                 // Ha sikertelen akkor kiírja
-                if(!thread.branchThread(tecton)){
+                if (!thread.branchThread(tecton)) {
                     System.out.println("Sikertelen");
                 }
 
                 break;
             }
 
-            case "eatInsect" : { // <Fonal név>  <Rovarnév>
+
+            case "eatInsect": { // <Fonal név>  <Rovarnév>
                 String threadName = command[1];
                 String insectName = command[2];
 
@@ -707,56 +800,55 @@ public class Controller {
                 FungalThread thread;
                 Insect insect;
 
-                if(objects.containsKey(threadName) && objects.containsKey(insectName)){
+                if (objects.containsKey(threadName) && objects.containsKey(insectName)) {
                     thread = (FungalThread) objects.get(threadName);
                     insect = (Insect) objects.get(insectName);
-                }
-                else{
+                } else {
                     System.out.println("Helytelen parancs! - Hibás fonál- vagy rovarnév");
                     return;
                 }
 
                 // Megnézzük, hogy annak a játékosnak a fonalával akarunk lépni amelyik most van soron
                 FungusPlayer mushroomPlayer = null;
-                for(FungusPlayer fPlayer : fungusPlayers){
-                    if(fPlayer.getThread() == thread){
+                for (FungusPlayer fPlayer : fungusPlayers) {
+                    if (fPlayer.getThread() == thread) {
                         mushroomPlayer = fPlayer;
                     }
                 }
 
-                if(mushroomPlayer != currentPlayer){
+                if (mushroomPlayer != currentPlayer) {
                     System.out.println("Ez nem a te gombad!");
                     return;
                 }
 
                 // Ha sikertelen, akkor kiírja, egyébként kivesszi a rovart az objectsből
-                if(!thread.eatInsect(insect)){
+                if (!thread.eatInsect(insect)) {
                     System.out.println("Sikertelen");
-                }
-                else {
+                } else {
                     objects.remove(insectName, insect);
                 }
 
                 break;
             }
-            
-            case "assert":{ //<Elvártkimenetfájlnév> 
+
+
+            case "assert": { //<Elvártkimenetfájlnév>
                 // összehasonlítandó fájlok nevei
                 String resultFile = "result.txt"; // Elmentett állapotot tartalmazza
                 String expectedFile = command[1]; // Tesztesethez megadott fájlnév, a felhasználó adja meg, ezzel kell egyeznie a result.txt-nek
 
                 try (
-                BufferedReader resultReader = new BufferedReader(new FileReader(resultFile));
-                BufferedReader expectedReader = new BufferedReader(new FileReader(expectedFile));
+                        BufferedReader resultReader = new BufferedReader(new FileReader(resultFile));
+                        BufferedReader expectedReader = new BufferedReader(new FileReader(expectedFile));
                 ) {
                     // Éppen olvasott sorok
                     String resultLine;
-                    String expectedLine;   
-                    
+                    String expectedLine;
+
                     int lineNumber = 1;
                     boolean success = true;
 
-                    while ((resultLine = resultReader.readLine()) != null && (expectedLine = expectedReader.readLine()) != null){
+                    while ((resultLine = resultReader.readLine()) != null && (expectedLine = expectedReader.readLine()) != null) {
                         System.out.println("r: " + resultLine); // Lehet ilyen sok mindent nem kéne kíírni, egyelőre jó lesz így debugolás miatt is
                         System.out.println("e: " + expectedLine);
 
@@ -774,16 +866,17 @@ public class Controller {
                     } else {
                         System.out.println("Sikertelen teszt.");
                     }
-                }catch (IOException e) {
+                } catch (IOException e) {
                     System.out.println("Hiba a fájlok olvasása közben: " + e.getMessage());
                 }
             }
 
-            case "setTectons" : {
+
+            case "setTectons": {
                 String threadName = command[1];
 
                 FungalThread thread;
-                if (objects.containsKey(threadName)){
+                if (objects.containsKey(threadName)) {
                     thread = (FungalThread) objects.get(threadName);
                 } else {
                     System.out.println("Helytelen parancs! - Hibás fonál név");
@@ -792,7 +885,7 @@ public class Controller {
 
                 List<Tecton> tectons = new ArrayList<>();
 
-                for(int i = 2; i < command.length; i++) {
+                for (int i = 2; i < command.length; i++) {
                     Tecton t = (Tecton) objects.get(command[i]);
                     tectons.add(t);
                 }
@@ -802,7 +895,8 @@ public class Controller {
                 break;
             }
 
-            case "setState" : {
+
+            case "setState": {
                 String insectName = command[1];
 
                 Insect insect;
@@ -841,18 +935,20 @@ public class Controller {
                 break;
             }
 
-            case "setFungusPlayerCount" : {
+
+            case "setFungusPlayerCount": {
                 int n = Integer.parseInt(command[1]);
                 fungusPlayerCount = n;
 
                 break;
             }
 
-            case "break" : {
+
+            case "break": {
                 String tectonName = command[1];
 
                 Tecton tecton;
-                if(objects.containsKey(tectonName)){
+                if (objects.containsKey(tectonName)) {
                     tecton = (Tecton) objects.get(tectonName);
                 } else {
                     System.out.println("Helytelen parancs! - Nincs ilyen nevű tekton");
@@ -861,7 +957,7 @@ public class Controller {
 
                 List<Tecton> tectons = new ArrayList<>(tecton.breakTecton());
 
-                if(tectons == null){
+                if (tectons == null) {
                     System.out.println("Sikertelen volt a parancs");
                     return;
                 }
@@ -880,10 +976,11 @@ public class Controller {
                 break;
             }
 
-            case "deleteUnnecessaryThreads" : {
+
+            case "deleteUnnecessaryThreads": {
                 String threadName = command[1];
                 FungalThread thread;
-                if (objects.containsKey(threadName)){
+                if (objects.containsKey(threadName)) {
                     thread = (FungalThread) objects.get(threadName);
                 } else {
                     System.out.println("Helytelen parancs! - Hibás fonál név");
@@ -894,7 +991,8 @@ public class Controller {
                 break;
             }
 
-            case "putFirstMushroom" : {
+
+            case "putFirstMushroom": {
                 if (round != 0)
                     return;
 
@@ -902,7 +1000,7 @@ public class Controller {
                 String tectonName = command[2];
 
                 Tecton tecton;
-                if (objects.containsKey(tectonName)){
+                if (objects.containsKey(tectonName)) {
                     tecton = (Tecton) objects.get(tectonName);
                 } else {
                     System.out.println("Helytelen parancs! - Hibás tekton név");
@@ -948,7 +1046,8 @@ public class Controller {
                 break;
             }
 
-            case "growMushroom" : {
+
+            case "growMushroom": {
                 String threadName = command[1];
                 String tectonName = command[2];
 
@@ -973,223 +1072,235 @@ public class Controller {
                 break;
             }
 
-            case "loadResult":{
+
+            case "loadResult": {
                 readAndPrintFile("result.txt");
                 break;
             }
 
-            default:{
+
+            default: {
                 System.out.println("Helytelen parancs");
             }
         }
-
     }
 
-    public void setCurrentPlayer(){
+
+    public void setCurrentPlayer() {
         int indexCurrentPlayer = -1;
 
-        if(fungusPlayers.contains(currentPlayer)){
-            for(int i=0; i<fungusPlayers.size();i++){
-                if (currentPlayer.equals(fungusPlayers.get(i))){
+        if (fungusPlayers.contains(currentPlayer)) {
+            for (int i = 0; i < fungusPlayers.size(); i++) {
+                if (currentPlayer.equals(fungusPlayers.get(i))) {
                     indexCurrentPlayer = i;
                 }
             }
 
-            if(indexCurrentPlayer == fungusPlayers.size()-1){
-                if(!insectPlayers.isEmpty()){
+            if (indexCurrentPlayer == fungusPlayers.size() - 1) {
+                if (!insectPlayers.isEmpty()) {
                     currentPlayer = insectPlayers.get(0);
-                }else{
+                } else {
                     currentPlayer = fungusPlayers.get(0);
                     initRound();
                 }
-            }else{
-                currentPlayer = fungusPlayers.get(indexCurrentPlayer+1);
+            } else {
+                currentPlayer = fungusPlayers.get(indexCurrentPlayer + 1);
             }
 
-        }else if(insectPlayers.contains(currentPlayer) && indexCurrentPlayer==-1){
-            for(int i=0; i<insectPlayers.size();i++){
-                if (currentPlayer.equals(insectPlayers.get(i))){
+        } else if (insectPlayers.contains(currentPlayer) && indexCurrentPlayer == -1) {
+            for (int i = 0; i < insectPlayers.size(); i++) {
+                if (currentPlayer.equals(insectPlayers.get(i))) {
                     indexCurrentPlayer = i;
                 }
             }
-            if(indexCurrentPlayer == insectPlayers.size()-1){
-                if(!fungusPlayers.isEmpty()){
+            if (indexCurrentPlayer == insectPlayers.size() - 1) {
+                if (!fungusPlayers.isEmpty()) {
                     currentPlayer = fungusPlayers.get(0);
                     initRound();
-                }else{
+                } else {
                     currentPlayer = insectPlayers.get(0);
                     initRound();
                 }
-            }else{
-                currentPlayer = insectPlayers.get(indexCurrentPlayer+1);
+            } else {
+                currentPlayer = insectPlayers.get(indexCurrentPlayer + 1);
             }
         }
     }
 
-    public void initRound(){
+
+    public void initRound() {
         round++;
 
-        if(round < maxRound){
-            for(FungusPlayer fungPlayer : fungusPlayers){
+        if (round < maxRound) {
+            for (FungusPlayer fungPlayer : fungusPlayers) {
                 fungPlayer.getThread().timeCheck();
             }
 
-            for(InsectPlayer insPlayer : insectPlayers){
-                for(InsectAssociation insectA : insPlayer.getInsects()){
+            for (InsectPlayer insPlayer : insectPlayers) {
+                for (InsectAssociation insectA : insPlayer.getInsects()) {
                     InsectState state = insectA.getInsect().getState();
 
-                    if(state == SLOWED){
+                    if (state == SLOWED) {
                         insectA.setMoved(false);
                         insectA.setCut(true);
                         insectA.getInsect().setState(NORMAL);
-                    }else if(state == PARALYZED){
+                    } else if (state == PARALYZED) {
                         insectA.setMoved(false);
                         insectA.setCut(false);
                         insectA.getInsect().setState(NORMAL);
-                    }else if(state == NOCUT){
+                    } else if (state == NOCUT) {
                         insectA.setMoved(true);
                         insectA.setCut(false);
                         insectA.getInsect().setState(NORMAL);
-                    }else if(state == DIVIDED){
-                
+                    } else if (state == DIVIDED) {
+
                         insectA.getInsect().setState(NORMAL);
-                    }else if(state == SPEEDBOOST){
+                    } else if (state == SPEEDBOOST) {
                         insectA.getInsect().setState(NORMAL);
                     }
                 }
             }
 
-
-            for(FungusPlayer fungPlayer : fungusPlayers){
+            for (FungusPlayer fungPlayer : fungusPlayers) {
                 fungPlayer.setBranchThread(false);
 
-                for(MushroomAssociation mushA : fungPlayer.getMushrooms()){
-                    mushA.setAge(mushA.getAge()+1);
-                    if(mushA.getAge() >= 5){
+                for (MushroomAssociation mushA : fungPlayer.getMushrooms()) {
+                    mushA.setAge(mushA.getAge() + 1);
+                    if (mushA.getAge() >= 5) {
                         mushA.getMushroom().evolve();
                     }
 
-                    if(round % 2 == 0){
+                    if (round % 2 == 0) {
                         Spore spore = null;
-                        if(randomize){
+                        if (randomize) {
                             int randNum = randomize(5);
 
-                            switch(randNum){
-                                case 0:{
+                            switch (randNum) {
+                                case 0: {
                                     spore = new SlowingSpore();
                                     break;
                                 }
-                                case 1:{
+
+                                case 1: {
                                     spore = new SpeedSpore();
                                     break;
                                 }
-                                case 2:{
+
+                                case 2: {
                                     spore = new ParalysingSpore();
                                     break;
                                 }
-                                case 3:{
+
+                                case 3: {
                                     spore = new NoCutSpore();
                                     break;
                                 }
-                                case 4:{
+
+                                case 4: {
                                     spore = new DividingSpore();
                                     break;
                                 }
-                                default:{
+
+                                default: {
                                     spore = new SpeedSpore();
                                     break;
                                 }
-
                             }
 
-                        }else{
-                            spore = new SpeedSpore();
-                        }
+                        } else { spore = new SpeedSpore(); }
 
                         //Hmmm jajjaj
-                        spore.setThread((FungalThread)fungPlayer.getThread());
-
+                        spore.setThread((FungalThread) fungPlayer.getThread());
                         mushA.getMushroom().generateSpore(spore);
-
                     }
-
                 }
             }
 
-            if(round % 4 == 0){
-                for(ITectonController tecton : tList){
+            if (round % 4 == 0) {
+                for (ITectonController tecton : tList) {
                     tecton.absorb();
                 }
 
                 tList.get(randomize(tList.size())).breakTecton();
             }
 
-        }else{
-            FungusPlayer fWinner=null;
-            InsectPlayer iWinner=null;
+        } else {
+            FungusPlayer fWinner = null;
+            InsectPlayer iWinner = null;
             int fMaxPoint = 0;
             int iMaxPoint = 0;
-            for(FungusPlayer fPlayer : fungusPlayers){
-                if(fPlayer.getPoints() > fMaxPoint){
+            for (FungusPlayer fPlayer : fungusPlayers) {
+                if (fPlayer.getPoints() > fMaxPoint) {
                     fWinner = fPlayer;
                     fMaxPoint = fPlayer.getPoints();
                 }
                 System.out.println(fPlayer.getName() + "-" + fPlayer.getPoints());
             }
 
-            for(InsectPlayer iPlayer : insectPlayers){
-                if(iPlayer.getPoints() > iMaxPoint){
+            for (InsectPlayer iPlayer : insectPlayers) {
+                if (iPlayer.getPoints() > iMaxPoint) {
                     iWinner = iPlayer;
                     iMaxPoint = iPlayer.getPoints();
                 }
                 System.out.println(iPlayer.getName() + "-" + iPlayer.getPoints());
             }
-            if(!(fWinner==null) || !(iWinner==null)){
+
+            if (!(fWinner == null) || !(iWinner == null)) {
                 System.out.println("Nyertesek: " + fWinner.getName() + " " + iWinner.getName());
             }
         }
-
     }
 
-    
-    public String getNewMushroomName(){
+
+    public String getNewMushroomName() {
         mushroomCount++;
-        String name = "m"+mushroomCount;
+        String name = "m" + mushroomCount;
         System.out.println(name);
         return name;
     }
-    public String getNewThreadName(){
+
+
+    public String getNewThreadName() {
         fungalThreadCount++;
-        String name = "f"+fungalThreadCount;
+        String name = "f" + fungalThreadCount;
         System.out.println(name);
         return name;
     }
-    public String getNewSporeName(){
+
+
+    public String getNewSporeName() {
         sporeCount++;
-        String name = "s"+sporeCount;
+        String name = "s" + sporeCount;
         System.out.println(name);
         return name;
     }
-    public String getNewInsectName(){
+
+
+    public String getNewInsectName() {
         insectCount++;
-        String name = "i"+insectCount;
+        String name = "i" + insectCount;
         System.out.println(name);
         return name;
     }
-    public String getNewTectonName(){
+
+
+    public String getNewTectonName() {
         tectonCount++;
-        String name = "t"+tectonCount;
+        String name = "t" + tectonCount;
         System.out.println(name);
         return name;
     }
-    public int randomize(int domain){
-        if(randomize == true){
+
+
+    public int randomize(int domain) {
+        if (randomize == true) {
             IView rand = new View();
             return (rand.randomize() % domain);
-        }else{
+        } else {
             return 0;
         }
     }
+
 
     private void writeObjectsToFile(Map<String, Object> objects, Writer writer) throws IOException {
         BufferedWriter bw = new BufferedWriter(writer);
@@ -1260,6 +1371,7 @@ public class Controller {
         bw.flush();
     }
 
+
     public static void readAndPrintFile(String file) {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
@@ -1269,5 +1381,4 @@ public class Controller {
             System.err.println("Hiba a fájl beolvasása során: " + e.getMessage());
         }
     }
-
 }
