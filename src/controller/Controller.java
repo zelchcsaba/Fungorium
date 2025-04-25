@@ -172,6 +172,7 @@ public class Controller {
                 Tecton t = (Tecton)objects.get(command[1]);
                 FungalThread f = (FungalThread)objects.get(command[2]);
                 FungusPlayer fplayer = (FungusPlayer)objects.get(command[3]);
+
                 m.setThread(f);
                 m.setPosition(t);
                 if(t.setMushroom(m)){
@@ -269,6 +270,13 @@ public class Controller {
             }
 
             case "cut":{ //<Rovarnév> <Tektonnév>
+
+
+
+                //ezt javitani
+                //+ezt csak akkor lehet kiadni ha nem 0. k0rben vagyunk
+
+
                 if (!(currentPlayer instanceof InsectPlayer)) { // Ebbe nem vagyok biztos, hogy szép e így, vagy, hogy egyáltalán kell e
                     System.out.println("A 'cut' parancs csak rovarász játékosoknak engedélyezett!");
                     return;
@@ -403,6 +411,10 @@ public class Controller {
             }
 
             case "putFirstInsect":{
+
+                //itt csak ha kor 0
+                //csak ha egy insectplayer
+
                 Tecton t = (Tecton) objects.get(command[1]);
                 Insect insect = new Insect();
                 boolean returnV = t.putFirstInsect(insect);
@@ -578,13 +590,7 @@ public class Controller {
                     return;
                 }
 
-                if(tecton instanceof AbsorbingTecton){
-                    tecton.absorb();
-                }
-                else {
-                    System.out.println("A megadott tekton nem Absorbingtecton típusú");
-                    return;
-                }
+                tecton.absorb();
 
                 break;
             }
