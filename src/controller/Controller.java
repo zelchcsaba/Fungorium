@@ -1,6 +1,8 @@
 package controller;
 import java.io.BufferedWriter;
+import java.io.BufferedReader;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -317,6 +319,33 @@ public class Controller {
                 }catch(IOException e){
                     e.printStackTrace();
                 }
+                break;
+            }
+
+            case "arrange":{
+                break;
+            }
+            case "end":{
+                break;
+            }
+            case "act":{
+                break;
+            }
+
+            case "runTest":{
+                String fileName = command[1];
+
+                try{
+                    BufferedReader br = new BufferedReader(new FileReader(fileName));
+                    String comm;
+                    while((comm = br.readLine()) != null){
+                        System.out.println(comm);
+                        processCmd(comm);
+                    }
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+
                 break;
             }
 
@@ -661,6 +690,9 @@ public class Controller {
                 }
 
                 break;
+            }
+            default:{
+                System.out.println("Helytelen parancs");
             }
         }
 
