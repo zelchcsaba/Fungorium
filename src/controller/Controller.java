@@ -351,6 +351,22 @@ public class Controller {
                 break;
             }
 
+            // uaz mint az előző, csak a szemantika más, ezt azért használjunk, hogy felépítsünk egy kezdő pályát
+            case "loadInit":{ //<InitFájlneve>
+                String fileName = command[1];
+                try{
+                    BufferedReader br = new BufferedReader(new FileReader(fileName));
+                    String line;
+                    while((line = br.readLine()) != null){
+                        processCmd(line); // Parancs végrehajtása
+                        System.out.println(line); // kiírjuk milyen parancsot hajtottunk végre 
+                    }
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+                break;
+            }
+
             case "setShotSpores":{
                 Mushroom m = (Mushroom) objects.get(command[1]);
 
@@ -1251,5 +1267,4 @@ public class Controller {
             System.err.println("Hiba a fájl beolvasása során: " + e.getMessage());
         }
     }
-
 }
