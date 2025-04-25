@@ -1,6 +1,6 @@
 package controller;
 
-public class Player {
+public  class Player {
     private int points;
     private String name;
 
@@ -10,6 +10,10 @@ public class Player {
 
     public int getPoints(){
         return points;
+    }
+
+    public void addPoint(){
+        points++;
     }
 
     public void setName(String name){

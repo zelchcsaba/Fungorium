@@ -1,13 +1,23 @@
 package controller;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import java.util.TreeMap;
+import java.lang.reflect.Field;
 import model.*;
+import static model.InsectState.*;  // InsectState.NORMAL helyett lehet írni simán, hogy NORMAL
+import static model.MushroomState.*;
 import view.IView;
 import view.View;
-
-import java.util.HashMap;
-
 
 public class Controller {
     private int round;
@@ -75,6 +85,48 @@ public class Controller {
             break;
             }
 
+            case "createSpore":{//<Spórafajta> <Tektonnév> <Fonálnév>
+		        //  Paraméterek kinyerése
+			    String type = command[1]; 
+			    String tectonName = command[2];
+			    String fungalName = command[3];
+
+			    // Megfelelő objektum inicializálása
+                Spore spore;
+			    switch(type){
+                    case "SlowingSpore":
+                        spore = new SlowingSpore();
+                    break;
+                    case "SpeedSpore":
+                        spore = new SpeedSpore();
+                    break;
+                    case "ParalysingSpore":
+                        spore = new ParalysingSpore();
+                    break;
+                    case "NoCutSpore":
+                        spore = new NoCutSpore();
+                    break;
+                    case "DividingSpore":
+                        spore = new DividingSpore();
+                    break;
+                    default:
+                        System.out.println("helytelen parancs");
+                    return;
+                }
+
+			    // Asszociációk beállítása
+                Tecton tecton = (Tecton)objects.get(tectonName);
+                tecton.addSpore(spore);
+
+                FungalThread fungal = (FungalThread)objects.get(fungalName);
+                spore.setThread(fungal);
+
+                // Konténerbe bele
+                String name = getNewSporeName();
+                objects.put(name, spore);
+                break;
+            }	
+
             case "setNeighbors":{
                 Tecton t = (Tecton)objects.get(command[1]);
                 List<Tecton> neighborList= new ArrayList<>();
@@ -132,7 +184,476 @@ public class Controller {
                 break;
             }
 
+            case "createEvolvedMushroom":{ // <Tektonnév> <Fonálnév> <Játékosnév>
+                // Paraméterek kinyerése
+                String tectonName = command[1];
+                String fungalName = command[2];
+                String playerName = command[3];
+
+                Tecton t = (Tecton)objects.get(tectonName);
+                FungalThread f = (FungalThread)objects.get(fungalName);
+                FungusPlayer fplayer = (FungusPlayer)objects.get(playerName);
+
+                Mushroom m = new Mushroom();
+
+                if(t.setMushroom(m)){
+                    m.setState(EVOLVED);
+                    m.setThread(f);
+                    m.setPosition(t);
+                    MushroomAssociation mAssociation = new MushroomAssociation();
+                    mAssociation.setMushroom(m);
+                    mAssociation.setAge(6);
+                    fplayer.addMushroomAssociation(mAssociation);
+                    String name = getNewMushroomName();
+                    objects.put(name, m);
+                }else{
+                    System.out.println("Sikertelen");
+                }
+                break;
+            }
+
+            case "createInsect":{ // <Tektonnév> <Játékosnév>
+		        // Paraméterek kinyerése
+    		    String tectonName = command[1];
+   	    	    String playerName = command[2];
+
+		        // Megfelelő objektum inicializálása
+			    Insect insect = new Insect();
+
+			    // Asszociációk beállítása
+                Tecton tecton = (Tecton)objects.get(tectonName);
+    		    insect.setPosition(tecton);
+                tecton.setInsect(insect);
+
+                InsectPlayer iPlayer = (InsectPlayer)objects.get(playerName);
+		        iPlayer.addInsect(insect);
+
+			    //Konténerbe bele
+                String name = getNewInsectName();
+                objects.put(name, insect);
+            break;
+            }
+            
+            case "createFungusPlayers":{//<Játékosnév><Játékosnév><Játékosnév><Játékosnév>
+		        // Ellenőrizzük a parancs helyességét
+                if(command.length>5 || command.length!=fungusPlayerCount+1){
+                    System.out.println("túl sok paraméter");
+                    return;
+                }
+
+		        // Objektumok incializálása
+                for(int i = 0; i<command.length; i++){
+                    FungusPlayer fPlayer = new FungusPlayer(); 
+                    String name = command[i];
+                    objects.put(name, fPlayer);
+                    fungusPlayers.add(fPlayer);
+                }
+            break;
+            }
+
+            case "createInsectPlayers":{//<Játékosnév><Játékosnév><Játékosnév><Játékosnév>
+		        // Ellenőrizzük a parancs helyességét
+                if(command.length>5 || command.length!=insectPlayerCount+1){
+                    System.out.println("túl sok paraméter");
+                    return;
+                }
+
+		        // Objektumok incializálása
+                for(int i = 0; i<command.length; i++){
+                    InsectPlayer iPlayer = new InsectPlayer(); 
+                    String name = command[i];
+                    objects.put(name, iPlayer);
+                    insectPlayers.add(iPlayer);
+                }
+            break;
+            }
+
+            case "cut":{ //<Rovarnév> <Tektonnév>
+                if (!(currentPlayer instanceof InsectPlayer)) { // Ebbe nem vagyok biztos, hogy szép e így, vagy, hogy egyáltalán kell e
+                    System.out.println("A 'cut' parancs csak rovarász játékosoknak engedélyezett!");
+                    return;
+                }
+
+                // Paraméterek kinyerése
+                String insectName = command[1];
+                String tectonName = command[2];
+                
+                // Megfelelő objektumok előszedése
+                Tecton tecton = (Tecton)objects.get(tectonName);
+                Insect insect = (Insect)objects.get(insectName);
+
+                // Segéd objektumok
+                InsectPlayer insectPlayer = (InsectPlayer) currentPlayer;
+                InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
+                
+                // Az ő rovarával akar vágni?
+                if (insectAssociation == null) {
+                    System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
+                    return;
+                }
+                // Tud vágni?
+                if (insectAssociation.getCut()) {
+                    System.out.println("Ez a rovar már vágott ebben a körben.");
+                    return;
+                }
+
+                // Vágás
+                insect.cut(tecton);
+                insectAssociation.setCut(true);
+            break;
+            }
+
+            case "saveResult":{
+                try{
+                    writeObjectsToFile(objects, new FileWriter("result.txt"));
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+                break;
+            }
+
+            case "setShotSpores":{
+                Mushroom m = (Mushroom) objects.get(command[1]);
+
+                int shotSporesCount = Integer.parseInt(command[2]);
+                m.setShootedSporesCount(shotSporesCount);
+                break;
+            }
+
+            case "setMushroomAge":{
+                Mushroom m = (Mushroom) objects.get(command[1]);
+
+                int newAge = Integer.parseInt(command[2]);
+                for(int i =0; i < fungusPlayers.size(); i++){
+                    for(MushroomAssociation mushroomAss : fungusPlayers.get(i).getMushrooms()){
+                        if(mushroomAss.getMushroom() == m){
+                            mushroomAss.setAge(newAge);
+                        }
+                    }
+                }
+                break;
+            }
+
+            case "stepGameRound":{
+                int r = Integer.parseInt(command[1]);
+                round += r;
+                break;
+            }
+
+            case "evolve":{
+                Mushroom m = (Mushroom) objects.get(command[1]);
+                boolean returnV = m.evolve();
+                if(!returnV){
+                    System.out.println("Sikertelen!");
+                }
+                break;
+            }
+
+            case "divide":{
+                Insect insect = (Insect) objects.get(command[1]);
+
+                Insect insect2 = insect.divide();
+                if(insect2 != null){
+                    objects.put(getNewInsectName(), insect2);
+                   
+                    for(InsectPlayer iPlayer : insectPlayers){
+                        for(InsectAssociation insectA : iPlayer.getInsects()){
+                            if(insectA.getInsect() == insect){
+                                iPlayer.addInsect(insect2);
+                            }
+                        }
+                    }
+
+                }else{
+                    System.out.println("Sikertelen!");
+                }
+                break;
+            }
+
+            case "closeStep":{
+                setCurrentPlayer();
+                break;
+            }
+
+            case "shootSpore":{
+                 //Meg kell találni a gomba playerét, és meg kell nézni hogy a currentPlayer az-e
+                
+                Mushroom m = (Mushroom) objects.get(command[1]);
+                Tecton t = (Tecton) objects.get(command[2]);
+
+                FungusPlayer mushroomPlayer = null;
+                for(FungusPlayer fPlayer : fungusPlayers){
+                    for(MushroomAssociation mushroomA : fPlayer.getMushrooms()){
+                        if(mushroomA.getMushroom() == m){
+                            mushroomPlayer = fPlayer;
+                        }
+                    }
+                }
+
+                if(mushroomPlayer != currentPlayer){
+                    System.out.println("Ez nem a te gombad!");
+                    return;
+                }
+                
+                boolean returnV = m.shootSpore(t);
+                if(!returnV){
+                    System.out.println("Sikertelen!");
+                }
+                break;
+            }
+
+            case "putFirstInsect":{
+                Tecton t = (Tecton) objects.get(command[1]);
+                Insect insect = new Insect();
+                boolean returnV = t.putFirstInsect(insect);
+
+                if(returnV){
+                    objects.put(getNewInsectName(), insect);
+                    InsectPlayer iPlayer = (InsectPlayer) currentPlayer;
+                    iPlayer.addInsect(insect);
+                    setCurrentPlayer();
+                }else{
+                    System.out.println("Sikertelen!");
+                }    
+                break;
+            }
+
+
+            case "move":{ //<Rovarnév> <Tektonnév>
+                if (!(currentPlayer instanceof InsectPlayer)) { // Ebbe nem vagyok biztos, hogy szép e így, vagy, hogy egyáltalán kell e
+                    System.out.println("A 'move' parancs csak rovarász játékosoknak engedélyezett!");
+                    return;
+                }
+
+                // Paraméterek kinyerése
+                String insectName = command[1];
+                String tectonName = command[2];
+                
+                // Megfelelő objektumok előszedése
+                Tecton tecton = (Tecton)objects.get(tectonName);
+                Insect insect = (Insect)objects.get(insectName);
+
+                // Segéd objektumok
+                List<Spore> spores = tecton.getSpores();
+                InsectPlayer insectPlayer = (InsectPlayer) currentPlayer;
+                InsectAssociation insectAssociation = insectPlayer.getInsectAssociation(insect);
+                
+                // Az ő rovarával akar lépni?
+                if (insectAssociation == null) {
+                    System.out.println("Ez a rovar nem a játékosodhoz tartozik.");
+                    return;
+                }
+                // Tud lépni?
+                if (insectAssociation.getMoved()) {
+                    System.out.println("Ez a rovar már lépett ebben a körben.");
+                    return;
+                }
+
+                // Lesz evés?
+                boolean eat = false;
+                if(!spores.isEmpty()) eat = true;
+
+                // Lépés
+                if(insect.move(tecton)){
+                    insectAssociation.setMoved(true);
+                    if (eat) {
+                        Spore spore = spores.getFirst();
+                        objects.remove(spore);
+                        spores.removeFirst();
+                        insectPlayer.addPoint();
+                    }
+                }
+
+                // Kapott effekt hatása
+                if(insect.getState().equals(DIVIDED)){ // létrejön egy új rovar
+                    Insect otherInsect = insect.divide();
+                    if(otherInsect !=null){
+                        String name = getNewInsectName();
+                        objects.put(name, otherInsect);
+                        insectPlayer.addInsect(otherInsect);
+                    }
+                }
+                if(insect.getState().equals(SPEEDBOOST)){ // mintha nem is lépett volna
+                    insectAssociation.setMoved(false);
+                }
+                if(insect.getState().equals(NOCUT) || insect.getState().equals(PARALYZED)){ // nocut = mintha már vágott volna
+                    insectAssociation.setCut(true);                                       // paralyzed = mintha már vágott és lépett is volna (az utóbbi igaz is)      
+                }
+                // normal-t és slowed-et nem kell kezelni sztem
+            }
+            
+            case "turnOnRandom":{
+                randomize = true;
+                break;
+            }
+
+            case "turnOffRandom":{
+                randomize = false;
+                break;
+            }
+
+            case "generateSpore":{ // <Gombatest név> <Spórafajta>
+
+                // Parancsok feldolgozása
+                String mushroomName = command[1];
+                String sporeType = command[2];
+
+                // Gombatest lekérdezése
+                Mushroom mushroom;
+                if(objects.containsKey(mushroomName)){
+                    mushroom = (Mushroom) objects.get(mushroomName);
+                }
+                else {
+                    System.out.println("Helytelen parancs! - Nincs ilyen nevű gombatest");
+                    return;
+                }
+
+
+                //Spóra létrehozása, majd beállítása típusnak megfelelően
+                Spore spore;
+
+                switch(sporeType){
+                    case "SlowingSpore":
+                        spore = new SlowingSpore();
+                        break;
+                    case "SpeedSpore":
+                        spore = new SpeedSpore();
+                        break;
+                    case "ParalysingSpore":
+                        spore = new ParalysingSpore();
+                        break;
+                    case "NoCutSpore":
+                        spore = new NoCutSpore();
+                        break;
+                    case "DividingSpore":
+                        spore = new DividingSpore();
+                        break;
+                    default:
+                        System.out.println("Helytelen parancs! - Nincs ilyen Spóratípus");
+                        return;
+                }
+
+                // Fonál beállítása a spórának
+                spore.setThread(mushroom.getThread());
+
+                // Spóra beállítása
+                mushroom.generateSpore(spore);
+
+                // Konténerbe bele
+                objects.put(getNewSporeName(), spore );
+
+                break;
+            }
+
+            case "setMaxRound":{ // <Pozitív egész>
+                int n = Integer.parseInt(command[1]);
+
+                if(maxRound > 0){ maxRound = n; } // Max kör beállítása
+                else {
+                    System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
+                }
+
+                break;
+            }
+
+            case "setInsectPlayerCount" : { // <Pozitív egész>
+                int n = Integer.parseInt(command[1]);
+
+                if(insectPlayerCount > 0){ insectPlayerCount = n; } // Rovarászok számának beállítása
+                else {
+                    System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
+                }
+                break;
+            }
+
+            case "absorb" : { // <Tektonnév>
+                String tectonName = command[1];
+                Tecton tecton;
+
+                if(objects.containsKey(tectonName)){
+                    tecton = (Tecton) objects.get(tectonName);
+                }
+                else {
+                    System.out.println("Helytelen parancs! - Nincs ilyen nevű tekton");
+                    return;
+                }
+
+                if(tecton instanceof AbsorbingTecton){
+                    tecton.absorb();
+                }
+                else {
+                    System.out.println("A megadott tekton nem Absorbingtecton típusú");
+                    return;
+                }
+
+                break;
+            }
+
+            case "timeCheck" : {
+                    for(Object o : objects.values()){   // Bejárjuk az objektumok listáját, és az összes FungalThread típusú
+                        if(o instanceof FungalThread){  // objektumnak meghívjuk a timeCheck metódusát.
+                            ((FungalThread) o).timeCheck();
+                        }
+                    }
+                break;
+            }
+
+            case "branchThread" : { // <Fonal név>  <Tektonnév>
+
+                // Parancsok feldolgozása
+                String threadName = command[1];
+                String tectonName = command[2];
+
+                // Megfelelő objektumok beállítása
+                FungalThread thread;
+                Tecton tecton;
+
+                if(objects.containsKey(threadName) && objects.containsKey(tectonName)){
+                    thread = (FungalThread) objects.get(threadName);
+                    tecton = (Tecton) objects.get(tectonName);
+                }
+                else{
+                    System.out.println("Helytelen parancs! - Hibás fonál- vagy tektonnév");
+                    return;
+                }
+
+                // Ha sikertelen akkor kiírja
+                if(!thread.branchThread(tecton)){
+                    System.out.println("Sikertelen");
+                }
+
+                break;
+            }
+
+            case "eatInsect" : { // <Fonal név>  <Rovarnév>
+                String threadName = command[1];
+                String insectName = command[2];
+
+                // Megfelelő objektumok beállítása
+                FungalThread thread;
+                Insect insect;
+
+                if(objects.containsKey(threadName) && objects.containsKey(insectName)){
+                    thread = (FungalThread) objects.get(threadName);
+                    insect = (Insect) objects.get(insectName);
+                }
+                else{
+                    System.out.println("Helytelen parancs! - Hibás fonál- vagy rovarnév");
+                    return;
+                }
+
+                // Ha sikertelen, akkor kiírja, egyébként kivesszi a rovart az objectsből
+                if(!thread.eatInsect(insect)){
+                    System.out.println("Sikertelen");
+                }
+                else {
+                    objects.remove(insectName, insect);
+                }
+
+                break;
+            }
         }
+
     }
     public void setCurrentPlayer(){
         int indexCurrentPlayer = -1;
@@ -176,8 +697,126 @@ public class Controller {
     }
 
     public void initRound(){
-        
+        round++;
+
+        if(round < maxRound){
+            for(FungusPlayer fungPlayer : fungusPlayers){
+                fungPlayer.getThread().timeCheck();
+            }
+
+            for(InsectPlayer insPlayer : insectPlayers){
+                for(InsectAssociation insectA : insPlayer.getInsects()){
+                    InsectState state = insectA.getInsect().getState();
+
+                    if(state == SLOWED){
+                        insectA.setMoved(false);
+                        insectA.setCut(true);
+                        insectA.getInsect().setState(NORMAL);
+                    }else if(state == PARALYZED){
+                        insectA.setMoved(false);
+                        insectA.setCut(false);
+                        insectA.getInsect().setState(NORMAL);
+                    }else if(state == NOCUT){
+                        insectA.setMoved(true);
+                        insectA.setCut(false);
+                        insectA.getInsect().setState(NORMAL);
+                    }else if(state == DIVIDED){
+                
+                        insectA.getInsect().setState(NORMAL);
+                    }else if(state == SPEEDBOOST){
+                        insectA.getInsect().setState(NORMAL);
+                    }
+                }
+            }
+
+
+            for(FungusPlayer fungPlayer : fungusPlayers){
+                fungPlayer.setBranchThread(false);
+
+                for(MushroomAssociation mushA : fungPlayer.getMushrooms()){
+                    mushA.increaseAge();
+                    if(mushA.getAge() >= 5){
+                        mushA.getMushroom().evolve();
+                    }
+
+                    if(round % 2 == 0){
+                        Spore spore = null;
+                        if(randomize){
+                            int randNum = randomize(5);
+
+                            switch(randNum){
+                                case 0:{
+                                    spore = new SlowingSpore();
+                                    break;
+                                }
+                                case 1:{
+                                    spore = new SpeedSpore();
+                                    break;
+                                }
+                                case 2:{
+                                    spore = new ParalysingSpore();
+                                    break;
+                                }
+                                case 3:{
+                                    spore = new NoCutSpore();
+                                    break;
+                                }
+                                case 4:{
+                                    spore = new DividingSpore();
+                                    break;
+                                }
+
+                            }
+
+                        }else{
+                            spore = new SpeedSpore();
+                        }
+
+                        //Hmmm jajjaj
+                        spore.setThread(fungPlayer.getThread());
+
+                        mushA.getMushroom().generateSpore(spore);
+
+                    }
+
+                }
+            }
+
+            if(round % 4 == 0){
+                for(ITectonController tecton : tList){
+                    tecton.absorb();
+                }
+
+                tList.get(randomize(tList.size())).breakTecton();
+            }
+
+        }else{
+            FungusPlayer fWinner;
+            InsectPlayer iWinner;
+            int fMaxPoint = 0;
+            int iMaxPoint = 0;
+            for(FungusPlayer fPlayer : fungusPlayers){
+                if(fPlayer.getPoints() > fMaxPoint){
+                    fWinner = fPlayer;
+                    fMaxPoint = fPlayer.getPoints();
+                }
+                System.out.println(fPlayer.getName() + "-" + fPlayer.getPoints());
+            }
+
+            for(InsectPlayer iPlayer : insectPlayers){
+                if(iPlayer.getPoints() > iMaxPoint){
+                    iWinner = iPlayer;
+                    iMaxPoint = iPlayer.getPoints();
+                }
+                System.out.println(iPlayer.getName() + "-" + iPlayer.getPoints());
+            }
+
+            System.out.println("Nyertesek: " + fWinner.getName() + " " + iWinner.getName());
+        }
+
     }
+
+    
     public String getNewMushroomName(){
         mushroomCount++;
         String name = "m"+mushroomCount;
@@ -216,4 +855,74 @@ public class Controller {
             return 0;
         }
     }
+
+    private void writeObjectsToFile(Map<String, Object> objects, Writer writer) throws IOException {
+        BufferedWriter bw = new BufferedWriter(writer);
+        Map<Object, String> reverseLookup = new HashMap<>();
+        Map<String, Object> sortedObjects = new TreeMap<>(objects); // ABC sorrend az objektumnevekre
+
+        // 1. Objektumok listája
+        bw.write("-begin-\n");
+        for (Map.Entry<String, Object> entry : sortedObjects.entrySet()) {
+            String name = entry.getKey();
+            String type = entry.getValue().getClass().getSimpleName();
+            bw.write(type + " " + name + "\n");
+            reverseLookup.put(entry.getValue(), name);
+        }
+        bw.write("—\n");
+
+        // 2. Attribútumok
+        for (Map.Entry<String, Object> entry : sortedObjects.entrySet()) {
+            String name = entry.getKey();
+            Object obj = entry.getValue();
+            Class<?> clazz = obj.getClass();
+
+            bw.write(name + "\n");
+
+            // Rendezett mezők
+            Field[] fields = clazz.getDeclaredFields();
+            Arrays.sort(fields, Comparator.comparing(Field::getName));
+
+            for (Field field : fields) {
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(obj);
+                    bw.write(field.getName());
+
+                    if (value == null) {
+                        bw.write(" -\n");
+                    } else if (value instanceof Collection<?> col) {
+                        if (col.isEmpty()) {
+                            bw.write(" -\n");
+                        } else {
+                            List<String> names = new ArrayList<>();
+                            for (Object item : col) {
+                                names.add(reverseLookup.get(item));
+                            }
+                            Collections.sort(names);
+                            for (String n : names) {
+                                bw.write(" " + n);
+                            }
+                            bw.write("\n");
+                        }
+                    } else if (reverseLookup.containsKey(value)) {
+                        bw.write(" " + reverseLookup.get(value) + "\n");
+                    } else if (value.getClass().isEnum()) {
+                        bw.write(" " + ((Enum<?>) value).name() + "\n");
+                    } else {
+                        bw.write(" " + value + "\n");
+                    }
+
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Nem tudom elérni a mezőt: " + field.getName(), e);
+                }
+            }
+
+            bw.write("\n");
+        }
+
+        bw.write("-end-\n");
+        bw.flush();
+    }
+
 }

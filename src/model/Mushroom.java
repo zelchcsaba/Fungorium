@@ -15,6 +15,7 @@ public class Mushroom implements IMushroomController{
     private FungalThread thread;
     private MushroomState state;
     private int shootedSporesCount;
+    
 
 
     /**
