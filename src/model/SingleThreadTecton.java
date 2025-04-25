@@ -60,8 +60,9 @@ public class SingleThreadTecton extends Tecton {
      *
      * @param mushroom A beállítandó gomba objektum.
      */
-    public void setMushroom(Mushroom mushroom) {
+    public boolean setMushroom(Mushroom mushroom) {
         this.mushroom = mushroom;
+        return true;
     }
 
 
