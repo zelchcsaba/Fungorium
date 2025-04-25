@@ -1,8 +1,5 @@
 package controller;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -652,8 +649,205 @@ public class Controller {
 
                 break;
             }
-        }
 
+            case "setTectons" : {
+                String threadName = command[1];
+
+                FungalThread thread;
+                if (objects.containsKey(threadName)){
+                    thread = (FungalThread) objects.get(threadName);
+                } else {
+                    System.out.println("Helytelen parancs! - Hibás fonál név");
+                    return;
+                }
+
+                List<Tecton> tectons = new ArrayList<>();
+
+                for(int i = 2; i < command.length; i++) {
+                    Tecton t = (Tecton) objects.get(command[i]);
+                    tectons.add(t);
+                }
+
+                thread.setTectons(tectons);
+
+                break;
+            }
+
+            case "setState" : {
+                String insectName = command[1];
+
+                Insect insect;
+                if (objects.containsKey(insectName)) {
+                    insect = (Insect) objects.get(insectName);
+                } else {
+                    System.out.println("Helytelen parancs! - Hibás rovar név");
+                    return;
+                }
+
+                String state = command[2];
+
+                switch (state) {
+                    case "NORMAL":
+                        insect.setState(NORMAL);
+                        break;
+                    case "SLOWED":
+                        insect.setState(SLOWED);
+                        break;
+                    case "PARALYZED":
+                        insect.setState(PARALYZED);
+                        break;
+                    case "DIVIDED":
+                        insect.setState(DIVIDED);
+                        break;
+                    case "NOCUT":
+                        insect.setState(NOCUT);
+                        break;
+                    case "SPEEDBOOST":
+                        insect.setState(SPEEDBOOST);
+                        break;
+                    default:
+                        System.out.println("Helytelen parancs! - Hibás állapot név");
+                        return;
+                }
+                break;
+            }
+
+            case "setFungusPlayerCount" : {
+                int n = Integer.parseInt(command[1]);
+                fungusPlayerCount = n;
+
+                break;
+            }
+
+            case "break" : {
+                String tectonName = command[1];
+
+                Tecton tecton;
+                if(objects.containsKey(tectonName)){
+                    tecton = (Tecton) objects.get(tectonName);
+                } else {
+                    System.out.println("Helytelen parancs! - Nincs ilyen nevű tekton");
+                    return;
+                }
+
+                List<Tecton> tectons = new ArrayList<>(tecton.breakTecton());
+
+                if(tectons == null){
+                    System.out.println("Sikertelen volt a parancs");
+                    return;
+                }
+
+                String tectonName1 = getNewTectonName();
+                objects.put(tectonName1, tectons.get(0));
+                tList.add(tectons.get(0));
+
+                String tectonName2 = getNewTectonName();
+                objects.put(tectonName2, tectons.get(1));
+                tList.add(tectons.get(1));
+
+                objects.remove(tectonName, tecton);
+                tList.remove(tecton);
+
+                break;
+            }
+
+            case "deleteUnnecessaryThreads" : {
+                String threadName = command[1];
+                FungalThread thread;
+                if (objects.containsKey(threadName)){
+                    thread = (FungalThread) objects.get(threadName);
+                } else {
+                    System.out.println("Helytelen parancs! - Hibás fonál név");
+                    return;
+                }
+
+                thread.deleteUnnecessaryThreads();
+                break;
+            }
+
+            case "putFirstMushroom" : {
+                if (round != 0)
+                    return;
+
+                String fungalType = command[1];
+                String tectonName = command[2];
+
+                Tecton tecton;
+                if (objects.containsKey(tectonName)){
+                    tecton = (Tecton) objects.get(tectonName);
+                } else {
+                    System.out.println("Helytelen parancs! - Hibás tekton név");
+                    return;
+                }
+
+                FungalThread thread;
+                switch (fungalType) {
+                    case "ShortLifeThread":
+                        thread = new ShortLifeThread();
+                        break;
+                    case "LongLifeThread":
+                        thread = new LongLifeThread();
+                        break;
+                    default:
+                        System.out.println("Helytelen parancs! - Hibás fonál típus");
+                        return;
+                }
+
+                Mushroom mushroom = new Mushroom();
+                mushroom.setThread(thread);
+                mushroom.setPosition(tecton);
+
+                if (fungusPlayers.contains(currentPlayer)) {
+                    FungusPlayer fungusPlayer = (FungusPlayer) currentPlayer;
+                    fungusPlayer.addMushroom(mushroom);
+                    fungusPlayer.setThread(thread);
+                    currentPlayer.addPoint();
+                } else {
+                    System.out.println("Helytelen parancs! - Jelenlegi játékos nem FungusPlayer típusú.");
+                    return;
+                }
+
+                if (tecton.putFirstMushroom(thread, mushroom)) {
+                    objects.put(getNewMushroomName(), mushroom);
+                    objects.put(getNewThreadName(), thread);
+                } else {
+                    System.out.println("Sikertelen! Nem sikerült a gombát elhelyezni a tektonra.");
+                    return;
+                }
+
+                break;
+            }
+
+            case "growMushroom" : {
+                String threadName = command[1];
+                String tectonName = command[2];
+
+                FungalThread thread;
+                Tecton tecton;
+
+                if (objects.containsKey(threadName) && objects.containsKey(tectonName)) {
+                    thread = (FungalThread) objects.get(threadName);
+                    tecton = (Tecton) objects.get(tectonName);
+                } else {
+                    System.out.println("Helytelen parancs! - Hibás fonál- vagy tektonnév");
+                    return;
+                }
+
+                Mushroom mushroom = new Mushroom();
+                if (thread.growMushroom(tecton, mushroom)) {
+                    objects.put(getNewMushroomName(), mushroom);
+                } else {
+                    System.out.println("Sikertelen! Nem sikerült a gombát elhelyezni a tektonra.");
+                    return;
+                }
+                break;
+            }
+
+            case "loadResult":{
+                readAndPrintFile("result.txt");
+                break;
+            }
+        }
     }
     public void setCurrentPlayer(){
         int indexCurrentPlayer = -1;
@@ -805,6 +999,17 @@ public class Controller {
 
         bw.write("-end-\n");
         bw.flush();
+    }
+
+
+    public static void readAndPrintFile(String file) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null)
+                System.out.println(line);
+        } catch (IOException e) {
+            System.err.println("Hiba a fájl beolvasása során: " + e.getMessage());
+        }
     }
 
 }
