@@ -1,0 +1,55 @@
+<<<<<<< HEAD
+=======
+-begin-
+ShortLifeThread f1
+FungusPlayer fplayer
+Insect i1
+InsectPlayer iplayer
+Mushroom m1
+SlowingSpore s1
+MultiThreadTecton t1
+MultiThreadTecton t2
+MultiThreadTecton t3
+MultiThreadTecton t4
+—
+f1
+
+fplayer
+branchThread false
+fungalThread f1
+mushrooms null
+
+i1
+position t2
+state NORMAL
+
+iplayer
+insects null
+
+m1
+position t1
+shootedSporesCount 0
+spores s1
+state UNEVOLVED
+thread f1
+
+s1
+
+t1
+mushroom m1
+threads -
+
+t2
+mushroom -
+threads -
+
+t3
+mushroom -
+threads -
+
+t4
+mushroom -
+threads -
+
+-end-
+>>>>>>> 1a6f61936c06c70489f8b8573074f3821b3f9bf1

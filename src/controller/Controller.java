@@ -219,7 +219,6 @@ public class Controller {
                 break;
             }
 
-
             case "createEvolvedMushroom": { // <Tektonnév> <Fonálnév> <Játékosnév>
                 // Paraméterek kinyerése
                 String tectonName = command[1];
@@ -285,7 +284,7 @@ public class Controller {
                     FungusPlayer fPlayer = new FungusPlayer(); 
 =======
                 // Objektumok incializálása
-                for (int i = 0; i < command.length; i++) {
+                for (int i = 1; i < command.length; i++) {
                     FungusPlayer fPlayer = new FungusPlayer();
 >>>>>>> e6c04e77e80e786adfe26dd1c7a55ee80fa771bb
                     String name = command[i];
@@ -309,7 +308,7 @@ public class Controller {
                     InsectPlayer iPlayer = new InsectPlayer(); 
 =======
                 // Objektumok incializálása
-                for (int i = 0; i < command.length; i++) {
+                for (int i = 1; i < command.length; i++) {
                     InsectPlayer iPlayer = new InsectPlayer();
 >>>>>>> e6c04e77e80e786adfe26dd1c7a55ee80fa771bb
                     String name = command[i];
