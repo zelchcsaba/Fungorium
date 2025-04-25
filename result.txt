@@ -1,6 +1,4 @@
 -begin-
-FungusPlayer createFungusPlayers
-InsectPlayer createInsectPlayers
 ShortLifeThread f1
 FungusPlayer fplayer
 Insect i1
@@ -12,14 +10,6 @@ MultiThreadTecton t2
 MultiThreadTecton t3
 MultiThreadTecton t4
 —
-createFungusPlayers
-branchThread false
-fungalThread -
-mushrooms -
-
-createInsectPlayers
-insects -
-
 f1
 
 fplayer
