@@ -611,7 +611,7 @@ public class Controller {
             case "setInsectPlayerCount" : { // <Pozitív egész>
                 int n = Integer.parseInt(command[1]);
 
-                if(n > 0){ insectPlayerCount = n; } // Rovarászok számának beállítása
+                if(n >= 0){ insectPlayerCount = n; } // Rovarászok számának beállítása
                 else {
                     System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
                 }
