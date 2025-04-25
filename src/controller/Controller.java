@@ -16,12 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import model.*;
-
 import static model.InsectState.*;  // InsectState.NORMAL helyett lehet írni simán, hogy NORMAL
 import static model.MushroomState.*;
-
 import view.IView;
 import view.View;
 
@@ -379,7 +376,6 @@ public class Controller {
                 break;
             }
 
-<<<<<<< HEAD
             // uaz mint az előző, csak a szemantika más, ezt azért használjunk, hogy felépítsünk egy kezdő pályát
             case "loadInit":{ //<InitFájlneve>
                 String fileName = command[1];
@@ -397,10 +393,6 @@ public class Controller {
             }
 
             case "setShotSpores":{
-=======
-
-            case "setShotSpores": {
->>>>>>> 8f6cf1fe1af6c2606265f2e2541d0aef85686ffe
                 Mushroom m = (Mushroom) objects.get(command[1]);
 
                 int shotSporesCount = Integer.parseInt(command[2]);
