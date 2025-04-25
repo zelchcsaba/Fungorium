@@ -512,7 +512,7 @@ public class Controller {
             case "setMaxRound":{ // <Pozitív egész>
                 int n = Integer.parseInt(command[1]);
 
-                if(maxRound > 0){ maxRound = n; } // Max kör beállítása
+                if(n >= 0){ maxRound = n; } // Max kör beállítása
                 else {
                     System.out.println("Helytelen parancs! - csak pozitív szám fogadható el");
                 }
