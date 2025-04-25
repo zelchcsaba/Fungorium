@@ -1,13 +1,8 @@
 package controller;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-<<<<<<< HEAD
 import java.io.FileReader;
-=======
-import java.io.BufferedReader;
->>>>>>> aabaf9347b0fcfe0099751b98848cccd4d13e5c4
 import java.io.FileWriter;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -727,7 +722,7 @@ public class Controller {
 
                 break;
             }
-<<<<<<< HEAD
+            
             case "assert":{ //<Elvártkimenetfájlnév> 
                 // összehasonlítandó fájlok nevei
                 String resultFile = "result.txt"; // Elmentett állapotot tartalmazza
@@ -765,7 +760,7 @@ public class Controller {
                 }catch (IOException e) {
                     System.out.println("Hiba a fájlok olvasása közben: " + e.getMessage());
                 }
-=======
+            }
 
             case "setTectons" : {
                 String threadName = command[1];
@@ -967,7 +962,6 @@ public class Controller {
 
             default:{
                 System.out.println("Helytelen parancs");
->>>>>>> aabaf9347b0fcfe0099751b98848cccd4d13e5c4
             }
         }
 
