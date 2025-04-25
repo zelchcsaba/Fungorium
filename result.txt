@@ -1,13 +1,24 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
 -begin-
 ShortLifeThread f1
 FungusPlayer fplayer
 Insect i1
+<<<<<<< HEAD
 Insect i2
 InsectPlayer iplayer1
 InsectPlayer iplayer2
 Mushroom m1
 SlowingSpore s1
 NoCutSpore s2
+=======
+InsectPlayer iplayer
+Mushroom m1
+SlowingSpore s1
+>>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
 MultiThreadTecton t1
 MultiThreadTecton t2
 MultiThreadTecton t3
@@ -24,6 +35,7 @@ i1
 position t2
 state NORMAL
 
+<<<<<<< HEAD
 i2
 position t4
 state NORMAL
@@ -38,11 +50,21 @@ m1
 position t2
 shootedSporesCount 0
 spores null
+=======
+iplayer
+insects null
+
+m1
+position t1
+shootedSporesCount 0
+spores s1
+>>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
 state UNEVOLVED
 thread f1
 
 s1
 
+<<<<<<< HEAD
 s2
 
 t1
@@ -52,6 +74,15 @@ threads -
 t2
 mushroom m1
 threads f1
+=======
+t1
+mushroom m1
+threads -
+
+t2
+mushroom -
+threads -
+>>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
 
 t3
 mushroom -
@@ -62,3 +93,7 @@ mushroom -
 threads -
 
 -end-
+<<<<<<< HEAD
+=======
+>>>>>>> 1a6f61936c06c70489f8b8573074f3821b3f9bf1
+>>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
