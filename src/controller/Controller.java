@@ -145,7 +145,6 @@ public class Controller {
 
             case "createShortLifeThread": {
                 FungalThread f = new ShortLifeThread();
-<<<<<<< HEAD
                 Tecton t = (Tecton)objects.get(command[1]);
                 List<Tecton> tlist = new ArrayList<>();
                 List<FungalThread> flist = new ArrayList<>();
@@ -157,14 +156,6 @@ public class Controller {
                 t.setThreads(flist);
                 
                 FungusPlayer fplayer =(FungusPlayer)objects.get(command[2]);
-=======
-
-                List<Tecton> tlist = new ArrayList<>();
-                tlist.add((Tecton) objects.get(command[1]));
-                f.setTectons(tlist);
-
-                FungusPlayer fplayer = (FungusPlayer) objects.get(command[2]);
->>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
                 fplayer.setThread(f);
 
                 String name = getNewThreadName();
@@ -183,10 +174,6 @@ public class Controller {
                 tlist.add(t);
                 flist.add(f);
 
-<<<<<<< HEAD
-=======
-                tlist.add((Tecton) objects.get(command[1]));
->>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
                 f.setTectons(tlist);
                 t.setThreads(flist);
 
@@ -276,15 +263,9 @@ public class Controller {
                     return;
                 }
 
-<<<<<<< HEAD
 		        // Objektumok incializálása
                 for(int i = 1; i<command.length; i++){
                     FungusPlayer fPlayer = new FungusPlayer(); 
-=======
-                // Objektumok incializálása
-                for (int i = 1; i < command.length; i++) {
-                    FungusPlayer fPlayer = new FungusPlayer();
->>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
                     String name = command[i];
                     objects.put(name, fPlayer);
                     fungusPlayers.add(fPlayer);
@@ -300,15 +281,9 @@ public class Controller {
                     return;
                 }
 
-<<<<<<< HEAD
 		        // Objektumok incializálása
                 for(int i = 1; i<command.length; i++){
                     InsectPlayer iPlayer = new InsectPlayer(); 
-=======
-                // Objektumok incializálása
-                for (int i = 1; i < command.length; i++) {
-                    InsectPlayer iPlayer = new InsectPlayer();
->>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
                     String name = command[i];
                     objects.put(name, iPlayer);
                     insectPlayers.add(iPlayer);
@@ -489,12 +464,7 @@ public class Controller {
                 break;
             }
 
-<<<<<<< HEAD
             case "closestep":{
-=======
-
-            case "closeStep": {
->>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
                 setCurrentPlayer();
                 break;
             }
@@ -739,14 +709,8 @@ public class Controller {
                 break;
             }
 
-<<<<<<< HEAD
             case "branchThread" : { // <Fonal név>  <Tektonnév>
                 
-=======
-
-            case "branchThread": { // <Fonal név>  <Tektonnév>
-                //meg kell nezni, hogy a currentplayer jatekose-e
->>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
                 // Parancsok feldolgozása
                 String threadName = command[1];
                 String tectonName = command[2];
@@ -758,11 +722,7 @@ public class Controller {
                 if (objects.containsKey(threadName) && objects.containsKey(tectonName)) {
                     thread = (FungalThread) objects.get(threadName);
                     tecton = (Tecton) objects.get(tectonName);
-<<<<<<< HEAD
                 }else{
-=======
-                } else {
->>>>>>> 3ad110746f751da14ca6420958f4a1560bef5981
                     System.out.println("Helytelen parancs! - Hibás fonál- vagy tektonnév");
                     return;
                 }
