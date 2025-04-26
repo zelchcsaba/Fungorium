@@ -1,5 +1,7 @@
 package model;
 
+import static model.InsectState.PARALYZED;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +70,7 @@ public abstract class FungalThread implements IFungalThreadController{
         for (int i = 0; i < tectons.size(); i++) {
 
             // megnézem, ha van-e rajta gombatest
-            if (tectons.get(i).getMushroom() != null) {
+            if ((tectons.get(i).isConnected(this))) {
                 fungalList.add(tectons.get(i));
             }
         }
@@ -92,12 +94,17 @@ public abstract class FungalThread implements IFungalThreadController{
         // olyanfonálrészek vannak,
         // amelyek nincsenek kapcsolatban ugyanolyan fajból származó gombatesttel
         // leszedjük a fonalat
+        List<Tecton> removallist = new ArrayList<>();
         for (int i = 0; i < tectons.size(); i++) {
             if (!connectedTectons.contains(tectons.get(i))) {
 
                 // leveszem a tektonokról a fonalat
                 tectons.get(i).removeThread(this);
+                removallist.add(tectons.get(i));
             }
+        }
+        for(int i=0; i<removallist.size();i++){
+            tectons.remove(removallist.get(i));
         }
     }
 
@@ -200,15 +207,16 @@ public abstract class FungalThread implements IFungalThreadController{
     }
 
     public boolean eatInsect(Insect i){
-        if(tectons.contains(i.getPosition())){
-            if(i.getPosition().removeInsect()){
-                return true;
+            if(tectons.contains(i.getPosition())){
+                if(i.getPosition().removeInsect()){
+                    return true;
+                }else{
+                    return false;
+                }
             }else{
                 return false;
             }
-        }else{
-            return false;
-        }
+        
     }
 
 }

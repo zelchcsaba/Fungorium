@@ -46,7 +46,7 @@ public class SingleThreadTecton extends Tecton {
         // berakom egy listába a fonalat
         ArrayList<FungalThread> list = new ArrayList<>();
         if (thread == null) {
-            return null;
+            return list;
         } else {
             list.add(thread);
         }
