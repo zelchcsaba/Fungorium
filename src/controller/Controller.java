@@ -567,9 +567,9 @@ public class Controller {
                 if (insect.move(tecton)) {
                     insectAssociation.setMoved(true);
                     if (eat) {
-                        Spore spore = spores.getFirst();
+                        Spore spore = spores.get(0);
                         objects.remove(spore);
-                        spores.removeFirst();
+                        spores.remove(0);
                         insectPlayer.addPoint();
                     }
                 }
@@ -1283,8 +1283,8 @@ public class Controller {
             bw.write(name + "\n");
 
             // Rendezett mezők
-            Field[] fields = clazz.getDeclaredFields();
-            Arrays.sort(fields, Comparator.comparing(Field::getName));
+            List<Field> fields = getAllFields(clazz);
+            fields.sort(Comparator.comparing(Field::getName));
 
             for (Field field : fields) {
                 field.setAccessible(true);
@@ -1300,7 +1300,16 @@ public class Controller {
                         } else {
                             List<String> names = new ArrayList<>();
                             for (Object item : col) {
-                                names.add(reverseLookup.get(item));
+                                if(item instanceof MushroomAssociation ma){
+                                    String mushName = reverseLookup.get(ma.getMushroom());
+                                    names.add(mushName + " " + ma.getAge());
+                                }else if(item instanceof InsectAssociation ia){
+                                    String insName = reverseLookup.get(ia.getInsect());
+                                    names.add(insName + " " + ia.getCut() + " " + ia.getMoved());
+                                }else{
+                                    names.add(reverseLookup.get(item));
+                                }
+                                
                             }
                             Collections.sort(names);
                             for (String n : names) {
@@ -1324,8 +1333,27 @@ public class Controller {
             bw.write("\n");
         }
 
-        bw.write("-end-\n");
+        bw.write("GameState\n");
+        bw.write("round " + round + "\n");
+        bw.write("maxRound " + maxRound + "\n");
+        bw.write("currentPlayer ");
+        for(Map.Entry<String, Object> entry : sortedObjects.entrySet()){
+            if(entry.getValue() == currentPlayer){
+                bw.write(entry.getKey() + "\n");
+            }
+        }
+
+        bw.write("-end-");
         bw.flush();
+    }
+
+    public static List<Field> getAllFields(Class<?> type) {
+        List<Field> fields = new ArrayList<>();
+        while (type != null) {
+            fields.addAll(Arrays.asList(type.getDeclaredFields()));
+            type = type.getSuperclass();
+        }
+        return fields;
     }
 
 
