@@ -159,12 +159,12 @@ public class Mushroom implements IMushroomController{
             //ha sikerült a spórát lerkani
             //növeljük a shooted spores countot 1-el
             shootedSporesCount += 1;
+            spores.remove(0);
             //ha a 10. spórát is kilőtte, akkor a gombatestnek meg kell halnia
             if (shootedSporesCount == 10) {
 
                 //töröljük a tektonról
                 position.removeMushroom();
-
                 //töröljük azon gombafonál részeket, amelyekhez nem kapcsolódik gombatest
                 thread.deleteUnnecessaryThreads();
             }

@@ -1,12 +1,6 @@
 -begin-
 ShortLifeThread f1
-LongLifeThread f2
-FungusPlayer fplayer1
-FungusPlayer fplayer2
-Insect i1
-Insect i2
-InsectPlayer iplayer1
-InsectPlayer iplayer2
+FungusPlayer fplayer
 Mushroom m1
 <<<<<<< HEAD
 SlowingSpore s1
@@ -15,42 +9,21 @@ NoCutSpore s2
 Mushroom m2
 >>>>>>> cc1a591af15a888c83e9990c72e60bbc6af2ef04
 MultiThreadTecton t1
-MultiThreadTecton t2
-MultiThreadTecton t3
-MultiThreadTecton t4
-MultiThreadTecton t5
-MultiThreadTecton t6
-MultiThreadTecton t7
-MultiThreadTecton t8
-MultiThreadTecton t9
+AbsorbingTecton t2
+SingleThreadTecton t3
+SingleThreadTecton t4
 —
 f1
 life -
-tectons t1 t2
+tectons t3 t4
 
-f2
-life -
-tectons t4 t8 t9
-
-fplayer1
+fplayer
 branchThread false
 fungalThread f1
-mushrooms m1 0
-name -
-points 0
+mushrooms m1 5
+points 1
 
-fplayer2
-branchThread false
-fungalThread f2
-mushrooms m2 0 m3 0
-name -
-points 0
-
-i1
-position t5
-state NORMAL
-
-i2
+m1
 position t3
 state NORMAL
 
@@ -60,20 +33,6 @@ name -
 points 0
 
 iplayer2
-<<<<<<< HEAD
-insects null
-
-m1
-position t2
-shootedSporesCount 0
-spores null
-state UNEVOLVED
-thread f1
-
-s1
-
-s2
-=======
 insects i2 false false
 name -
 points 0
@@ -81,23 +40,9 @@ points 0
 m1
 position t1
 shootedSporesCount 0
-spores -
-state UNEVOLVED
-thread f1
-
-m2
-position t5
-shootedSporesCount 1
 spores s1
-state UNEVOLVED
-thread f2
-
-m3
-position t9
-shootedSporesCount 0
-spores -
-state UNEVOLVED
-thread f2
+state EVOLVED
+thread f1
 
 s1
 thread f2
@@ -109,15 +54,13 @@ mushroom m1
 neighbors t2 t4
 spores -
 threads f1
-<<<<<<< HEAD
-=======
 
 t2
 i -
 mushroom -
 neighbors t1 t3 t5
 spores -
-threads -
+threads f1
 
 t3
 i i2
@@ -126,54 +69,32 @@ neighbors t2 t6
 spores -
 threads -
 
+t2
+i -
+neighbors t1 t3
+spores -
+threads -
+
+t3
+i -
+mushroom m1
+neighbors t2 t4
+spores -
+thread f1
+
 t4
 i -
 mushroom -
-neighbors t1 t5
+neighbors t3
 spores -
-threads -
-
-t5
-i i1
-mushroom m2
-neighbors t2 t4 t6 t8
-spores -
-threads f2
-
-t6
-i -
-mushroom -
-neighbors t3 t5 t9
-spores -
-threads -
-
-t7
-i -
-mushroom -
-neighbors t4 t8
-spores -
-threads -
-
-t8
-i -
-mushroom -
-neighbors t5 t7 t9
-spores s1
-threads -
-
-t9
-i -
-mushroom m3
-neighbors t6 t8
-spores -
-threads -
+thread f1
 
 <<<<<<< HEAD
 -end-
 =======
 GameState
-round 2
-maxRound 2
-currentPlayer fplayer1
+round 5
+maxRound 8
+currentPlayer fplayer
 -end-
 >>>>>>> cc1a591af15a888c83e9990c72e60bbc6af2ef04

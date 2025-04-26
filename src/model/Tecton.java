@@ -113,6 +113,7 @@ public abstract class Tecton implements ITectonController,ITectonView{
     public abstract boolean isConnected(FungalThread f);
 
     public abstract void absorb();
+    public abstract boolean canPutMushroom();
 
     // -- //
 
@@ -224,6 +225,7 @@ public abstract class Tecton implements ITectonController,ITectonView{
         if(connected) {
            t.removeInsect();
            i = ins;
+           i.setPosition(this);
             return true;
         }
         else {
