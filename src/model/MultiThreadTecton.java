@@ -197,8 +197,10 @@ public class MultiThreadTecton extends Tecton {
             t6.setInsect(i);
 
             // beállítom a bogár pozícióját
-            i.setPosition(t6);
-
+            if(i != null){
+                i.setPosition(t6);
+            }
+            
             // kitörlöm a tektont a fonálról
             for (int i = 0; i < threads.size(); i++) {
                 threads.get(i).removeTecton(this);

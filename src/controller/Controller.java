@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import model.*;
 import static model.InsectState.*;  // InsectState.NORMAL helyett lehet írni simán, hogy NORMAL
@@ -1202,7 +1203,7 @@ public class Controller {
                 System.out.println(iPlayer.getName() + "-" + iPlayer.getPoints());
             }
 
-            if (!(fWinner == null) || !(iWinner == null)) {
+            if (!(fWinner == null || iWinner == null)) {
                 System.out.println("Nyertesek: " + fWinner.getName() + " " + iWinner.getName());
             }
         }
@@ -1311,6 +1312,7 @@ public class Controller {
                                 }
                                 
                             }
+                            names.removeIf(Objects::isNull);
                             Collections.sort(names);
                             for (String n : names) {
                                 bw.write(" " + n);
