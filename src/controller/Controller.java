@@ -1325,7 +1325,6 @@ public class Controller {
             }
 
         } else {
-            System.out.println("Abel ezt csinald meg");
             FungusPlayer fWinner = null;
             InsectPlayer iWinner = null;
             int fMaxPoint = 0;
@@ -1335,7 +1334,13 @@ public class Controller {
                     fWinner = fPlayer;
                     fMaxPoint = fPlayer.getPoints();
                 }
-                //System.out.println(fPlayer.getName() + "-" + fPlayer.getPoints());
+                String fPlayerName = null;
+                for (Map.Entry<String, Object> entry : objects.entrySet()){
+                    if(entry.getValue() == fPlayer){
+                        fPlayerName = entry.getKey();
+                    }
+                }
+                System.out.println(fPlayerName + " - " + fPlayer.getPoints() + " pont");
             }
 
             for (InsectPlayer iPlayer : insectPlayers) {
@@ -1343,11 +1348,28 @@ public class Controller {
                     iWinner = iPlayer;
                     iMaxPoint = iPlayer.getPoints();
                 }
-                //System.out.println(iPlayer.getName() + "-" + iPlayer.getPoints());
+                String iPlayerName = null;
+                for (Map.Entry<String, Object> entry : objects.entrySet()){
+                    if(entry.getValue() == iPlayer){
+                        iPlayerName = entry.getKey();
+                    }
+                }
+                System.out.println(iPlayerName + " - " + iPlayer.getPoints() + " pont");
             }
 
             if (!(fWinner == null || iWinner == null)) {
-                //System.out.println("Nyertesek: " + fWinner.getName() + " " + iWinner.getName());
+                String fWinnerName = null;
+                String iWinnerName = null;
+                for (Map.Entry<String, Object> entry : objects.entrySet()){
+                    if(entry.getValue() == fWinner){
+                        fWinnerName = entry.getKey();
+                    }
+
+                    if(entry.getValue() == iWinner){
+                        iWinnerName = entry.getKey();
+                    }
+                }
+                System.out.println("Nyertesek: " + fWinnerName + " " + iWinnerName);
             }
         }
     }
@@ -1450,6 +1472,9 @@ public class Controller {
                                 }else if(item instanceof InsectAssociation ia){
                                     String insName = reverseLookup.get(ia.getInsect());
                                     names.add(insName + " " + ia.getCut() + " " + ia.getMoved());
+                                }else if(item instanceof timeToDie timeToDie){
+                                    String tectName = reverseLookup.get(timeToDie.getTecton());
+                                    names.add(tectName + " " + timeToDie.getTime());
                                 }else{
                                     names.add(reverseLookup.get(item));
                                 }

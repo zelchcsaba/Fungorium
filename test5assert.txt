@@ -11,7 +11,7 @@ SingleThreadTecton t3
 SingleThreadTecton t4
 —
 f1
-life
+life t2 2
 tectons t2 t3 t4
 
 fplayer
