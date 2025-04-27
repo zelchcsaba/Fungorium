@@ -1,0 +1,25 @@
+arrange
+turnOffRandom
+createTecton MultiThreadTecton
+createTecton AbsorbingTecton
+createTecton SingleThreadTecton
+createTecton SingleThreadTecton
+setNeighbors t1 t2 
+setNeighbors t2 t1 t3
+setNeighbors t3 t2 t4
+setNeighbors t4 t3 
+setFungusPlayerCount 1
+createFungusPlayers fplayer
+createShortLifeThread t3 fplayer
+setTectons f1 t4
+createMushroom t3 f1 fplayer
+setMushroomAge m1 3
+stepGameRound 3
+setMaxRound 8
+end
+act
+branchThread f1 t2
+closestep
+closestep
+end
+saveResult

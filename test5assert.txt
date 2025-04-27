@@ -1,0 +1,77 @@
+-begin-
+LongLifeThread f1
+FungusPlayer fplayer
+Insect i1
+InsectPlayer iplayer
+Mushroom m1
+Mushroom m2
+MultiThreadTecton t1
+MultiThreadTecton t2
+SingleThreadTecton t3
+SingleThreadTecton t4
+—
+f1
+life
+tectons t2 t3 t4
+
+fplayer
+branchThread false
+fungalThread f1
+mushrooms m1 0 m2 0
+points 2
+
+i1
+position t4
+state NORMAL
+
+iplayer
+insects i1 true true
+points 1
+
+m1
+position t3
+shootedSporesCount 0
+spores -
+state UNEVOLVED
+thread f1
+
+m2
+position t4
+shootedSporesCount 0
+spores -
+state UNEVOLVED
+thread f1
+
+t1
+i -
+mushroom -
+neighbors t2 t3
+spores -
+threads -
+
+t2
+i -
+mushroom -
+neighbors t1 t4
+spores -
+threads f1
+
+t3
+i -
+mushroom m1
+neighbors t1 t4
+spores -
+thread f1
+
+t4
+i i1
+mushroom m2
+neighbors t2 t3
+spores -
+thread f1
+
+GameState
+round 1
+maxRound 5
+currentPlayer iplayer
+-end-

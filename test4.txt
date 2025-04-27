@@ -1,0 +1,35 @@
+arrange
+turnOffRandom
+createTecton MultiThreadTecton
+createTecton MultiThreadTecton
+createTecton SingleThreadTecton
+createTecton  SingleThreadTecton
+setNeighbors t1 t2 t3
+setNeighbors t2 t4 t1
+setNeighbors t3 t1 t4
+setNeighbors t4 t3 t2
+setFungusPlayerCount 1
+setInsectPlayerCount 1
+createFungusPlayers fplayer
+createInsectPlayers iplayer
+createShortLifeThread t1 fplayer
+setTectons f1 t3
+createEvolvedMushroom t1 f1 fplayer
+setShotSpores m1 9
+createMushroom t3 f1 fplayer
+createInsect t1 iplayer
+generateSpore m1 SlowingSpore
+createSpore ParalysingSpore t2 f1
+stepGameRound 1
+setMaxRound 5
+end
+act
+branchThread f1 t2
+branchThread f1 t4
+shootSpore m1 t4
+closestep
+move i1 t2
+closestep
+eatInsect f1 i1
+end
+saveResult

@@ -129,6 +129,7 @@ public class AbsorbingTecton extends Tecton {
     public boolean putThread(FungalThread f) {
         for (Tecton tecton : neighbors) {
             if (tecton.getThreads().contains(f)) {
+                threads.add(f);
                 return true;
             }
         }
@@ -262,6 +263,10 @@ public class AbsorbingTecton extends Tecton {
      */
     public void addThread(FungalThread f) {
         threads.add(f);
+    }
+
+    public boolean canPutMushroom(){
+        return false;
     }
 
 
