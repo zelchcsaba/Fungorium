@@ -2,6 +2,7 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 import model.IInsectController;
+import model.Insect;
 
 public class InsectPlayer extends Player {
     private List<InsectAssociation> insects;
@@ -30,6 +31,16 @@ public class InsectPlayer extends Player {
 
     public void removeInsect(InsectAssociation i){
         insects.remove(i);
+    }
+
+    public void rm(Insect i){
+        InsectAssociation removable=null;
+        for(InsectAssociation ins : insects){
+            if(ins.getInsect()==i){
+                removable = ins;
+            }
+        }
+        removeInsect(removable);
     }
 
     public int getInsectSize(){

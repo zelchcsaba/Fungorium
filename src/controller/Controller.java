@@ -148,6 +148,7 @@ public class Controller {
                 } catch (IOException e) {
                     System.out.println("Hiba a fájlok olvasása közben: " + e.getMessage());
                 }
+                break;
             }
 
             case "setMaxRound": { // <Pozitív egész>
@@ -634,14 +635,14 @@ public class Controller {
                 if (objects.containsKey(tectonName)) {
                     tecton = (Tecton) objects.get(tectonName);
                 } else {
-                    System.out.println("Sikertelen");
+                    System.out.println("Sikertelen tektontores");
                     return;
                 }
 
                 List<Tecton> tectons = new ArrayList<>(tecton.breakTecton());
 
                 if (tectons == null) {
-                    System.out.println("Sikertelen");
+                    System.out.println("Sikertelen tektontores");
                     return;
                 }
 
@@ -822,7 +823,17 @@ public class Controller {
                     if (!thread.branchThread(tecton)) {
                         System.out.println("Sikertelen");
                     }else{
-                        mushroomPlayer.setBranchThread(true);
+                        List<Spore> slist = new ArrayList<>();
+                        slist = tecton.getSpores();
+                        boolean isSpore = false;
+                        for(int i=0; i< slist.size();i++){
+                            if(slist.get(i).getThread()==thread){
+                                isSpore = true;
+                            }
+                        }
+                        if(!isSpore){
+                            mushroomPlayer.setBranchThread(true);
+                        }
                     }
                 }else{
                     System.out.println("Sikertelen");
@@ -862,7 +873,8 @@ public class Controller {
                     if(m.getShootedSporesCount()>=10){
                         m.getPosition().removeMushroom();
                         m.getThread().deleteUnnecessaryThreads();
-                        objects.remove(command[1]);
+                        mushroomPlayer.rm(m);
+                        objects.remove(command[1], m);
                     }
 
                 }
@@ -908,6 +920,7 @@ public class Controller {
                 if (thread.growMushroom(tecton, mushroom)) {
 
                     objects.put(getNewMushroomName(), mushroom);
+                    mushroomPlayer.addMushroom(mushroom);
                     mushroomPlayer.addPoint();
 
                     int thisSporeCount = 0;
@@ -999,8 +1012,18 @@ public class Controller {
                             if(insect.getPosition().setMushroom(m)){
                                 objects.put(getNewMushroomName(),m);
                                 mushroomPlayer.addMushroom(m);
+                                mushroomPlayer.addPoint();
                             }
                         }
+                        InsectPlayer insectPlayer = null;
+                        for (InsectPlayer iPlayer : insectPlayers) {
+                            for (InsectAssociation insectA : iPlayer.getInsects()) {
+                                if (insectA.getInsect() == insect) {
+                                    insectPlayer = iPlayer;
+                                }
+                            }
+                        }
+                        insectPlayer.rm(insect);
                         objects.remove(insectName, insect);
                     }
                 }else{
@@ -1077,9 +1100,10 @@ public class Controller {
                         List<Spore> rm = new ArrayList<>();
                         rm.add(spores.get(0));
                         tecton.removeSpores(rm);
-                        //spores.remove(0);
                         insectPlayer.addPoint();
                     }
+                }else{
+                    System.out.println("Sikertelen");
                 }
 
                 // Kapott effekt hatása
@@ -1089,6 +1113,7 @@ public class Controller {
                 }
                 if (insect.getState().equals(SPEEDBOOST)) { // mintha nem is lépett volna
                     insectAssociation.setMoved(false);
+                    insect.setState(NORMAL);
                 }
                 if (insect.getState().equals(NOCUT) || insect.getState().equals(PARALYZED)) { // nocut = mintha már vágott volna
                     insectAssociation.setCut(true);                                       // paralyzed = mintha már vágott és lépett is volna (az utóbbi igaz is)      
@@ -1293,13 +1318,14 @@ public class Controller {
                 for (ITectonController tecton : tList) {
                     tecton.absorb();
                 }
-                int rnumb = randomize(tList.size());
+                int rnumb = randomize(tList.size())+1;
                 String str = "break t"+rnumb;
                 processCmd(str);
                 
             }
 
         } else {
+            System.out.println("Abel ezt csinald meg");
             FungusPlayer fWinner = null;
             InsectPlayer iWinner = null;
             int fMaxPoint = 0;

@@ -92,7 +92,9 @@ public class Insect implements IInsectController{
      */
     //elvágja a fonalakat a kijelölt tektonon
     public boolean cut(Tecton t) {
-
+        if(t.getMushroom()!=null){
+            return false;
+        }
         //leellenőrizzük, hogy a kapott tekton az szomszédos-e a position tektonnal
 
         if (t.isNeighbor(position)) {

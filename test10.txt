@@ -1,0 +1,46 @@
+arrange
+turnOffRandom
+createTecton MultiThreadTecton
+createTecton MultiThreadTecton
+createTecton SingleThreadTecton
+createTecton SingleThreadTecton
+createTecton MultiThreadTecton
+createTecton MultiThreadTecton
+createTecton AbsorbingTecton
+createTecton KeepThreadTecton 
+createTecton MultiThreadTecton
+setNeighbors t1 t2 t4
+setNeighbors t2 t1 t3 t5
+setNeighbors t3 t2 t6
+setNeighbors t4 t1 t5
+setNeighbors t5 t2 t6 t8 t4
+setNeighbors t6 t5 t3 t9
+setNeighbors t7 t4 t8
+setNeighbors t8 t7 t5 t9
+setNeighbors t9 t8 t6
+setFungusPlayerCount 2
+setInsectPlayerCount 2
+createFungusPlayers fplayer1 fplayer2
+createInsectPlayers iplayer1 iplayer2
+createShortLifeThread t1 fplayer1
+createMushroom t1 f1 fplayer1
+createLongLifeThread t5 fplayer2
+setTectons f2 t4 t8 t9
+createMushroom t5 f2 fplayer2
+createMushroom t9 f2 fplayer2
+createInsect t5 iplayer1
+createInsect t3 iplayer2
+generateSpore m2 SlowingSpore
+stepGameRound 1
+setMaxRound 2
+end
+act
+branchThread f1 t2
+closestep
+shootSpore m2 t8
+closestep
+move i1 t8
+closestep
+closestep
+end
+saveResult

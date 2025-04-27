@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.IFungalThreadController;
 import model.IMushroomController;
+import model.Mushroom;
 
 public class FungusPlayer extends Player {
     private IFungalThreadController fungalThread;
@@ -55,6 +56,16 @@ public class FungusPlayer extends Player {
 
     public void removeMushroom(MushroomAssociation m){
         mushrooms.remove(m);
+    }
+
+    public void rm(Mushroom m){
+        MushroomAssociation removable=null;
+        for(MushroomAssociation mush : mushrooms){
+            if(mush.getMushroom()==m){
+                removable = mush;
+            }
+        }
+        removeMushroom(removable);
     }
 
     public int getMushroomSize(){
