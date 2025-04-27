@@ -504,6 +504,9 @@ public class Controller {
                 //itt csak ha kor 0
                 //csak ha egy insectplayer
 
+                if (round != 0)
+                    return;
+
                 Tecton t = (Tecton) objects.get(command[1]);
                 Insect insect = new Insect();
                 boolean returnV = t.putFirstInsect(insect);
