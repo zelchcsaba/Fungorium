@@ -68,27 +68,14 @@ public class AbsorbingTecton extends Tecton {
 
 
     /**
-     * Ez a metódus felelős az "AbsorbingTecton" típusú objektumhoz tartozó összes
-     * gombafonal (FungalThread) felszívásáért. A felszívás folyamata során az objektumhoz
-     * rendelt fonalakat eltávolítja a tektonról, és törli azokat a fonálrészeket,
-     * amelyek nem kapcsolódnak azonos fajhoz tartozó gombatestekhez.
+     * Eltávolítja az aktuális objektum listájában található összes FungalThread (gombafonal)
+     * objektumot, és törli a nem szükséges gombafonalakat.
      * <p>
-     * A metódus működése:
-     * 1. Meghívja a "toCall" függvényt az aktuális művelet jelzésére.
-     * 2. Iterál az "AbsorbingTecton" objektumhoz tartozó gombafonalak listáján, majd
-     * a következőket hajtja végre:
-     * - Hozzáadja magát és a fonalat egy "list" nevű belső szimulációs tárolóhoz.
-     * - Eltávolítja a gombafonalhoz tartozó tektonról az aktuális objekumot
-     * a "removeTecton" metódus segítségével.
-     * 3. Létrehoz egy átmeneti lista objektumot, amelyhez hozzáadja az összes eredeti
-     * gombafonalat, majd kiüríti az eredeti fonallista tartalmát.
-     * 4. Iterál az átmeneti gombafonalakon, és a következőket hajtja végre:
-     * - Hozzáadja az aktuális objektumot és az adott fonalat ugyanabba a "list"
-     * nevű tárolóba.
-     * - Meghívja a "deleteUnnecessaryThreads" metódust az adott fonál esetében
-     * az irreleváns kapcsolatok eltávolítására.
-     * 5. Az összes végrehajtott művelet után tisztítja az aktuális visszatérési érték
-     * tárolót, majd meghívja a "toReturn" metódust a végrehajtás szimulációjára.
+     * A metódus először eltávolítja az aktuális objektumot az összes kapcsolódó
+     * FungalThread objektum tartalmából. Ezután létrehoz egy új listát, amelybe átmásolja
+     * az eredeti gombafonalakat, majd az eredeti listát kiüríti. A másolt elemekre végrehajtja
+     * a törlési műveletet, amely eltávolítja azokat a fonalrészeket, amelyek nem kapcsolódnak
+     * azonos fajhoz tartozó gombatesthez.
      */
     public void absorb() {
 
