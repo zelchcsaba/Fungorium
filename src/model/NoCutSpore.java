@@ -8,14 +8,12 @@ package model;
 public class NoCutSpore extends Spore {
 
     /**
-     * A NoCutSpore konstruktor, amely egy adott teszt objektumot fogad, és
-     * inicializálja a spóra alapobjektumát ezzel a teszt paraméterrel.
-     *
-     * @param t A Tester objektum, amely a spóra működésének meghatározásához szükséges.
+     * Alapértelmezett konstruktor, amely létrehozza a NoCutSpore objektumot.
      */
     public NoCutSpore() {
         super();
     }
+
 
     /**
      * A megadott rovar (Insect) állapotát (state) a NOCUT értékre állítja,

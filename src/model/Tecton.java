@@ -7,7 +7,7 @@ import java.util.List;
  * A Tecton osztály egy absztrakt osztály, amely a játék tektonjait
  * reprezentálja, ezek játékterület alapvető egységei.
  */
-public abstract class Tecton implements ITectonController,ITectonView{
+public abstract class Tecton implements ITectonController, ITectonView {
 
     protected List<Spore> spores;
     protected List<Tecton> neighbors;
@@ -16,7 +16,6 @@ public abstract class Tecton implements ITectonController,ITectonView{
 
     /**
      * Létrehozza egy Tecton osztály példányát a megfelelő mezők inicializálásával.
-     *
      */
     public Tecton() {
         spores = new ArrayList<>();
@@ -53,7 +52,6 @@ public abstract class Tecton implements ITectonController,ITectonView{
     public void setNeighbors(List<Tecton> neighbors) {
         this.neighbors = neighbors;
     }
-
 
 
     /**
@@ -113,6 +111,7 @@ public abstract class Tecton implements ITectonController,ITectonView{
     public abstract boolean isConnected(FungalThread f);
 
     public abstract void absorb();
+
     public abstract boolean canPutMushroom();
 
     // -- //
@@ -122,26 +121,25 @@ public abstract class Tecton implements ITectonController,ITectonView{
      * Spóra hozzáadása egy Tecton objektumhoz, feltéve, hogy a Tecton szomszédos.
      *
      * @param sp A Spore objektum, amelyet hozzá kívánunk adni.
-     * @param t A Tecton objektum, amelyhez a spórát hozzá szeretnénk adni.
+     * @param t  A Tecton objektum, amelyhez a spórát hozzá szeretnénk adni.
      * @return Igaz, ha a művelet sikeres, hamis, ha a Tecton nem szomszédos, és a spóra nem lett hozzáadva.
      */
     public boolean putSpore(Spore sp, Tecton t) {
         if (!neighbors.contains(t)) {
-
             return false;
-
         } else {
             spores.add(sp);
             return true;
         }
     }
 
-     /**
+
+    /**
      * Spóra hozzáadása a listához.
      *
      * @param sp A Spore objektum, amelyet hozzá kívánunk adni.
      */
-    public void addSpore(Spore sp){
+    public void addSpore(Spore sp) {
         spores.add(sp);
     }
 
@@ -180,14 +178,10 @@ public abstract class Tecton implements ITectonController,ITectonView{
      * @return true, ha sikeresen beállította az első rovart, vagy már volt hozzárendelve rovar;
      * false, ha az inicializálatlan állapot vagy más okok miatt nem lehetett műveletet végrehajtani.
      */
-    // to do
     public boolean putFirstInsect(Insect ins) {
         if (i == null) {
-
             ins.setPosition(this);
-
             i = ins;
-
             return true;
         } else {
             return false;
@@ -199,12 +193,11 @@ public abstract class Tecton implements ITectonController,ITectonView{
      * Egy rovart próbál helyezni az adott Tecton objektumba.
      *
      * @param ins A rovar objektum, amelyet a Tecton-ba kell helyezni.
-     * @param t Az a Tecton objektum, amelybe a rovar behelyezésre kerül.
+     * @param t   Az a Tecton objektum, amelybe a rovar behelyezésre kerül.
      * @return Igaz, ha a rovar sikeresen behelyezésre került, hamis, ha a behelyezés sikertelen.
      */
     public boolean putInsect(Insect ins, Tecton t) {
-
-        if(!isNeighbor(t)) {
+        if (!isNeighbor(t)) {
             return false;
         }
 
@@ -216,19 +209,18 @@ public abstract class Tecton implements ITectonController,ITectonView{
         list1 = this.getThreads();
         list2 = t.getThreads();
 
-        boolean connected=false;
-        for(int idx=0; idx<list1.size();idx++){
-            if(list2.contains(list1.get(idx))){
-                connected=true;
+        boolean connected = false;
+        for (int idx = 0; idx < list1.size(); idx++) {
+            if (list2.contains(list1.get(idx))) {
+                connected = true;
             }
         }
-        if(connected) {
-           t.removeInsect();
-           i = ins;
-           i.setPosition(this);
+        if (connected) {
+            t.removeInsect();
+            i = ins;
+            i.setPosition(this);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -257,10 +249,8 @@ public abstract class Tecton implements ITectonController,ITectonView{
      */
     public boolean isNeighbor(Tecton t) {
         if (neighbors.contains(t)) {
-
             return true;
         } else {
-
             return false;
         }
     }
@@ -274,9 +264,7 @@ public abstract class Tecton implements ITectonController,ITectonView{
      * @return true értéket ad vissza, ha a művelet sikeres volt.
      */
     public boolean addNeighbor(List<Tecton> tlist) {
-
         neighbors.addAll(tlist);
-
         return true;
     }
 
@@ -289,7 +277,6 @@ public abstract class Tecton implements ITectonController,ITectonView{
      */
     public boolean removeNeighbor(Tecton t) {
         neighbors.remove(t);
-
         return true;
     }
 
@@ -299,7 +286,7 @@ public abstract class Tecton implements ITectonController,ITectonView{
      * egy adott Tecton példányhoz, ha az megfelelő szomszédsági kritériumoknak megfelel.
      *
      * @param sp A hozzáadni kívánt kifejlődött Spore objektum.
-     * @param t Az a cél Tecton példány, amelyhez a Spore-t hozzá kell adni.
+     * @param t  Az a cél Tecton példány, amelyhez a Spore-t hozzá kell adni.
      * @return Igaz (true), ha a spóra hozzáadása sikeres volt, hamis (false), ha nem.
      */
     public boolean putEvolvedSpore(Spore sp, Tecton t) {

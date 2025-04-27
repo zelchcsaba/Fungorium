@@ -8,19 +8,24 @@ import java.util.List;
  * képes generálni és kilőni egy adott tektonra. A gomba különböző
  * állapotokban lehet, és működéséhez teszter osztályt használ.
  */
-public class Mushroom implements IMushroomController{
+public class Mushroom implements IMushroomController {
 
     private Tecton position;
     private List<Spore> spores;
     private FungalThread thread;
     private MushroomState state;
     private int shootedSporesCount;
-    
 
 
     /**
-     * Létrehozza a Mushroom objektumot.
-     *
+     * A Mushroom osztály alapértelmezett konstruktora.
+     * <p>
+     * Inicializálja a Mushroom objektum alapértelmezett állapotát, beleértve a következőket:
+     * - A pozíció kezdetben null értéken van.
+     * - A spórák üres listaként inicializálódnak.
+     * - A szál (thread) alaphelyzetben null értéket kap.
+     * - Az állapot a MushroomState.UNEVOLVED értékre van állítva, jelezve a kezdeti fejletlen állapotot.
+     * - A kilőtt spórák száma (shootedSporesCount) kezdetben 0.
      */
     public Mushroom() {
         position = null;
@@ -144,7 +149,7 @@ public class Mushroom implements IMushroomController{
 
             return false;
         }
-        
+
         boolean returnV = false;
         if (state == MushroomState.UNEVOLVED) {
             returnV = t.putSpore(spores.get(0), position);
@@ -193,11 +198,9 @@ public class Mushroom implements IMushroomController{
      * @param sp A hozzáadandó spóra objektum.
      * @return true, ha a spóra sikeresen hozzá lett adva.
      */
-    public boolean generateSpore(Spore sp) { //Még kérdéses, hogy enum-ot, vagy spórát vesz át.  
-
+    public boolean generateSpore(Spore sp) {
         sp.setThread(this.thread);
         spores.add(sp);
-
         return true;
     }
 

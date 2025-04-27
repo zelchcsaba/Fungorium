@@ -4,7 +4,7 @@ package model;
  * A SporeEffect enum a különböző spóra hatásokat reprezentálja,
  * amelyek alkalmazhatók rovarokra (Insect). Ezek az állapotok
  * meghatározzák, hogy a spóra milyen módon befolyásolja a rovart.
- *
+ * <p>
  * Enum értékek:
  * - SPEEDBOOST: A rovar mozgását gyorsító hatás.
  * - SLOWED: A rovar mozgását lassító hatás.

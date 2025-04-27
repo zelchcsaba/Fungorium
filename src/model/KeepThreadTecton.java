@@ -3,6 +3,11 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Ez az osztály a Tecton osztály leszármazottja, amely felelős olyan tekton objektumok viselkedéséért és kezeléséért,
+ * amelyek esetében több gombafonal (FungalThread) egyszerre kapcsolódhat és olyan fonalakat tartanak meg,
+ * amelyek sem közvetlenül, sem közvetve nem kapcsolódnak gombatesthez (Mushroom).
+ */
 public class KeepThreadTecton extends Tecton {
 
     private Mushroom mushroom;
@@ -10,8 +15,8 @@ public class KeepThreadTecton extends Tecton {
 
 
     /**
-     * Konstruktor
-     *
+     * Konstruktor, amely inicializálja a threads mezőt
+     * és a mushroom értékét null-ra állítja.
      */
     public KeepThreadTecton() {
         super();
@@ -60,11 +65,11 @@ public class KeepThreadTecton extends Tecton {
      * @return A tektonon lévő gombafonalakat tartalmazó lista.
      */
     public List<FungalThread> getThreads() {
-
         return threads;
     }
 
-     /**
+
+    /**
      * Lerak egy gombaobjektumot a tektonon, ha még nincs ott másik gomba.
      * Csak akkor sikeres, ha a megadott helyen nincs már gomba.
      *
@@ -79,6 +84,7 @@ public class KeepThreadTecton extends Tecton {
         }
         return false;
     }
+
 
     /**
      * A megadott gombafonal hozzáadása a jelenlegi vagy valamelyik szomszédos tektonjához,
@@ -97,11 +103,11 @@ public class KeepThreadTecton extends Tecton {
         return false;
     }
 
+
     /**
      * Eltávolítja a gombatestet a tektonról, ha van rajta gombatest.
      */
     public boolean removeMushroom() {
-
         if (mushroom != null) {
             mushroom = null;
 
@@ -112,103 +118,105 @@ public class KeepThreadTecton extends Tecton {
         }
     }
 
+
     /**
      * A kapott fonalat eltávolítja a listájából.
      *
      * @param f A törölni kívánt fonal.
      */
     public boolean removeThread(FungalThread f) {
-
         threads.remove(f);
         return true;
     }
 
+
     /**
-     * A tekton kettétörését végző metódus. Ez a metódus két új tektont hoz létre,
-     * a jelenlegi tekton szomszédait átrendezi és beállítja az új tektontípusokhoz,
-     * valamint szükség esetén eltávolítja a fonálszálakat, amelyek már nem kapcsolódnak
-     * egyetlen gombatesthez sem. A metódus hatására a jelenlegi tekton "megszűnik",
-     * és helyette két új tekton jön létre.
+     * Egy megadott tekton kettétörése során létrehozza az új tektonokat és
+     * azok szomszédsági, valamint fonalbeli kapcsolatait átrendezi.
+     * Biztosítja, hogy a régi tektonon lévő bogár, valamint az ahhoz tartozó
+     * gombafonal megfelelően áthelyezésre kerüljön az újonnan létrejött tektonokra,
+     * és eltávolítja a már nem szükséges fonalrészeket.
      *
-     * @return true, ha a tekton sikeresen kettétört; false, ha a kettétörés feltételei nem teljesülnek.
+     * @return A kettétört tektonból létrejött új tektonok listája.
      */
     public List<Tecton> breakTecton() {
 
         List<Tecton> ret = new ArrayList<>();
 
-            // létrejön a két új tekton
-            Tecton t6 = new KeepThreadTecton();
-            Tecton t7 = new KeepThreadTecton();
+        // létrejön a két új tekton
+        Tecton t6 = new KeepThreadTecton();
+        Tecton t7 = new KeepThreadTecton();
 
-            ret.add(t6);
-            ret.add(t7);
+        ret.add(t6);
+        ret.add(t7);
 
-            // ez lesz a töréspont a tektonon
-            int centre = neighbors.size() / 2;
+        // ez lesz a töréspont a tektonon
+        int centre = neighbors.size() / 2;
 
-            // létrehozok egy listát, amelyben a t6 tekton szomszédai lesznek
-            List<Tecton> neighborList = new ArrayList<>();
-            for (int i = 0; i < centre; i++) {
-                neighborList.add(neighbors.get(i));
-            }
-            neighborList.add(t7);
+        // létrehozok egy listát, amelyben a t6 tekton szomszédai lesznek
+        List<Tecton> neighborList = new ArrayList<>();
+        for (int i = 0; i < centre; i++) {
+            neighborList.add(neighbors.get(i));
+        }
+        neighborList.add(t7);
 
-            // beállítom a t6 szomszédait
-            t6.addNeighbor(neighborList);
-            neighborList.clear();
+        // beállítom a t6 szomszédait
+        t6.addNeighbor(neighborList);
+        neighborList.clear();
 
-            // létrehozok egy listát, amelyben a t7 szomszédai lesznek
-            neighborList.add(t6);
-            for (int i = centre; i < neighbors.size(); i++) {
-                neighborList.add(neighbors.get(i));
-            }
+        // létrehozok egy listát, amelyben a t7 szomszédai lesznek
+        neighborList.add(t6);
+        for (int i = centre; i < neighbors.size(); i++) {
+            neighborList.add(neighbors.get(i));
+        }
 
-            // beállítom a t7 szomszédait
-            t7.addNeighbor(neighborList);
-            neighborList.clear();
+        // beállítom a t7 szomszédait
+        t7.addNeighbor(neighborList);
+        neighborList.clear();
 
-            // a jelenlegi tekton szomszédait beállítom, hozzáadva szomszédsági listájukhoz
-            // a megfelelő létrejött tektont
-            // valamint kivéve a kettétötött tektont
-            neighborList.add(t6);
-            for (int i = 0; i < centre; i++) {
+        // a jelenlegi tekton szomszédait beállítom, hozzáadva szomszédsági listájukhoz
+        // a megfelelő létrejött tektont
+        // valamint kivéve a kettétötött tektont
+        neighborList.add(t6);
+        for (int i = 0; i < centre; i++) {
 
-                neighbors.get(i).addNeighbor(neighborList);
+            neighbors.get(i).addNeighbor(neighborList);
 
-                neighbors.get(i).removeNeighbor(this);
-            }
+            neighbors.get(i).removeNeighbor(this);
+        }
 
-            neighborList.clear();
+        neighborList.clear();
 
-            neighborList.add(t7);
-            for (int i = centre; i < neighbors.size(); i++) {
+        neighborList.add(t7);
+        for (int i = centre; i < neighbors.size(); i++) {
 
-                neighbors.get(i).addNeighbor(neighborList);
+            neighbors.get(i).addNeighbor(neighborList);
 
-                neighbors.get(i).removeNeighbor(this);
-            }
+            neighbors.get(i).removeNeighbor(this);
+        }
 
-            // a tektonon levő bogarat ráhelyezem a t6-ra
-            t6.setInsect(i);
+        // a tektonon levő bogarat ráhelyezem a t6-ra
+        t6.setInsect(i);
 
-            // beállítom a bogár pozícióját
-            i.setPosition(t6);
+        // beállítom a bogár pozícióját
+        i.setPosition(t6);
 
-            // kitörlöm a tektont a fonálról
-            for (int i = 0; i < threads.size(); i++) {
-                threads.get(i).removeTecton(this);
-            }
+        // kitörlöm a tektont a fonálról
+        for (int i = 0; i < threads.size(); i++) {
+            threads.get(i).removeTecton(this);
+        }
 
-            // ha keletkezett olyan fonálrész, amely a kettétörés során már nem kapcsolódik
-            // gombatesthez ezt eltávolítom
-            for(int i=0; i< threads.size(); i++){
-                threads.get(i).deleteUnnecessaryThreads();
-            }
+        // ha keletkezett olyan fonálrész, amely a kettétörés során már nem kapcsolódik
+        // gombatesthez ezt eltávolítom
+        for (int i = 0; i < threads.size(); i++) {
+            threads.get(i).deleteUnnecessaryThreads();
+        }
 
         return ret;
     }
 
-     /**
+
+    /**
      * Lerakja az első gombatestet a tektonon, amennyiben az még nem létezik.
      * A módszer ellenőrzi, hogy már létezik-e gombatest a tektonon.
      * Ha nem, létrehoz egy új gombatestet és egy új gombafonalat,
@@ -223,7 +231,7 @@ public class KeepThreadTecton extends Tecton {
             mushroom = m;
             mushroom.setPosition(this);
             mushroom.setThread(f);
-            
+
             threads.add(f);
             f.addTecton(this);
 
@@ -232,19 +240,39 @@ public class KeepThreadTecton extends Tecton {
         return false;
     }
 
-    public void absorb(){}
 
-    public boolean isConnected(FungalThread f){
+    public void absorb() {
+    }
+
+
+    /**
+     * Megvizsgálja, hogy egy adott FungalThread objektum kapcsolódik-e
+     * a tektonon található gombatesthez.
+     *
+     * @param f A vizsgálandó FungalThread objektum.
+     * @return true, ha az adott gombafonal össze van kapcsolva a tekton gombatestével,
+     * különben false.
+     */
+    public boolean isConnected(FungalThread f) {
         return true;
     }
 
-    public boolean canPutMushroom(){
-        if(mushroom == null){
+
+    /**
+     * Ellenőrzi, hogy lehet-e új gombatestet (mushroom) elhelyezni a tektonon.
+     * Csak akkor lehet gombatestet lerakni, ha jelenleg nincs másik gombatest rajta.
+     *
+     * @return true, ha nincs gombatest a tektonon és elhelyezhető egy új gombatest,
+     * különben false.
+     */
+    public boolean canPutMushroom() {
+        if (mushroom == null) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
+
 
     /**
      * Hozzáad egy gombafonalat a meglévő fonalak listájához.

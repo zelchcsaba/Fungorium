@@ -7,14 +7,12 @@ package model;
 public class SpeedSpore extends Spore {
 
     /**
-     * A SpeedSpore konstruktor egy új SpeedSpore objektumot hoz létre,
-     * amely egy adott Tester példányhoz van csatolva.
-     *
-     * @param t Az a Tester objektum, amelyet a SpeedSpore fog használni.
+     * A SpeedSpore konstruktor egy új SpeedSpore objektumot hoz létre.
      */
     public SpeedSpore() {
         super();
     }
+
 
     /**
      * A megadott rovarra (Insect) egy sebességnövelő (SPEEDBOOST) hatást alkalmaz.
