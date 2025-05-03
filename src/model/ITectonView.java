@@ -8,11 +8,11 @@ import java.util.List;
  */
 public interface ITectonView {
 
-    public abstract Insect getInsect();
+    Insect getInsect();
 
-    public abstract Mushroom getMushroom();
+    Mushroom getMushroom();
 
-    public abstract List<FungalThread> getThreads();
+    List<FungalThread> getThreads();
 
-    public abstract List<Spore> getSpores();
+    List<Spore> getSpores();
 }

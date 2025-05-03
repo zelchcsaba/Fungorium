@@ -5,5 +5,5 @@ package model;
  * Ez az interfész a spóra fonalának lekérdezésére alkalmas metódust definiál.
  */
 public interface ISporeController {
-    public abstract FungalThread getThread();
+    FungalThread getThread();
 }
