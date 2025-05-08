@@ -8,24 +8,27 @@ import java.util.List;
  * Az osztály a mozgásra, pozíció megváltoztatására és fonál vágására vonatkozó
  * függvényeket valósít meg.
  */
-public class Insect implements IInsectController{
+public class Insect implements IInsectController {
 
     private Tecton position;
     private InsectState state;
 
 
     /**
-     * Létrehoz egy új Insect objektumot.
-     *
+     * Az Insect osztály konstruktora, amely létrehoz egy új rovar objektumot.
+     * Az inicializálás során beállítja a pozíciót null értékre, és az állapotot
+     * alapértelmezett módon InsectState.NORMAL értékre állítja.
      */
     public Insect() {
         position = null;
         state = InsectState.NORMAL;
     }
 
+
     /**
      * Beállítja a rovar pozícióját a megadott Tecton objektumra.
      *
+     * @param t A Tecton objektum, amely a rovar új pozícióját jelöli.
      */
     public void setPosition(Tecton t) {
         position = t;
@@ -70,29 +73,30 @@ public class Insect implements IInsectController{
      */
     public boolean move(Tecton t) {
 
-        if(t.putInsect(this,position)){
+        if (t.putInsect(this, position)) {
 
             List<Spore> tSpores = t.getSpores();
 
-            if(!tSpores.isEmpty()){
+            if (!tSpores.isEmpty()) {
                 tSpores.get(0).applyEffect(this);
             }
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
 
     /**
-     * Elvágja a fonalakat a kijelölt tektonon, ha az szomszédos a rovar aktuális pozíciójával.
+     * Megpróbál elvágni egy fonalat a megadott Tecton objektumnál.
+     * Először ellenőrzi, hogy a megadott tekton szomszédos-e a rovar aktuális pozíciójával,
+     * majd végrehajtja az elvágási műveletet, ha lehetséges.
      *
-     * @return True, ha sikeresen elvágták a fonalakat, különben False.
+     * @param t A Tecton objektum, amelynél a fonál elvágását próbálja.
+     * @return true, ha sikerült fonalat vágni, false, ha nem sikerült (pl. nincs szomszéd, vagy nem vágott fonalat).
      */
-    //elvágja a fonalakat a kijelölt tektonon
     public boolean cut(Tecton t) {
-        if(t.getMushroom()!=null){
+        if (t.getMushroom() != null) {
             return false;
         }
         //leellenőrizzük, hogy a kapott tekton az szomszédos-e a position tektonnal
@@ -123,21 +127,30 @@ public class Insect implements IInsectController{
         }
     }
 
-    public Insect divide(){
+
+    /**
+     * Létrehoz egy új rovar objektumot (Insect), amely a szomszédos szabad pozíciók közül
+     * egyre kerül, ha van ilyen elérhető pozíció. Ha nincs szabad szomszédos hely,
+     * nem jön létre új rovar.
+     *
+     * @return Az újonnan létrehozott rovar objektumot adja vissza, ha sikerült egy
+     * szabad szomszédos pozícióra elhelyezni. Ha nincs elérhető szabad hely, null értéket ad vissza.
+     */
+    public Insect divide() {
         Insect i = null;
         List<Tecton> tlist = position.getNeighbors();
         boolean attached = false;
-        int j=0;
-        while(j<tlist.size() && attached == false){
-            if(tlist.get(j).getInsect() == null){
+        int j = 0;
+        while (j < tlist.size() && attached == false) {
+            if (tlist.get(j).getInsect() == null) {
                 i = new Insect();
                 i.setPosition(tlist.get(j));
                 tlist.get(j).setInsect(i);
                 attached = true;
             }
-            j = j+1;
+            j = j + 1;
         }
-        
+
         return i;
     }
 

@@ -1,22 +1,24 @@
 package model;
 
+/**
+ * A DividingSpore egy olyan spóra implementáció, amely a rovarokat egy
+ * különleges állapotba helyezi, ahol a rovarok osztódási képességet kapnak.
+ */
 public class DividingSpore extends Spore {
 
     /**
-     * A NoCutSpore konstruktor, amely egy adott teszt objektumot fogad, és
-     * inicializálja a spóra alapobjektumát ezzel a teszt paraméterrel.
-     *
-     * @param t A Tester objektum, amely a spóra működésének meghatározásához szükséges.
+     * A DividingSpore osztály konstruktora, amely inicializálja a spórát.
      */
     public DividingSpore() {
         super();
     }
 
+
     /**
-     * A megadott rovar (Insect) állapotát (state) a NOCUT értékre állítja,
-     * hogy a vágási képességét deaktiválja a spóra effektus hatására.
+     * A metódus speciális hatást alkalmaz egy megadott rovaron (Insect),
+     * amelynek eredményeképp a rovar állapota osztott (DIVIDED) lesz.
      *
-     * @param i az a rovar, amelyre az effektust alkalmazni kell
+     * @param i A rovar objektum, amelyre a hatás alkalmazásra kerül.
      */
     public void applyEffect(Insect i) {
         i.setState(InsectState.DIVIDED);

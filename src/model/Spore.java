@@ -6,14 +6,14 @@ package model;
  * különféle specifikus spóra implementációk számára, amelyek különféle hatásokat
  * alkalmazhatnak rovarokra.
  */
-public abstract class Spore implements ISporeController{
+public abstract class Spore implements ISporeController {
 
     private FungalThread thread;
 
+
     /**
-     * A Spore konstruktora, amely inicializálja a Spore egy példányát a megadott tesztelővel.
-     *
-     * @param t A Tester példány, amely a spóra különböző tesztelési funkcióit biztosítja.
+     * A Spore konstruktora, amely inicializálja a Spore egy példányát,
+     * és beállítja a thread mezőt null értékre.
      */
     public Spore() {
         thread = null;
@@ -31,9 +31,9 @@ public abstract class Spore implements ISporeController{
 
 
     /**
-     * Visszaadja a jelenlegi szálat, amely a Spore-hoz tartozik.
+     * Visszaadja a jelenlegi fonalat, amely a Spore-hoz tartozik.
      *
-     * @return A Spore-hoz tartozó FungalThread objektum, amely reprezentálja a működési szálat, vagy null, ha nincs szál inicializálva.
+     * @return A Spore-hoz tartozó FungalThread objektum.
      */
     public FungalThread getThread() {
         return thread;
