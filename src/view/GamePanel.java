@@ -28,6 +28,7 @@ public class GamePanel extends JPanel{
     public GamePanel(MainWindow parent, Controller controller) {
         this.parent = parent;
         this.controller = controller;
+        
         JButton startButton = new JButton("Anyád");
         startButton.addActionListener(e -> parent.showStartScreen());
         this.add(startButton);
@@ -48,10 +49,10 @@ public class GamePanel extends JPanel{
 
     public void addTecton(List<Integer> points, Tecton t){
         GTecton gtect = new GTecton();
-        int lineCount = -1;
-        for(int i=0; i<points.size()-1;i=i+2){
+        int lineCount = 0;
+        for(int i=0; i<points.size()-1; i=i+2){
             int x = points.get(i);
-            int y = points.get(i);
+            int y = points.get(i+1);
             gtect.addPoint(x,y);
             lineCount++;
         }

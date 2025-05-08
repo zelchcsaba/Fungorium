@@ -1241,24 +1241,24 @@ public class Controller {
             while((line = br.readLine()) != null){
                 
                 String[] str = line.split(" ");
-                if(str[0].equals("neighbours")){
-                    readPoints = false;
+                if(str[0].equals("neighbors")){
+                    break;
                 }
 
-                if(readPoints){
+                List<Integer> points = new ArrayList<>();
 
-                    List<Integer> points = new ArrayList<>();
-
-                    for(int i=0; i<str.length-1;i++){
-                        points.add(Integer.parseInt(str[i]));
-                    }
-
-                    Tecton t = createTecton(str[str.length-1]);
-                    gPanel.addTecton(points, t);
-
-                }else{
-                    setNeighbors(str);
+                for(int i=0; i<str.length-1;i++){
+                    points.add(Integer.parseInt(str[i]));
                 }
+
+                Tecton t = createTecton(str[str.length-1]);
+                gPanel.addTecton(points, t);
+
+            }
+
+            while((line = br.readLine()) != null){
+                String[] str = line.split(" ");
+                setNeighbors(str);
             }
 
         }catch(IOException e){
