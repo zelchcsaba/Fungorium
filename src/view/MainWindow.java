@@ -1,0 +1,53 @@
+package view;
+import java.awt.CardLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import controller.Controller;
+
+public class MainWindow extends JFrame{
+    Controller controller;
+    private CardLayout cardLayout;
+    private JPanel cardPanel;
+
+    private StartScreenPanel startScreen;
+    private NameEntryPanel nameEntry;
+    private GamePanel gamePanel;
+
+    public MainWindow() {
+        controller = new Controller();
+
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+
+        startScreen = new StartScreenPanel(this, controller);
+        nameEntry = new NameEntryPanel(this, controller);
+        gamePanel = new GamePanel(this, controller);
+
+        cardPanel.add(startScreen, "start");
+        cardPanel.add(nameEntry, "nameEntry");
+        cardPanel.add(gamePanel, "game");
+
+        setTitle("Gombász vs Rovarász");
+        this.setContentPane(cardPanel);
+        this.setSize(800, 600);
+        setLocationRelativeTo(null); // Képernyő közepére
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setVisible(true);
+
+    }
+
+    public void showStartScreen() {
+        cardLayout.show(cardPanel, "start");
+    }
+
+    public void showNameEntryPanel() {
+        cardLayout.show(cardPanel, "nameEntry");
+    }
+
+    public void showGamePanel() {
+        
+        cardLayout.show(cardPanel, "game");
+    }
+}

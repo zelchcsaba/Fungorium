@@ -21,8 +21,7 @@ import java.util.TreeMap;
 import model.*;
 import static model.InsectState.*;  // InsectState.NORMAL helyett lehet írni simán, hogy NORMAL
 import static model.MushroomState.*;
-import view.IView;
-import view.View;
+import view.*;
 
 public class Controller {
     private int round;
@@ -41,6 +40,8 @@ public class Controller {
     private int fungusPlayerCount;
     private int insectPlayerCount;
 
+    private GamePanel gPanel;
+
     public Controller() {
         round = 0;
         objects = new HashMap<>();
@@ -57,13 +58,19 @@ public class Controller {
         insectPlayers = new ArrayList<>();
         fungusPlayers = new ArrayList<>();
         tList = new ArrayList<>();
+
+        gPanel = null;
+    }
+
+    public void setGPanel(GamePanel gPanel){
+        this.gPanel = gPanel;
     }
 
     public void processCmd(String cmd) {
         String[] command = cmd.split(" ");
         switch (command[0]) {
 
-
+            /*
             case "saveResult": {
                 try {
                     writeObjectsToFile(objects, new FileWriter("result.txt"));
@@ -150,7 +157,7 @@ public class Controller {
                 }
                 break;
             }
-
+            */
             case "setMaxRound": { // <Pozitív egész>
                 int n = Integer.parseInt(command[1]);
 
@@ -163,7 +170,7 @@ public class Controller {
 
                 break;
             }
-
+            /*
             case "stepGameRound": {
                 int r = Integer.parseInt(command[1]);
                 round += r;
@@ -192,6 +199,7 @@ public class Controller {
                 break;
             }
 
+            */
             case "act": {
                 if (!fungusPlayers.isEmpty()) {
                     currentPlayer = fungusPlayers.get(0);
@@ -203,33 +211,6 @@ public class Controller {
                 break;
             }
 
-
-            case "createTecton": {
-                String type = command[1];
-                Tecton t;
-                switch (type) {
-                    case "MultiThreadTecton":
-                        t = new MultiThreadTecton();
-                        break;
-                    case "SingleThreadTecton":
-                        t = new SingleThreadTecton();
-                        break;
-                    case "AbsorbingTecton":
-                        t = new AbsorbingTecton();
-                        break;
-                    case "KeepThreadTecton":
-                        t = new KeepThreadTecton();
-                        break;
-                    default:
-                        t = new MultiThreadTecton();
-                        break;
-                }
-
-                String name = getNewTectonName();
-                objects.put(name, t);
-                tList.add(t);
-                break;
-            }
 
 
             case "setNeighbors": {
@@ -301,7 +282,7 @@ public class Controller {
                 break;
             }
 
-
+/*
             case "createShortLifeThread": {
                 FungalThread f = new ShortLifeThread();
                 Tecton t = (Tecton)objects.get(command[1]);
@@ -421,7 +402,7 @@ public class Controller {
                 break;
             }
 
-
+*/
             case "generateSpore": { // <Gombatest név> <Spórafajta>
 
                 // Parancsok feldolgozása
@@ -468,6 +449,7 @@ public class Controller {
                 break;
             }
 
+            /*
             case "setShotSpores":{
                 Mushroom m = (Mushroom) objects.get(command[1]);
 
@@ -596,7 +578,7 @@ public class Controller {
                 break;
             }
 
-
+*/
             case "absorb": { // <Tektonnév>
                 String tectonName = command[1];
                 Tecton tecton;
@@ -1180,6 +1162,79 @@ public class Controller {
                 System.out.println("Helytelen parancs");
             }
         }
+    }
+
+    Tecton createTecton(String type) {
+        Tecton t;
+        switch (type) {
+            case "MultiThreadTecton":
+                t = new MultiThreadTecton();
+                break;
+            case "SingleThreadTecton":
+                t = new SingleThreadTecton();
+                break;
+            case "AbsorbingTecton":
+                t = new AbsorbingTecton();
+                break;
+            case "KeepThreadTecton":
+                t = new KeepThreadTecton();
+                break;
+            default:
+                t = new MultiThreadTecton();
+                break;
+        }
+
+        String name = getNewTectonName();
+        objects.put(name, t);
+        tList.add(t);
+        return t;
+    }
+
+    void setNeighbors(String[] neighborList) {
+        Tecton t = (Tecton)objects.get(neighborList[0]);
+        List<Tecton> nList = new ArrayList<>();
+
+        for (int i = 1; i < neighborList.length; i++) {
+            nList.add((Tecton) objects.get(neighborList[i]));
+        }
+
+        t.setNeighbors(nList);
+    }
+
+    public void loadTecton(String filename){
+        
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+            String line;
+            boolean readPoints = true;
+            
+            while((line = br.readLine()) != null){
+                
+                String[] str = line.split(" ");
+                if(str[0].equals("neighbours")){
+                    readPoints = false;
+                }
+
+                if(readPoints){
+
+                    List<Integer> points = new ArrayList<>();
+
+                    for(int i=0; i<str.length-1;i++){
+                        points.add(Integer.parseInt(str[i]));
+                    }
+
+                    Tecton t = createTecton(str[str.length-1]);
+                    gPanel.addTecton(points, t);
+
+                }else{
+                    setNeighbors(str);
+                }
+            }
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        
     }
 
 
