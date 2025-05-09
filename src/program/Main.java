@@ -1,11 +1,7 @@
 package program;
 
-import controller.*;
-import view.MainWindow;
-
-import java.util.Scanner;
-
 import javax.swing.SwingUtilities;
+import view.MainWindow;
 
 
 public class Main {

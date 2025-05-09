@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -41,6 +42,26 @@ public class Controller {
     private int insectPlayerCount;
 
     private GamePanel gPanel;
+
+    public Map<String, Integer> getInsectScores() {
+        Map<String, Integer> insectScores = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> entry : objects.entrySet()) {
+            if (entry.getValue() instanceof InsectPlayer player) {
+                insectScores.put(entry.getKey(), player.getPoints());
+            }
+        }
+        return insectScores;
+    }
+
+    public Map<String, Integer> getFungalScores() {
+        Map<String, Integer> fungalScores = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> entry : objects.entrySet()) {
+            if (entry.getValue() instanceof FungusPlayer player) {
+                fungalScores.put(entry.getKey(), player.getPoints());
+            }
+        }
+        return fungalScores;
+    }
 
     public Controller() {
         round = 0;
