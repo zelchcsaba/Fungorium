@@ -142,6 +142,10 @@ public class Controller {
             System.out.println("Nincs jatekos");
         }
     }
+
+    public int getFungusPlayerCount(){
+        return fungusPlayerCount;
+    }
     
     public void setFungusPlayerCount(int n) {
         if (n >= 0) {
@@ -151,8 +155,8 @@ public class Controller {
         }
     }
     
-    public void createFungusPlayers(String[] names) {
-        if (names.length > 4 || names.length != fungusPlayerCount) {
+    public void createFungusPlayers(List<String> names) {
+        if (names.size() > 4 || names.size() != fungusPlayerCount) {
             System.out.println("Sikertelen");
             return;
         }
@@ -161,6 +165,10 @@ public class Controller {
             objects.put(name, fPlayer);
             fungusPlayers.add(fPlayer);
         }
+    }
+
+    public int getInsectPlayerCount(){
+        return insectPlayerCount;
     }
     
     public void setInsectPlayerCount(int n) {
@@ -171,8 +179,8 @@ public class Controller {
         }
     }
     
-    public void createInsectPlayers(String[] names) {
-        if (names.length > 4 || names.length != insectPlayerCount) {
+    public void createInsectPlayers(List<String> names) {
+        if (names.size() > 4 || names.size() != insectPlayerCount) {
             System.out.println("Sikertelen");
             return;
         }

@@ -93,6 +93,17 @@ public class StartScreenPanel extends JPanel implements ActionListener{
                 int fCount = Integer.parseInt(fPlayerCount.getText());
                 int iCount = Integer.parseInt(iPlayerCount.getText());
                 int maxRound = Integer.parseInt(maxRounds.getText());
+                if(fCount < 0 || fCount > 4){
+                    throw new IllegalArgumentException();
+                }
+
+                if(iCount < 0 || iCount > 4){
+                    throw new IllegalArgumentException();
+                }
+
+                if(maxRound < 0){
+                    throw new IllegalArgumentException();
+                }
 
                 controller.setFungusPlayerCount(fCount);
                 controller.setInsectPlayerCount(iCount);
@@ -101,9 +112,10 @@ public class StartScreenPanel extends JPanel implements ActionListener{
 
                 
                
-            } catch (NumberFormatException ex) {
+            } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(this, "Please enter valid numbers!", "Input Error", JOptionPane.ERROR_MESSAGE);
             }
+            
             
             
         }
