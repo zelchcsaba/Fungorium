@@ -1,10 +1,8 @@
 package view;
+import controller.Controller;
 import java.awt.CardLayout;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import controller.Controller;
 
 public class MainWindow extends JFrame{
     
@@ -17,6 +15,7 @@ public class MainWindow extends JFrame{
     private StartScreenPanel startScreen;
     private NameEntryPanel nameEntry;
     private GamePanel gamePanel;
+    private WinPanel winPanel;
 
     public MainWindow() {
         cardLayout = new CardLayout();
@@ -27,8 +26,10 @@ public class MainWindow extends JFrame{
         startScreen = new StartScreenPanel(this, controller);
         nameEntry = new NameEntryPanel(this, controller);
         gamePanel = new GamePanel(this, controller);
+        winPanel = new WinPanel(this, controller);
         controller.setGPanel(gamePanel);
 
+        cardPanel.add(winPanel, "winPanel");
         cardPanel.add(startScreen, "start");
         cardPanel.add(nameEntry, "nameEntry");
         cardPanel.add(gamePanel, "game");
@@ -54,5 +55,9 @@ public class MainWindow extends JFrame{
     public void showGamePanel() {
         controller.loadTecton("ok.txt");
         cardLayout.show(cardPanel, "game");
+    }
+
+    public void showWinPanel() {
+        cardLayout.show(winPanel, "winPanel");
     }
 }
