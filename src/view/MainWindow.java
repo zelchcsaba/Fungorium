@@ -29,11 +29,6 @@ public class MainWindow extends JFrame{
         winPanel = new WinPanel(this, controller);
         controller.setGPanel(gamePanel);
 
-<<<<<<< HEAD
-=======
-
-        
->>>>>>> ec5fd9c4dceef0c557ea66cc53fc9e7f5187948c
         cardPanel.add(startScreen, "start");
         cardPanel.add(nameEntry, "nameEntry");
         cardPanel.add(gamePanel, "game");
