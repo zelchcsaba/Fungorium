@@ -330,6 +330,8 @@ public class Controller {
             gPanel.addMushroom(mushroom);
 
             setCurrentPlayer();
+
+            gPanel.repaint();
         } 
         else {
             System.out.println("Sikertelen");
@@ -357,6 +359,8 @@ public class Controller {
             gPanel.addInsect(insect);
 
             setCurrentPlayer();
+
+            gPanel.repaint();
         } 
         else {
             System.out.println("Sikertelen!");
@@ -367,7 +371,16 @@ public class Controller {
      * Branches the given thread onto a new tecton.
      * Returns true on success.
      */
-    public void branchThread(FungalThread thread, Tecton tecton) {
+    public void branchThread(Tecton tecton) {
+        FungalThread thread;
+
+        if (fungusPlayers.contains(currentPlayer)) {
+            FungusPlayer fp = (FungusPlayer) currentPlayer;
+            thread = (FungalThread)fp.getThread();
+        }else{
+            return;
+        }
+ 
         if (round == 0) {
             System.out.println("Sikertelen, 0. körben nem lehet elágaztatni");
             return;
@@ -403,6 +416,8 @@ public class Controller {
                 if (!isSpore) {
                     mushroomPlayer.setBranchThread(true);
                 }
+
+                gPanel.repaint();
             }
         } else {
             System.out.println("Sikertelen");
@@ -440,13 +455,23 @@ public class Controller {
 
                 gPanel.removeMushroom(m);
 
-                objects.entrySet().removeIf(entry -> entry.getValue() == m);            
+                objects.entrySet().removeIf(entry -> entry.getValue() == m); 
+                gPanel.repaint();           
             }
         }
     }
 
     /** Grows a mushroom from a thread on a tecton. */
-    public void growMushroom(FungalThread thread, Tecton tecton) {
+    public void growMushroom(Tecton tecton) {
+        FungalThread thread;
+
+        if (fungusPlayers.contains(currentPlayer)) {
+            FungusPlayer fp = (FungusPlayer) currentPlayer;
+            thread = (FungalThread)fp.getThread();
+        }else{
+            return;
+        }
+        
         if (round == 0) {
             System.out.println("Sikertelen, ez a 0. kör");
             return;
@@ -502,6 +527,8 @@ public class Controller {
                 tecton.removeSpores(removable);
             }
 
+            gPanel.repaint();
+
         } 
         else {
             System.out.println("Sikertelen növesztés");
@@ -513,9 +540,13 @@ public class Controller {
      * Eats an insect with a fungal thread and possibly spawns a mushroom.
      * Returns true on success.
      */
-    public void eatInsect(FungalThread thread, Insect insect) {
-        if (round == 0) {
-            System.out.println("Sikertelen, ez 0. kör");
+    public void eatInsect(Insect insect) {
+        FungalThread thread;
+
+        if (fungusPlayers.contains(currentPlayer)) {
+            FungusPlayer fp = (FungusPlayer) currentPlayer;
+            thread = (FungalThread)fp.getThread();
+        }else{
             return;
         }
 
@@ -572,7 +603,9 @@ public class Controller {
 
                 gPanel.removeInsect(insect);
 
-                objects.entrySet().removeIf(entry -> entry.getValue() == insect);            
+                objects.entrySet().removeIf(entry -> entry.getValue() == insect);  
+                
+                gPanel.repaint();
             }
         } else {
             System.out.println("Sikertelen, nem ehet");
@@ -643,6 +676,8 @@ public class Controller {
                 rm.add(spores.get(0));
                 tecton.removeSpores(rm);
                 insectPlayer.addPoint();
+
+                gPanel.repaint();
             }
         } else {
             System.out.println("Sikertelen lépés");
@@ -700,6 +735,7 @@ public class Controller {
         // Vágás
         if (insect.cut(tecton)) {
             insectAssociation.setCut(true);
+            gPanel.repaint();
         } else {
             System.out.println("Sikertelen vágás");
         }
@@ -789,6 +825,11 @@ public class Controller {
         
     }
 
+    public void closestep(){
+        setCurrentPlayer();
+        gPanel.repaint();
+    }
+
 
     /**
      * Beállítja az aktuális játékost a játékmenetben, figyelembe véve a gombász és rovarász játékosok listáját.
@@ -809,8 +850,17 @@ public class Controller {
             if (indexCurrentPlayer == fungusPlayers.size() - 1) {
                 if (!insectPlayers.isEmpty()) {
                     currentPlayer = insectPlayers.get(0);
+
+                    if(gPanel.getState() == GameState.PUTFIRSTMUSHROOM){
+                        gPanel.setState(GameState.PUTFIRSTINSECT);
+                    }else{
+                        gPanel.setState(GameState.WAITINSECTCOMMAND);
+                    }
+
                 } else {
                     currentPlayer = fungusPlayers.get(0);
+
+                    gPanel.setState(GameState.WAITFUNGALCOMMAND);
                     initRound();
                 }
             } else {
@@ -826,9 +876,13 @@ public class Controller {
             if (indexCurrentPlayer == insectPlayers.size() - 1) {
                 if (!fungusPlayers.isEmpty()) {
                     currentPlayer = fungusPlayers.get(0);
+
+                    gPanel.setState(GameState.WAITFUNGALCOMMAND);
+
                     initRound();
                 } else {
                     currentPlayer = insectPlayers.get(0);
+                    gPanel.setState(GameState.WAITINSECTCOMMAND);
                     initRound();
                 }
             } else {

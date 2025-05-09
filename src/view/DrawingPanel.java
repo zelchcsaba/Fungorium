@@ -16,6 +16,8 @@ public class DrawingPanel extends JPanel{
     private HashMap<Insect, GInsect> insCombo;
     private Controller controller;
     private GamePanel gPanel;
+    private GTecton selectedSource;
+    private GTecton targetSource;
 
     public DrawingPanel(Controller controller, GamePanel gPanel){
         tectCombo = new HashMap();
@@ -23,6 +25,9 @@ public class DrawingPanel extends JPanel{
         insCombo = new HashMap();
         this.controller = controller;
         this.gPanel = gPanel;
+
+        selectedSource = null;
+        targetSource = null;
 
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -84,15 +89,71 @@ public class DrawingPanel extends JPanel{
 
     private void handleClickEvent(MouseEvent e) {
     Point click = e.getPoint();
-
+    GTecton selected = null;
     for (Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()) {
         GTecton val = entry.getValue();
         if (val.contains(click)) {
             val.toggleSelected();
+            selected = val;
             repaint();
             break;
         }
     }
+
+    if(selected!=null){
+        GameState state= gPanel.getState();
+
+        switch (state){
+            case GameState.SELECTINSECTFORMOVE:
+                selectedSource = selected;
+                gPanel.setState(GameState.MOVEINSECT);
+            break;
+            case GameState.MOVEINSECT:
+                targetSource = selected;
+                controller.move(selectedSource.getTecton().getInsect(), targetSource.getTecton());
+                gPanel.setState(GameState.WAITINSECTCOMMAND);
+            break;
+            case GameState.SELECTINSECTFORCUT:
+                selectedSource = selected;
+                gPanel.setState(GameState.CUTTHREAD);
+            break;
+            case GameState.CUTTHREAD:
+                targetSource = selected;
+                controller.cut(selectedSource.getTecton().getInsect(), targetSource.getTecton());
+                gPanel.setState(GameState.WAITINSECTCOMMAND);
+            break;
+            case GameState.BRANCHTHREAD:
+                controller.branchThread(selected.getTecton());
+                gPanel.setState(GameState.WAITFUNGALCOMMAND);
+            break;
+            case GameState.EATINSECT:
+                controller.eatInsect(selected.getTecton().getInsect());
+                gPanel.setState(GameState.WAITFUNGALCOMMAND);
+            break;
+            case GameState.SELECTMUSHROOMFORSHOOT:
+                selectedSource = selected;
+                gPanel.setState(GameState.SHOOTSPORE);
+            break;
+            case GameState.SHOOTSPORE:
+                targetSource = selected;
+                controller.shootSpore(selectedSource.getTecton().getMushroom(), targetSource.getTecton());
+                gPanel.setState(GameState.WAITFUNGALCOMMAND);
+            break;
+            case GameState.GROWMUSHROOM:
+                controller.growMushroom(selected.getTecton());
+                gPanel.setState(GameState.WAITFUNGALCOMMAND);
+            break;
+            case GameState.PUTFIRSTINSECT:
+                controller.putFirstInsect(selected.getTecton());
+            break;
+            case GameState.PUTFIRSTMUSHROOM:
+                controller.putFirstMushroom("ShortLifeThread", selected.getTecton());
+            break;
+            default:
+            break;
+        }
+    }
+
 }
 
 }
