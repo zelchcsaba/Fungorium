@@ -64,6 +64,14 @@ public class Controller {
         return fungalScores;
     }
 
+    public List<InsectPlayer> getInsectPlayers(){
+        return insectPlayers;
+    }
+
+    public List<FungusPlayer> getFungusPlayers(){
+        return fungusPlayers;
+    }
+
     public Controller() {
         round = 0;
         objects = new HashMap<>();

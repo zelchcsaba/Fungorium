@@ -1,13 +1,11 @@
 package view;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.JPanel;
-
 import controller.Controller;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JPanel;
 import model.Insect;
 import model.Mushroom;
 import model.Tecton;

@@ -29,10 +29,11 @@ public class MainWindow extends JFrame{
         winPanel = new WinPanel(this, controller);
         controller.setGPanel(gamePanel);
 
-        cardPanel.add(winPanel, "winPanel");
+        
         cardPanel.add(startScreen, "start");
         cardPanel.add(nameEntry, "nameEntry");
         cardPanel.add(gamePanel, "game");
+        cardPanel.add(winPanel, "winPanel");
 
         setTitle("Gombász vs Rovarász");
         this.setContentPane(cardPanel);
