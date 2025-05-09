@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class MainWindow extends JFrame{
+    
+    
     Controller controller;
 
     private CardLayout cardLayout;
@@ -16,10 +18,10 @@ public class MainWindow extends JFrame{
     private WinPanel winPanel;
 
     public MainWindow() {
-        controller = new Controller();
-
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
+
+        controller = new Controller();
 
         startScreen = new StartScreenPanel(this, controller);
         nameEntry = new NameEntryPanel(this, controller);
@@ -38,11 +40,12 @@ public class MainWindow extends JFrame{
         setLocationRelativeTo(null); // Képernyő közepére
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
-
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximalizálás
     }
 
     public void showStartScreen() {
         cardLayout.show(cardPanel, "start");
+
     }
 
     public void showNameEntryPanel() {
