@@ -1,16 +1,16 @@
 package view;
 import controller.Controller;
+import controller.FungusPlayer;
+import controller.InsectPlayer;
+import controller.Player;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
-
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import model.Insect;
 import model.Mushroom;
 import model.Tecton;
@@ -29,6 +29,7 @@ public class GamePanel extends JPanel{
     private JButton eatButton;
     private JButton closeButton;
 
+    Map<Player, Color> players;
 
     public GamePanel(MainWindow parent, Controller controller) {
         this.parent = parent;
@@ -114,7 +115,6 @@ public class GamePanel extends JPanel{
         actionsPanel.add(closeButton);
 
         setVisibility();
-
     }
 
     public void setState(GameState state){
@@ -123,6 +123,23 @@ public class GamePanel extends JPanel{
 
     public GameState getState(){
         return state;
+    }
+
+    public void setPlayerColors(){
+        Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW};
+
+        List<InsectPlayer> iPlayers = controller.getInsectPlayers();
+        List<FungusPlayer> fPlayers = controller.getFungusPlayers();
+
+        int i = 0;
+        for(InsectPlayer iPlayer : iPlayers){
+            players.put(iPlayer, colors[i++]);
+        }
+
+        i = 0;
+        for(FungusPlayer fPlayer : fPlayers){
+            players.put(fPlayer, colors[i++]);
+        }
     }
 
     public void addTecton(List<Integer> points, Tecton t){

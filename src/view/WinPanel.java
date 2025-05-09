@@ -74,17 +74,20 @@ public class WinPanel extends JPanel{
     }
 
     private void loadPlayers(){
-        fungalScores.put("huszi", 100);
-        fungalScores.put("goldi", 1010);
-        fungalScores.put("huszii", 1010);
+        // fungalScores.put("huszi", 100);
+        // fungalScores.put("goldi", 1010);
+        // fungalScores.put("huszii", 1010);
 
-        insectScores.put("ruszi", 100);
-        insectScores.put("puli", 100);
-        insectScores.put("rudi", 10);
-        insectScores.put("asa", 80);
+        // insectScores.put("ruszi", 100);
+        // insectScores.put("puli", 100);
+        // insectScores.put("rudi", 10);
+        // insectScores.put("asa", 80);
 
-        sortFungal();
-        sortInsect();
+        insectScores = controller.getInsectScores();
+        fungalScores = controller.getFungalScores();
+
+        if(insectScores.size()>0)sortInsect();
+        if(fungalScores.size()>0)sortFungal();
     }
 
     public WinPanel(MainWindow parent, Controller controller) {
