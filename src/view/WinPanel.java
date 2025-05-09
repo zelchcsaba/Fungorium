@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import controller.Controller;
-import view.GamePanel.DrawingPanel;
+
 
 public class WinPanel extends JPanel{
     private MainWindow parent;
