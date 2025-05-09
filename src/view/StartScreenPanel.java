@@ -99,14 +99,15 @@ public class StartScreenPanel extends JPanel implements ActionListener{
                 controller.setFungusPlayerCount(fCount);
                 controller.setInsectPlayerCount(iCount);
                 controller.setMaxRound(maxRound);
+                parent.showNameEntryPanel();
 
                 
                
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Please enter valid integers!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please enter valid numbers!", "Input Error", JOptionPane.ERROR_MESSAGE);
             }
             
-            parent.showNameEntryPanel();
+            
         }
     }
         
