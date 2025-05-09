@@ -6,15 +6,15 @@ package model;
  */
 public interface IInsectController {
 
-    public abstract boolean move(Tecton t);
+    boolean move(Tecton t);
 
-    public abstract boolean cut(Tecton t);
+    boolean cut(Tecton t);
 
-    public abstract Insect divide();
+    Insect divide();
 
-    public abstract void setPosition(Tecton t);
+    void setPosition(Tecton t);
 
-    public abstract void setState(InsectState iState);
+    void setState(InsectState iState);
 
-    public abstract InsectState getState();
+    InsectState getState();
 }
