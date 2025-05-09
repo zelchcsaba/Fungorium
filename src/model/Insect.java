@@ -8,7 +8,7 @@ import java.util.List;
  * Az osztály a mozgásra, pozíció megváltoztatására és fonál vágására vonatkozó
  * függvényeket valósít meg.
  */
-public class Insect implements IInsectController {
+public class Insect implements IInsectController, IInsectView {
 
     private Tecton position;
     private InsectState state;

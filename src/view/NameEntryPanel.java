@@ -1,8 +1,7 @@
 package view;
+import controller.Controller;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
-import controller.Controller;
 
 public class NameEntryPanel extends JPanel{
     private MainWindow parent;

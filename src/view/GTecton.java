@@ -4,12 +4,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
-
+import model.ITectonView;
 import model.Tecton;
 
 public class GTecton extends Polygon {
     private boolean selected = false;
-    private Tecton t;
+    private ITectonView t;
     private int lineCount;
     private DrawingPanel drawingPanel;
 
@@ -25,7 +25,7 @@ public class GTecton extends Polygon {
         this.t = t;
     }
 
-    public Tecton getTecton(){
+    public ITectonView getTecton(){
         return t;
     }
 

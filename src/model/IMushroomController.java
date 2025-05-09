@@ -29,4 +29,7 @@ public interface IMushroomController {
     void setShootedSporesCount(int count);
 
     int getShootedSporesCount();
+
+    public FungalThread getThread();
+
 }

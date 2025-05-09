@@ -72,6 +72,34 @@ public class Controller {
         return fungusPlayers;
     }
 
+    public FungusPlayer getMushroomPlayer(IMushroomController m){
+        for(FungusPlayer fPlayer : fungusPlayers){
+            for(MushroomAssociation mAssociation : fPlayer.getMushrooms()){
+                if(m == mAssociation.getMushroom()) return fPlayer;
+            }
+        }
+        return null;
+    }
+
+    public InsectPlayer getInsectPlayer(IInsectController i){
+        for(InsectPlayer iPlayer : insectPlayers){
+            for(InsectAssociation insectAssociation : iPlayer.getInsects()){
+                if(i == insectAssociation.getInsect()) return iPlayer;
+            }
+        }
+        return null;
+    }
+
+    public FungusPlayer getThreadPlayer(IFungalThreadController f){
+        for(FungusPlayer fPlayer : fungusPlayers){
+            for(MushroomAssociation mAssociation : fPlayer.getMushrooms()){
+                if(f == mAssociation.getMushroom().getThread()) return fPlayer;
+            }
+        }
+        return null;
+    }
+
+
     public Controller() {
         round = 0;
         objects = new HashMap<>();

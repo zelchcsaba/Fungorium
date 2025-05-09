@@ -1,7 +1,5 @@
 package model;
 
-import static model.InsectState.PARALYZED;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +9,7 @@ import java.util.List;
  * a fonál részeinek kezelésére, például hozzáadására, eltávolítására, elágazására,
  * és a nem szükséges fonálrészek automatikus eltávolítására.
  */
-public abstract class FungalThread implements IFungalThreadController {
+public abstract class FungalThread implements IFungalThreadController, IFungalThreadView {
 
     private List<Tecton> tectons;
     protected List<timeToDie> life;

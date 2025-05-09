@@ -8,7 +8,7 @@ import java.util.List;
  * képes generálni és kilőni egy adott tektonra. A gomba különböző
  * állapotokban lehet, és működéséhez teszter osztályt használ.
  */
-public class Mushroom implements IMushroomController {
+public class Mushroom implements IMushroomController, IMushroomView{
 
     private Tecton position;
     private List<Spore> spores;
