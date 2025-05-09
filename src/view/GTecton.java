@@ -11,9 +11,14 @@ public class GTecton extends Polygon {
     private boolean selected = false;
     private Tecton t;
     private int lineCount;
+    private DrawingPanel drawingPanel;
 
     public GTecton() {
         super();
+    }
+
+    public void setDrawingPanel(DrawingPanel drawingPanel){
+        this.drawingPanel = drawingPanel;
     }
 
     public void setTecton(Tecton t){
@@ -42,6 +47,21 @@ public class GTecton extends Polygon {
 
     public void toggleSelected() {
         selected = !selected;
+    }
+
+    public Point getCenter(){
+        int sumX = 0;
+        int sumY = 0;
+
+        for (int i = 0; i < npoints; i++) {
+            sumX += xpoints[i];
+            sumY += ypoints[i];
+        }
+
+        int centerX = sumX / npoints;
+        int centerY = sumY / npoints;
+
+        return new Point(centerX, centerY);
     }
 
     public void draw(Graphics g) {
