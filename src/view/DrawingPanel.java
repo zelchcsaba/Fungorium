@@ -3,7 +3,6 @@ package view;
 import controller.Controller;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
@@ -17,6 +16,8 @@ public class DrawingPanel extends JPanel{
     private HashMap<Insect, GInsect> insCombo;
     private Controller controller;
     private GamePanel gPanel;
+
+    private GTecton lastClicked;     // ezt használjuk a piros kijelöléshez
 
     private GTecton selectedSource;
     private GTecton targetSource;
@@ -204,19 +205,31 @@ public class DrawingPanel extends JPanel{
     }
 
     private void handleClickEvent(MouseEvent e) {
-    Point click = e.getPoint();
-    GTecton selected = null;
-    for (Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()) {
-        GTecton val = entry.getValue();
-        if (val.contains(click)) {
-            val.toggleSelected();
-            selected = val;
-            repaint();
-            break;
+        Point click = e.getPoint();
+        GTecton selected = null;
+        for (GTecton gt : tectCombo.values()) {
+            if (gt.contains(click)) {
+                selected = gt;
+                break;
+            }
         }
-    }
 
-    if(selected!=null){
+        if (selected != null) {
+            // Ha ugyanaz, ami épp ki van választva, akkor deselect
+            if (selected == lastClicked) {
+                clearSelection();
+                lastClicked = null;
+            }
+            // Ha új elem, akkor előbb clear, aztán select
+            else {
+                clearSelection();
+                selected.setSelected(true);
+                lastClicked = selected;
+            }
+            repaint();
+        }
+
+        if(selected!=null){
         GameState state= gPanel.getState();
 
         switch (state){
@@ -268,8 +281,12 @@ public class DrawingPanel extends JPanel{
             default:
             break;
         }
-    }
-
+    }    
 }
 
+    public void clearSelection() {
+        for (GTecton gt : tectCombo.values()) {
+            gt.setSelected(false);
+        }
+    }
 }

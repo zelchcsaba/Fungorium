@@ -63,6 +63,7 @@ public class MainWindow extends JFrame{
     }
 
     public void showWinPanel() {
+        winPanel.refresh();
         cardLayout.show(cardPanel, "winPanel");
     }
 }
