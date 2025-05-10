@@ -161,6 +161,7 @@ public class Controller {
             currentPlayer = fungusPlayers.get(0);
         } else if (!insectPlayers.isEmpty()) {
             currentPlayer = insectPlayers.get(0);
+            gPanel.setState(GameState.PUTFIRSTINSECT);
         }
     }
 
@@ -209,18 +210,18 @@ public class Controller {
     /**
      * Breaks a tecton into two, registers them, and removes the original.
      */
-    public void breakTecton(ITectonController tecton) {
+    public boolean breakTecton(ITectonController tecton) {
         if (gPanel.canBreakTecton((Tecton) tecton)) {
 
             if (tecton == null || !objects.containsValue(tecton)) {
                 System.out.println("Baj a tektonnal");
-                return;
+                return false;
             }
 
             List<Tecton> pieces = tecton.breakTecton();
             if (pieces == null || pieces.size() != 2) {
                 System.out.println("Baj a tekton töréssel");
-                return;
+                return false;
             }
 
             // register new pieces
@@ -237,6 +238,9 @@ public class Controller {
             // remove old
             objects.values().removeIf(o -> o == tecton);
             tList.remove(tecton);
+            return true;
+        }else{
+            return false;
         }
     }
 
@@ -967,7 +971,10 @@ public class Controller {
                     tecton.absorb();
                 }
                 int rnumb = randomize(tList.size() - 1);
-                breakTecton((Tecton) tList.get(rnumb));
+                if(!breakTecton((Tecton) tList.get(rnumb))){
+                    rnumb = randomize(tList.size() - 1);
+                    breakTecton((Tecton) tList.get(rnumb));
+                }
 
             }
 
