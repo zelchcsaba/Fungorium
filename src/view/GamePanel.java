@@ -117,7 +117,6 @@ public class GamePanel extends JPanel{
         closeButton.addActionListener(buttonListener);
         actionsPanel.add(closeButton);
 
-        setVisibility();
     }
 
     public void refreshTopPanel(){
@@ -132,7 +131,6 @@ public class GamePanel extends JPanel{
     public void setState(GameState state){
         this.state = state;
         System.out.println(this.state);
-        setVisibility();
     }
 
     public GameState getState(){
@@ -219,6 +217,8 @@ public class GamePanel extends JPanel{
     }
 
     protected void paintComponent(Graphics g) {
+        refreshTopPanel();
+        setVisibility();
         super.paintComponent(g);
     }
 
@@ -231,22 +231,22 @@ public class GamePanel extends JPanel{
         state == GameState.EATINSECT ||
         state == GameState.WAITFUNGALCOMMAND){
             closeButton.setVisible(true);
-            moveButton.setVisible(true);
-            cutButton.setVisible(true);
-            branchButton.setVisible(false);
-            growButton.setVisible(false);
-            shootButton.setVisible(false);
-            eatButton.setVisible(false);
-        }else if(state == GameState.SELECTINSECTFORMOVE ||
-        state == GameState.SELECTINSECTFORCUT ||
-        state == GameState.WAITINSECTCOMMAND){
-            closeButton.setVisible(true);
             moveButton.setVisible(false);
             cutButton.setVisible(false);
             branchButton.setVisible(true);
             growButton.setVisible(true);
             shootButton.setVisible(true);
             eatButton.setVisible(true);
+        }else if(state == GameState.SELECTINSECTFORMOVE ||
+        state == GameState.SELECTINSECTFORCUT ||
+        state == GameState.WAITINSECTCOMMAND){
+            closeButton.setVisible(true);
+            moveButton.setVisible(true);
+            cutButton.setVisible(true);
+            branchButton.setVisible(false);
+            growButton.setVisible(false);
+            shootButton.setVisible(false);
+            eatButton.setVisible(false);
         }else{
             closeButton.setVisible(false);
             moveButton.setVisible(false);
@@ -256,15 +256,12 @@ public class GamePanel extends JPanel{
             shootButton.setVisible(false);
             eatButton.setVisible(false);
         }
-        revalidate();
-        repaint();
     }
 
     public void handleButtonClick(ActionEvent e) {
 
             if (e.getSource() == closeButton) {
                 controller.closestep();
-                refreshTopPanel();
             } else if (e.getSource() == moveButton) {
                 state = GameState.SELECTINSECTFORMOVE;
             } else if (e.getSource() == cutButton) {
@@ -277,8 +274,7 @@ public class GamePanel extends JPanel{
                  state = GameState.SELECTMUSHROOMFORSHOOT;
             } else if (e.getSource() == eatButton) {
                  state = GameState.EATINSECT;
-            }
-            setVisibility(); 
+            } 
     }
 
 }

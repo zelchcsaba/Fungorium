@@ -101,12 +101,14 @@ public class SingleThreadTecton extends Tecton {
     public boolean putThread(FungalThread f) {
         if (thread == null && !neighbors.isEmpty()) {
             for (Tecton tecton : neighbors) {
-                List<FungalThread> threads = tecton.getThreads();
-                if (threads != null) { // Csak akkor iterálj, ha nem null
-                    for (FungalThread fungals : threads) {
-                        if (fungals != null && fungals.equals(f)) {
-                            thread = f;
-                            return true;
+                if(tecton != null){
+                    List<FungalThread> threads = tecton.getThreads();
+                    if (threads != null) { // Csak akkor iterálj, ha nem null
+                        for (FungalThread fungals : threads) {
+                            if (fungals != null && fungals.equals(f)) {
+                                thread = f;
+                                return true;
+                            }
                         }
                     }
                 }

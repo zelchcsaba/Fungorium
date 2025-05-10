@@ -117,9 +117,11 @@ public class AbsorbingTecton extends Tecton {
      */
     public boolean putThread(FungalThread f) {
         for (Tecton tecton : neighbors) {
-            if (tecton.getThreads().contains(f)) {
-                threads.add(f);
-                return true;
+            if(tecton != null){
+                if (tecton.getThreads().contains(f)) {
+                    threads.add(f);
+                    return true;
+                }
             }
         }
         return false;
