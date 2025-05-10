@@ -57,6 +57,7 @@ public class MainWindow extends JFrame{
         controller.loadTecton("ok.txt");
         gamePanel.tectontTranslateTransform();
         controller.act();
+        gamePanel.refreshTopPanel();
         cardLayout.show(cardPanel, "game");
     }
 
