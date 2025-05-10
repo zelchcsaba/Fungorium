@@ -1,25 +1,21 @@
 package view;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.List;
-import java.util.Map.Entry;
-
-import javax.imageio.ImageIO;
-
 import controller.Controller;
 import controller.FungusPlayer;
 import controller.Player;
-
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
+import java.util.List;
+import java.util.Map.Entry;
+import javax.imageio.ImageIO;
 import model.ITectonView;
-import model.Tecton;
 import model.Spore;
+import model.Tecton;
 
 public class GTecton extends Polygon {
     private boolean selected = false;
@@ -87,7 +83,7 @@ public class GTecton extends Polygon {
         return new Point(centerX, centerY);
     }
 
-    public void draw(Graphics g /*,Controller controller*/) {
+    public void draw(Graphics g ,Controller controller) {
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(selected ? Color.RED : color);
@@ -95,51 +91,59 @@ public class GTecton extends Polygon {
         g2.setColor(Color.BLACK);
         g2.drawPolygon(this);
 
-        /*List<Spore> spores = tecton.getSpores();
+        List<Spore> spores = tecton.getSpores(); // ezek a spórák vannak rajta
         if(spores.isEmpty()){
             return;
         }
 
-        for(Spore spore : spores){
-            FungusPlayer fPlayer = null;
-            for(FungusPlayer player : controller.getFungusPlayers()){
-                if(player.getThread() == spore.getThread()){
-                    fPlayer = player;
+        for(FungusPlayer fPlayer : controller.getFungusPlayers()){ // játékosokon végig
+            for(Spore s : tecton.getSpores()){ // spórákon végig
+                if(s.getThread() == fPlayer.getThread()){ // ha ez a spóra rajta van a tektonon
+                    Color playerColor = null;
+                    for(Entry<Player, Color> entry : drawingPanel.getGPanel().players.entrySet()){ // kiszedjük a színét
+                        if(entry.getKey() == fPlayer){
+                            Point center = getCenter();
+                            playerColor = entry.getValue();
+                            BufferedImage img = null;
+                            switch(playerColor.getRGB()) {
+                                case 0xFFFF0000: // Color.RED
+                                    try{
+                                        img = ImageIO.read(new File("spore1.png"));
+                                    }catch(IOException e){
+                                        e.printStackTrace();
+                                    }
+                                    g2.drawImage(img, center.x-23, center.y+3, 10, 10, null);
+                                break;
+                                case 0xFF00FF00: // Color.GREEN
+                                    try{
+                                        img = ImageIO.read(new File("spore3.png"));
+                                    }catch(IOException e){
+                                        e.printStackTrace();
+                                    }
+                                    g2.drawImage(img, center.x-11, center.y+3, 10, 10, null);
+                                break;
+                                case 0xFF0000FF: // Color.BLUE
+                                    try{
+                                        img = ImageIO.read(new File("spore2.png"));
+                                    }catch(IOException e){
+                                        e.printStackTrace();
+                                    }
+                                    g2.drawImage(img, center.x+1, center.y+3, 10, 10, null);
+                                break;
+                                case 0xFFFFFF00: // Color.YELLOW
+                                    try{
+                                        img = ImageIO.read(new File("spore4.png"));
+                                    }catch(IOException e){
+                                        e.printStackTrace();
+                                    }
+                                    g2.drawImage(img, center.x+13, center.y+3, 10, 10, null);
+                                break;
+                            }
+                            
+                        }
+                    }
                 }
             }
-
-            if(fPlayer == null){
-                return;
-            }
-            
-            Color playerColor = null;
-            for(Entry<Player, Color> entry : drawingPanel.getGPanel().players.entrySet()){
-                if(entry.getKey() == fPlayer){
-                    playerColor = entry.getValue();
-                    break;
-                }
-            }
-
-            
-            String pathName = null;
-            switch (playerColor.getRGB()) {
-                case 0xFFFF0000: // Color.RED
-                    pathName = "spore1.png";
-                    break;
-                case 0xFF00FF00: // Color.GREEN
-                    pathName = "spore3.png";
-                    break;
-                case 0xFF0000FF: // Color.BLUE
-                    pathName = "spore2.png";
-                    break;
-                case 0xFFFFFF00: // Color.YELLOW
-                    pathName = "spore4.png";
-                    break;
-            }
-
-           //Kirajz spóra
-        }*/
-
-
+        }
     }
 }

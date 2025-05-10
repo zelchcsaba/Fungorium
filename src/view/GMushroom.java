@@ -3,7 +3,6 @@ package view;
 import controller.Controller;
 import controller.FungusPlayer;
 import controller.Player;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,9 +10,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Map.Entry;
-
 import javax.imageio.ImageIO;
 import model.IMushroomView;
 import model.Mushroom;
