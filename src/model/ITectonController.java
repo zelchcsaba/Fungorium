@@ -2,14 +2,35 @@ package model;
 
 import java.util.List;
 
+/**
+ * Az ITectonController egy interfész, amely meghatározza a különböző műveleteket,
+ * amelyek egy Tecton elem kezelésére és manipulálására irányulnak.
+ */
 public interface ITectonController {
-    public abstract List<Tecton> breakTecton();
-    public abstract boolean putFirstMushroom(FungalThread f, Mushroom m);
-    public abstract boolean putFirstInsect(Insect i);
-    public abstract void absorb();
-    public abstract void setNeighbors(List<Tecton> tlist);
-    public abstract boolean setMushroom(Mushroom m);
-    public abstract void setInsect(Insect i);
-    public abstract boolean putThread(FungalThread f);
-    public abstract void setSpores(List<Spore> slist);
+
+    List<Tecton> breakTecton();
+
+    boolean putFirstMushroom(FungalThread f, Mushroom m);
+
+    boolean putFirstInsect(Insect i);
+
+    void absorb();
+
+    boolean setMushroom(Mushroom m);
+
+    void setInsect(Insect i);
+
+    boolean putThread(FungalThread f);
+
+    void setSpores(List<Spore> slist);
+
+    public List<Spore> getSpores();
+
+    public boolean removeSpores(List<Spore> slist);
+
+    public void setNeighbors(List<Tecton> neighbors);
+
+    public void addThread(FungalThread f);
+
+    public void addSpore(Spore sp);
 }

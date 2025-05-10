@@ -8,12 +8,11 @@ public class SlowingSpore extends Spore {
 
     /**
      * Létrehoz egy új SlowingSpore példányt, amely lassító hatást fejt ki rovarokra.
-     *
-     * @param t A teszteléshez használt Tester példány
      */
     public SlowingSpore() {
         super();
     }
+
 
     /**
      * Alkalmaz egy lassító hatást a megadott rovarra.

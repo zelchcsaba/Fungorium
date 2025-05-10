@@ -8,14 +8,12 @@ package model;
 public class ParalysingSpore extends Spore {
 
     /**
-     * A ParalysingSpore osztály konstruktora, amely inicializálja a spóra objektumot
-     * egy tesztelővel.
-     *
-     * @param t A Tester példány, amely biztosítja a Spore osztály megfelelő működését
+     * Konstruktor, amely létrehozza a ParalysingSpore objektumot.
      */
     public ParalysingSpore() {
         super();
     }
+
 
     /**
      * Alkalmazza a spóra hatását egy adott rovaron, mely ebben az esetben

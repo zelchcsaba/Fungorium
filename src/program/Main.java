@@ -1,9 +1,16 @@
 package program;
-import controller.*;
+
+import javax.swing.SwingUtilities;
+import view.MainWindow;
+
 
 public class Main {
-    public static void main(String[] args){
-        Controller clr = new Controller();
-        clr.processCmd("runTest test.txt");
+    public static void main(String[] args) {
+       
+        SwingUtilities.invokeLater(() -> {
+            MainWindow frame = new MainWindow(); 
+            frame.setVisible(true);           
+        });
+
     }
 }

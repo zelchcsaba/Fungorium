@@ -1,8 +1,0 @@
--begin-
-MultiThreadTecton t1
-—
-t1
-mushroom -
-threads -
-
--end-
