@@ -16,8 +16,6 @@ public interface ITectonController {
 
     void absorb();
 
-    void setNeighbors(List<Tecton> tlist);
-
     boolean setMushroom(Mushroom m);
 
     void setInsect(Insect i);
@@ -25,4 +23,14 @@ public interface ITectonController {
     boolean putThread(FungalThread f);
 
     void setSpores(List<Spore> slist);
+
+    public List<Spore> getSpores();
+
+    public boolean removeSpores(List<Spore> slist);
+
+    public void setNeighbors(List<Tecton> neighbors);
+
+    public void addThread(FungalThread f);
+
+    public void addSpore(Spore sp);
 }

@@ -228,7 +228,7 @@ public class Controller {
         objects.put(getNewSporeName(), spore);
     }
     
-    public void absorb(Tecton tecton) {
+    public void absorb(ITectonController tecton) {
         if (!objects.containsValue(tecton)) {
             System.out.println("Tekton nincs benne az objects-ben");
             return;
@@ -250,7 +250,7 @@ public class Controller {
     /**
      * Breaks a tecton into two, registers them, and removes the original.
      */
-    public void breakTecton(Tecton tecton) {
+    public void breakTecton(ITectonController tecton) {
         if (tecton == null || !objects.containsValue(tecton)) {
             System.out.println("Baj a tektonnal");
             return;
@@ -327,7 +327,7 @@ public class Controller {
      * Places the first mushroom on the given tecton with a new thread of the specified type.
      * Returns true on success, false otherwise.
      */
-    public void putFirstMushroom(String type, Tecton tecton) {
+    public void putFirstMushroom(String type, ITectonController tecton) {
         if (round != 0){
             System.out.println("Sikertelen, ez nem a 0. kör");
             return;
@@ -341,7 +341,7 @@ public class Controller {
 
         Mushroom mushroom = new Mushroom();
         mushroom.setThread(thread);
-        mushroom.setPosition(tecton);
+        mushroom.setPosition((Tecton)tecton);
         if (((fungusPlayers.contains(currentPlayer)) && tecton.putFirstMushroom(thread, mushroom))) {
 
             objects.put(getNewMushroomName(), mushroom);
@@ -368,7 +368,7 @@ public class Controller {
      * Places the first insect on the given tecton.
      * Returns true on success.
      */
-    public void putFirstInsect(Tecton tecton) {
+    public void putFirstInsect(ITectonController tecton) {
         if (round != 0) {
             System.out.println("Sikertelen, ez nem a 0. kör");
             return;
@@ -396,7 +396,7 @@ public class Controller {
      * Branches the given thread onto a new tecton.
      * Returns true on success.
      */
-    public void branchThread(Tecton tecton) {
+    public void branchThread(ITectonController tecton) {
         FungalThread thread;
 
         if (fungusPlayers.contains(currentPlayer)) {
@@ -427,7 +427,7 @@ public class Controller {
         if (mushroomPlayer.getBranchThread() != true) {
 
             // Ha sikertelen akkor kiírja
-            if (!thread.branchThread(tecton)) {
+            if (!thread.branchThread((Tecton)tecton)) {
                 System.out.println("Sikertelen");
             } else {
                 List<Spore> slist = new ArrayList<>();
@@ -450,7 +450,7 @@ public class Controller {
     }
 
     /** Shoots a spore from a mushroom onto a tecton. */
-    public void shootSpore(Mushroom m, Tecton t) {
+    public void shootSpore(Mushroom m, ITectonController t) {
         if (round == 0) {
             System.out.println("Sikertelen, 0. körben nem lehet lőni");
             return;
@@ -470,7 +470,7 @@ public class Controller {
             return;
         }
 
-        if (!m.shootSpore(t)) {
+        if (!m.shootSpore((Tecton)t)) {
             System.out.println("Sikertelen lövés!");
         } else {
             if (m.getShootedSporesCount() >= 10) {
@@ -487,7 +487,7 @@ public class Controller {
     }
 
     /** Grows a mushroom from a thread on a tecton. */
-    public void growMushroom(Tecton tecton) {
+    public void growMushroom(ITectonController tecton) {
         FungalThread thread;
 
         if (fungusPlayers.contains(currentPlayer)) {
@@ -519,7 +519,7 @@ public class Controller {
         List<Spore> slist = tecton.getSpores();
         List<Spore> removable = new ArrayList<>();
 
-        if (thread.growMushroom(tecton, mushroom)) {
+        if (thread.growMushroom((Tecton)tecton, mushroom)) {
 
             objects.put(getNewMushroomName(), mushroom);
             mushroomPlayer.addMushroom(mushroom);
@@ -640,7 +640,7 @@ public class Controller {
     /**
      * Moves an insect onto a tecton, handles eating and effects.
      */
-    public void move(Insect insect, Tecton tecton) {
+    public void move(Insect insect, ITectonController tecton) {
         if (round == 0) {
             System.out.println("Sikertelen, ez a 0. kör");
             return;
@@ -682,7 +682,7 @@ public class Controller {
         if (!spores.isEmpty()) eat = true;
 
         // Lépés
-        if (insect.move(tecton)) {
+        if (insect.move((Tecton)tecton)) {
             insectAssociation.setMoved(true);
             if (eat) {
                 Spore spore = spores.get(0);
@@ -722,7 +722,7 @@ public class Controller {
     }
 
     /** Cuts a thread on a tecton with an insect. */
-    public void cut(Insect insect, Tecton tecton) {
+    public void cut(Insect insect, ITectonController tecton) {
         if (round == 0) {
             System.out.println("Sikertelen, ez a 0. kör");
             return;
@@ -758,7 +758,7 @@ public class Controller {
         }
 
         // Vágás
-        if (insect.cut(tecton)) {
+        if (insect.cut((Tecton)tecton)) {
             insectAssociation.setCut(true);
             gPanel.repaint();
         } else {
@@ -794,17 +794,16 @@ public class Controller {
     }
 
     void setNeighbors(String[] neighborList) {
-        Tecton t = (Tecton)objects.get(neighborList[0]);
+        ITectonController t = (ITectonController)objects.get(neighborList[0]);
         List<Tecton> nList = new ArrayList<>();
 
         for (int i = 1; i < neighborList.length; i++) {
             if(neighborList[i].equals("null")){
                 nList.add(null);
             }else{
-                nList.add((Tecton) objects.get(neighborList[i]));
+                nList.add((Tecton)objects.get(neighborList[i]));
             }
         }
-
         t.setNeighbors(nList);
     }
 
@@ -1455,7 +1454,7 @@ public class Controller {
 
 
             case "setNeighbors": {
-                Tecton t = (Tecton) objects.get(command[1]);
+                ITectonController t = (ITectonController) objects.get(command[1]);
                 List<Tecton> neighborList = new ArrayList<>();
                 for (int i = 2; i < command.length; i++) {
                     neighborList.add((Tecton) objects.get(command[i]));
@@ -1583,8 +1582,8 @@ public class Controller {
                 }
 
                 for (int i = 2; i < command.length; i++) {
-                    Tecton t = (Tecton) objects.get(command[i]);
-                    thread.addTecton(t);
+                    ITectonController t = (ITectonController)objects.get(command[i]);
+                    thread.addTecton((Tecton)t);
                     t.addThread(thread);
                 }
                 break;
@@ -1593,13 +1592,13 @@ public class Controller {
 
             case "createMushroom": {
                 Mushroom m = new Mushroom();
-                Tecton t = (Tecton) objects.get(command[1]);
+                ITectonController t = (ITectonController) objects.get(command[1]);
                 FungalThread f = (FungalThread) objects.get(command[2]);
                 FungusPlayer fplayer = (FungusPlayer) objects.get(command[3]);
 
                 if (f != null) {
                     m.setThread(f);
-                    m.setPosition(t);
+                    m.setPosition((Tecton)t);
                     if (t.setMushroom(m)) {
                         fplayer.setPoints(fplayer.getPoints() + 1);
                         fplayer.addMushroom(m);
@@ -1624,14 +1623,14 @@ public class Controller {
                 String playerName = command[3];
 
                 Mushroom m = new Mushroom();
-                Tecton t = (Tecton) objects.get(tectonName);
+                ITectonController t = (ITectonController) objects.get(tectonName);
                 FungalThread f = (FungalThread) objects.get(fungalName);
                 FungusPlayer fplayer = (FungusPlayer) objects.get(playerName);
 
                 if (f != null) {
                     m.setState(MushroomState.EVOLVED);
                     m.setThread(f);
-                    m.setPosition(t);
+                    m.setPosition((Tecton)t);
                     if (t.setMushroom(m)) {
                         fplayer.setPoints(fplayer.getPoints() + 1);
                         MushroomAssociation mAssociation = new MushroomAssociation();
@@ -1730,8 +1729,8 @@ public class Controller {
                 Insect insect = new Insect();
 
                 // Asszociációk beállítása
-                Tecton tecton = (Tecton) objects.get(tectonName);
-                insect.setPosition(tecton);
+                ITectonController tecton = (ITectonController) objects.get(tectonName);
+                insect.setPosition((Tecton)tecton);
                 tecton.setInsect(insect);
 
                 InsectPlayer iPlayer = (InsectPlayer) objects.get(playerName);
@@ -1818,7 +1817,7 @@ public class Controller {
                 FungalThread fungal = (FungalThread) objects.get(fungalName);
                 spore.setThread(fungal);
 
-                Tecton tecton = (Tecton) objects.get(tectonName);
+                ITectonController tecton = (ITectonController) objects.get(tectonName);
                 tecton.addSpore(spore);
 
                 // Konténerbe bele
@@ -1830,10 +1829,10 @@ public class Controller {
 
             case "absorb": { // <Tektonnév>
                 String tectonName = command[1];
-                Tecton tecton;
+                ITectonController tecton;
 
                 if (objects.containsKey(tectonName)) {
-                    tecton = (Tecton) objects.get(tectonName);
+                    tecton = (ITectonController) objects.get(tectonName);
                 } else {
                     System.out.println("Sikertelen");
                     return;
@@ -1863,15 +1862,15 @@ public class Controller {
             case "break": {
                 String tectonName = command[1];
 
-                Tecton tecton;
+                ITectonController tecton;
                 if (objects.containsKey(tectonName)) {
-                    tecton = (Tecton) objects.get(tectonName);
+                    tecton = (ITectonController) objects.get(tectonName);
                 } else {
                     System.out.println("Sikertelen tektontores");
                     return;
                 }
 
-                List<Tecton> tectons = new ArrayList<>(tecton.breakTecton());
+                List<ITectonController> tectons = new ArrayList<>(tecton.breakTecton());
 
                 if (tectons == null) {
                     System.out.println("Sikertelen tektontores");
@@ -1952,9 +1951,9 @@ public class Controller {
                 String fungalType = command[1];
                 String tectonName = command[2];
 
-                Tecton tecton;
+                ITectonController tecton;
                 if (objects.containsKey(tectonName)) {
-                    tecton = (Tecton) objects.get(tectonName);
+                    tecton = (ITectonController) objects.get(tectonName);
                 } else {
                     System.out.println("Sikertelen");
                     return;
@@ -1975,7 +1974,7 @@ public class Controller {
 
                 Mushroom mushroom = new Mushroom();
                 mushroom.setThread(thread);
-                mushroom.setPosition(tecton);
+                mushroom.setPosition((Tecton)tecton);
 
                 if (((fungusPlayers.contains(currentPlayer)) && tecton.putFirstMushroom(thread, mushroom))) {
 
@@ -2004,7 +2003,7 @@ public class Controller {
                     return;
                 }
 
-                Tecton t = (Tecton) objects.get(command[1]);
+                ITectonController t = (ITectonController) objects.get(command[1]);
                 Insect insect = new Insect();
 
                 if ((insectPlayers.contains(currentPlayer)) && (t.putFirstInsect(insect))) {
@@ -2036,11 +2035,11 @@ public class Controller {
 
                 // Megfelelő objektumok beállítása
                 FungalThread thread = null;
-                Tecton tecton = null;
+                ITectonController tecton = null;
 
                 if (objects.containsKey(threadName) && objects.containsKey(tectonName)) {
                     thread = (FungalThread) objects.get(threadName);
-                    tecton = (Tecton) objects.get(tectonName);
+                    tecton = (ITectonController) objects.get(tectonName);
                 } else {
                     System.out.println("Sikertelen");
                     return;
@@ -2062,7 +2061,7 @@ public class Controller {
                 if (mushroomPlayer.getBranchThread() != true) {
 
                     // Ha sikertelen akkor kiírja
-                    if (!thread.branchThread(tecton)) {
+                    if (!thread.branchThread((Tecton)tecton)) {
                         System.out.println("Sikertelen");
                     } else {
                         List<Spore> slist = new ArrayList<>();
@@ -2093,7 +2092,7 @@ public class Controller {
                 //Meg kell találni a gomba playerét, és meg kell nézni hogy a currentPlayer az-e
 
                 Mushroom m = (Mushroom) objects.get(command[1]);
-                Tecton t = (Tecton) objects.get(command[2]);
+                ITectonController t = (ITectonController) objects.get(command[2]);
 
                 FungusPlayer mushroomPlayer = null;
                 for (FungusPlayer fPlayer : fungusPlayers) {
@@ -2109,7 +2108,7 @@ public class Controller {
                     return;
                 }
 
-                if (!m.shootSpore(t)) {
+                if (!m.shootSpore((Tecton)t)) {
                     System.out.println("Sikertelen!");
                 } else {
                     if (m.getShootedSporesCount() >= 10) {
@@ -2134,11 +2133,11 @@ public class Controller {
                 String tectonName = command[2];
 
                 FungalThread thread;
-                Tecton tecton;
+                ITectonController tecton;
 
                 if (objects.containsKey(threadName) && objects.containsKey(tectonName)) {
                     thread = (FungalThread) objects.get(threadName);
-                    tecton = (Tecton) objects.get(tectonName);
+                    tecton = (ITectonController) objects.get(tectonName);
                 } else {
                     System.out.println("Sikertelen");
                     return;
@@ -2161,7 +2160,7 @@ public class Controller {
                 List<Spore> slist = tecton.getSpores();
                 List<Spore> removable = new ArrayList<>();
 
-                if (thread.growMushroom(tecton, mushroom)) {
+                if (thread.growMushroom((Tecton)tecton, mushroom)) {
 
                     objects.put(getNewMushroomName(), mushroom);
 
@@ -2297,7 +2296,7 @@ public class Controller {
                 String tectonName = command[2];
 
                 // Megfelelő objektumok előszedése
-                Tecton tecton = (Tecton) objects.get(tectonName);
+                ITectonController tecton = (ITectonController) objects.get(tectonName);
                 Insect insect = (Insect) objects.get(insectName);
 
                 // Ő következik?
@@ -2336,7 +2335,7 @@ public class Controller {
                 if (!spores.isEmpty()) eat = true;
 
                 // Lépés
-                if (insect.move(tecton)) {
+                if (insect.move((Tecton)tecton)) {
                     insectAssociation.setMoved(true);
                     if (eat) {
                         Spore spore = spores.get(0);
@@ -2388,7 +2387,7 @@ public class Controller {
                 String tectonName = command[2];
 
                 // Megfelelő objektumok előszedése
-                Tecton tecton = (Tecton) objects.get(tectonName);
+                ITectonController tecton = (ITectonController) objects.get(tectonName);
                 Insect insect = (Insect) objects.get(insectName);
 
                 // Ő következik?
@@ -2421,7 +2420,7 @@ public class Controller {
                 }
 
                 // Vágás
-                if (insect.cut(tecton)) {
+                if (insect.cut((Tecton)tecton)) {
                     insectAssociation.setCut(true);
                 } else {
                     System.out.println("Sikertelen");
