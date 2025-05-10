@@ -9,7 +9,7 @@ import model.Tecton;
 
 public class GTecton extends Polygon {
     private boolean selected = false;
-    private ITectonView t;
+    private ITectonView tecton;
     private int lineCount;
     private DrawingPanel drawingPanel;
     private Color color;
@@ -31,11 +31,11 @@ public class GTecton extends Polygon {
     }
 
     public void setTecton(Tecton t){
-        this.t = t;
+        tecton = t;
     }
 
     public ITectonView getTecton(){
-        return t;
+        return tecton;
     }
 
     public void setLineCount(int lineCount){
@@ -80,5 +80,9 @@ public class GTecton extends Polygon {
         g2.fillPolygon(this);
         g2.setColor(Color.BLACK);
         g2.drawPolygon(this);
+
+        //List<Spore> sList = tecton.getSpores();
+
+
     }
 }
