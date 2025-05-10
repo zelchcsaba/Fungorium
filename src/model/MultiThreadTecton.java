@@ -145,6 +145,8 @@ public class MultiThreadTecton extends Tecton {
 
         List<Tecton> ret = new ArrayList<>();
 
+        if(mushroom == null){
+
         // létrejön a két új tekton
         Tecton t6 = new MultiThreadTecton();
         Tecton t7 = new MultiThreadTecton();
@@ -199,11 +201,10 @@ public class MultiThreadTecton extends Tecton {
             }
         }
 
-        // a tektonon levő bogarat ráhelyezem a t6-ra
-        t6.setInsect(i);
-
-        // beállítom a bogár pozícióját
-        if (i != null) {
+        if(i!=null){
+            // a tektonon levő bogarat ráhelyezem a t6-ra
+            t6.setInsect(i);
+            // beállítom a bogár pozícióját
             i.setPosition(t6);
         }
 
@@ -217,7 +218,7 @@ public class MultiThreadTecton extends Tecton {
         for (int i = 0; i < threads.size(); i++) {
             threads.get(i).deleteUnnecessaryThreads();
         }
-
+    }
         return ret;
     }
 

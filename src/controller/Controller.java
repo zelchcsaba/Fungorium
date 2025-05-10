@@ -34,7 +34,7 @@ public class Controller {
     private int sporeCount;
     private int insectCount;
     private int tectonCount;
-    private boolean randomize;
+    private boolean randomize = true;
 
     private List<InsectPlayer> insectPlayers;
     private List<FungusPlayer> fungusPlayers;
@@ -251,6 +251,8 @@ public class Controller {
      * Breaks a tecton into two, registers them, and removes the original.
      */
     public void breakTecton(ITectonController tecton) {
+        if(gPanel.canBreakTecton((Tecton)tecton)){
+        
         if (tecton == null || !objects.containsValue(tecton)) {
             System.out.println("Baj a tektonnal");
             return;
@@ -267,6 +269,9 @@ public class Controller {
         Tecton a = pieces.get(0), b = pieces.get(1);
         String nameA = getNewTectonName();
         String nameB = getNewTectonName();
+
+        gPanel.breakTecton((Tecton)tecton, a, b);
+
         objects.put(nameA, a);
         objects.put(nameB, b);
         tList.add(a);
@@ -275,6 +280,7 @@ public class Controller {
         objects.values().removeIf(o -> o == tecton);
         tList.remove(tecton);
     }
+}
 
     /** Evolves the given mushroom. Returns true on success. */
     public void evolve(Mushroom mushroom) {
