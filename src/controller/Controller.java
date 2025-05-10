@@ -745,14 +745,17 @@ public class Controller {
         List<Tecton> nList = new ArrayList<>();
 
         for (int i = 1; i < neighborList.length; i++) {
-            nList.add((Tecton) objects.get(neighborList[i]));
+            if(neighborList[i].equals("null")){
+                nList.add(null);
+            }else{
+                nList.add((Tecton) objects.get(neighborList[i]));
+            }
         }
 
         t.setNeighbors(nList);
     }
 
     public void loadTecton(String filename){
-        Tecton ttt = null;
         try{
             BufferedReader br = new BufferedReader(new FileReader(filename));
             String line;
@@ -773,7 +776,6 @@ public class Controller {
 
                 Tecton t = createTecton(str[str.length-1]);
 
-                ttt = t;
                 gPanel.addTecton(points, t);
 
             }
@@ -786,14 +788,6 @@ public class Controller {
         }catch(IOException e){
             e.printStackTrace();
         }
-
-        Mushroom m = new Mushroom();
-        m.setPosition(ttt);
-
-        Insect i = new Insect();
-        i.setPosition(ttt);
-        gPanel.addMushroom(m);
-        gPanel.addInsect(i);
         
     }
 
