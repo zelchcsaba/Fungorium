@@ -2,10 +2,24 @@ package view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.List;
+import java.util.Map.Entry;
+
+import javax.imageio.ImageIO;
+
+import controller.Controller;
+import controller.FungusPlayer;
+import controller.Player;
+
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 import model.ITectonView;
 import model.Tecton;
+import model.Spore;
 
 public class GTecton extends Polygon {
     private boolean selected = false;
@@ -73,7 +87,7 @@ public class GTecton extends Polygon {
         return new Point(centerX, centerY);
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g /*,Controller controller*/) {
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(selected ? Color.RED : color);
@@ -81,7 +95,50 @@ public class GTecton extends Polygon {
         g2.setColor(Color.BLACK);
         g2.drawPolygon(this);
 
-        //List<Spore> sList = tecton.getSpores();
+        /*List<Spore> spores = tecton.getSpores();
+        if(spores.isEmpty()){
+            return;
+        }
+
+        for(Spore spore : spores){
+            FungusPlayer fPlayer = null;
+            for(FungusPlayer player : controller.getFungusPlayers()){
+                if(player.getThread() == spore.getThread()){
+                    fPlayer = player;
+                }
+            }
+
+            if(fPlayer == null){
+                return;
+            }
+            
+            Color playerColor = null;
+            for(Entry<Player, Color> entry : drawingPanel.getGPanel().players.entrySet()){
+                if(entry.getKey() == fPlayer){
+                    playerColor = entry.getValue();
+                    break;
+                }
+            }
+
+            
+            String pathName = null;
+            switch (playerColor.getRGB()) {
+                case 0xFFFF0000: // Color.RED
+                    pathName = "spore1.png";
+                    break;
+                case 0xFF00FF00: // Color.GREEN
+                    pathName = "spore3.png";
+                    break;
+                case 0xFF0000FF: // Color.BLUE
+                    pathName = "spore2.png";
+                    break;
+                case 0xFFFFFF00: // Color.YELLOW
+                    pathName = "spore4.png";
+                    break;
+            }
+
+           //Kirajz spóra
+        }*/
 
 
     }
