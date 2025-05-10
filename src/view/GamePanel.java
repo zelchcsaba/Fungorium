@@ -38,7 +38,7 @@ public class GamePanel extends JPanel{
     public GamePanel(MainWindow parent, Controller controller) {
         this.parent = parent;
         this.controller = controller;
-        state = GameState.PUTFIRSTINSECT;
+        state = GameState.PUTFIRSTMUSHROOM;
 
         setLayout(new BorderLayout()); 
 
@@ -131,6 +131,8 @@ public class GamePanel extends JPanel{
 
     public void setState(GameState state){
         this.state = state;
+        System.out.println(this.state);
+        setVisibility();
     }
 
     public GameState getState(){
@@ -154,7 +156,7 @@ public class GamePanel extends JPanel{
         }
     }
 
-    public void addTecton(List<Integer> points, Tecton t){
+    public void addTecton(List<Integer> points, Tecton t, String type){
 
         GTecton gtect = new GTecton();
         int lineCount = 0;
@@ -166,6 +168,22 @@ public class GamePanel extends JPanel{
         }
         gtect.setLineCount(lineCount);
         gtect.setTecton(t);
+
+        switch(type){
+            case("MultiThreadTecton"):
+                gtect.setColor(Color.CYAN);
+            break;
+            case("SingleThreadTecton"):
+                gtect.setColor(Color.MAGENTA);
+            break;
+            case("AbsorbingTecton"):
+                gtect.setColor(Color.BLACK);
+            break;
+            case("KeepThreadTecton"):
+                gtect.setColor(Color.GRAY);
+            break;
+        }
+
         gtect.setDrawingPanel(drawingPanel);
 
         drawingPanel.addTecton(t, gtect);

@@ -826,7 +826,7 @@ public class Controller {
 
                 Tecton t = createTecton(str[str.length-1]);
 
-                gPanel.addTecton(points, t);
+                gPanel.addTecton(points, t, str[str.length-1]);
 
             }
 
