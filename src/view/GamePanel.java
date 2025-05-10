@@ -21,6 +21,10 @@ public class GamePanel extends JPanel{
     private DrawingPanel drawingPanel;
     private Controller controller;
     private GameState state;
+
+    JLabel player;
+    JLabel round;
+
     private JButton moveButton;
     private JButton cutButton;
     private JButton branchButton;
@@ -52,7 +56,7 @@ public class GamePanel extends JPanel{
         currentPlayer.setForeground(Color.BLACK);
         playerPanel.add(currentPlayer);
         
-        JLabel player = new JLabel("Huszi");
+        player = new JLabel();
         player.setForeground(Color.BLACK); 
         playerPanel.add(player);
 
@@ -65,10 +69,9 @@ public class GamePanel extends JPanel{
         roundNumber.setForeground(Color.BLACK);
         roundPanel.add(roundNumber);
 
-        JLabel number = new JLabel("1");
-        number.setForeground(Color.BLACK);
-        roundPanel.add(number);
-
+        round = new JLabel();
+        round.setForeground(Color.BLACK);
+        roundPanel.add(round);
 
         drawingPanel = new DrawingPanel(controller, this);
         drawingPanel.setBackground(Color.WHITE); // vagy amit szeretnél
@@ -115,6 +118,11 @@ public class GamePanel extends JPanel{
         actionsPanel.add(closeButton);
 
         setVisibility();
+    }
+
+    public void refreshTopPanel(){
+        player.setText(controller.getCurrentPlayerName());
+        round.setText(Integer.toString(controller.getRound()));
     }
 
     public void tectontTranslateTransform(){
@@ -238,6 +246,7 @@ public class GamePanel extends JPanel{
 
             if (e.getSource() == closeButton) {
                 controller.closestep();
+                refreshTopPanel();
             } else if (e.getSource() == moveButton) {
                 state = GameState.SELECTINSECTFORMOVE;
             } else if (e.getSource() == cutButton) {

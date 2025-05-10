@@ -44,6 +44,20 @@ public class Controller {
 
     private GamePanel gPanel;
 
+    public String getCurrentPlayerName(){
+        for (Map.Entry<String, Object> entry : objects.entrySet()) {
+            if (entry.getValue() == currentPlayer) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public int getRound(){
+        return round;
+    }
+
+
     public Map<String, Integer> getInsectScores() {
         Map<String, Integer> insectScores = new LinkedHashMap<>();
         for (Map.Entry<String, Object> entry : objects.entrySet()) {
