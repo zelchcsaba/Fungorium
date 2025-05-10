@@ -1,9 +1,9 @@
 package view;
+import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -11,8 +11,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import controller.Controller;
 
 public class StartScreenPanel extends JPanel implements ActionListener{
     private MainWindow parent;
@@ -95,18 +93,31 @@ public class StartScreenPanel extends JPanel implements ActionListener{
                 int fCount = Integer.parseInt(fPlayerCount.getText());
                 int iCount = Integer.parseInt(iPlayerCount.getText());
                 int maxRound = Integer.parseInt(maxRounds.getText());
+                if(fCount < 0 || fCount > 4){
+                    throw new IllegalArgumentException();
+                }
+
+                if(iCount < 0 || iCount > 4){
+                    throw new IllegalArgumentException();
+                }
+
+                if(maxRound < 0){
+                    throw new IllegalArgumentException();
+                }
 
                 controller.setFungusPlayerCount(fCount);
                 controller.setInsectPlayerCount(iCount);
                 controller.setMaxRound(maxRound);
+                parent.showNameEntryPanel();
 
                 
                
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Please enter valid integers!", "Input Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, "Please enter valid numbers!", "Input Error", JOptionPane.ERROR_MESSAGE);
             }
             
-            parent.showNameEntryPanel();
+            
+            
         }
     }
         

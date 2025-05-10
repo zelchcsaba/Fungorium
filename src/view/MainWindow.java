@@ -49,6 +49,7 @@ public class MainWindow extends JFrame{
     }
 
     public void showNameEntryPanel() {
+        nameEntry.updatePlayerFields();
         cardLayout.show(cardPanel, "nameEntry");
     }
 

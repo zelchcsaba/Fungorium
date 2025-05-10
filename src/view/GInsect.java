@@ -1,19 +1,18 @@
 package view;
 
+import controller.Controller;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
-import controller.Controller;
+import model.IInsectView;
 import model.Insect;
 
 public class GInsect {
-    private Insect i;
+    private IInsectView i;
     private DrawingPanel drawingPanel;
     public GInsect(){}
 
@@ -25,7 +24,7 @@ public class GInsect {
         this.i = i;
     }
 
-    public Insect getInsect(){
+    public IInsectView getInsect(){
         return i;
     }
 

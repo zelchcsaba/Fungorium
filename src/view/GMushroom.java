@@ -1,19 +1,18 @@
 package view;
 
+import controller.Controller;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
-import controller.Controller;
+import model.IMushroomView;
 import model.Mushroom;
 
 public class GMushroom {
-    private Mushroom m;
+    private IMushroomView m;
     private DrawingPanel drawingPanel;
     public GMushroom(){}
 
@@ -25,7 +24,7 @@ public class GMushroom {
         this.m = m;
     }
 
-    public Mushroom getMushroom(){
+    public IMushroomView getMushroom(){
         return m;
     }
 
