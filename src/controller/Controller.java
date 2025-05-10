@@ -255,11 +255,14 @@ public class Controller {
             System.out.println("Baj a tektonnal");
             return;
         }
+
         List<Tecton> pieces = tecton.breakTecton();
         if (pieces == null || pieces.size() != 2) {
             System.out.println("Baj a tekton töréssel");
             return;
         }
+
+        
         // register new pieces
         Tecton a = pieces.get(0), b = pieces.get(1);
         String nameA = getNewTectonName();
@@ -1010,9 +1013,8 @@ public class Controller {
                 for (ITectonController tecton : tList) {
                     tecton.absorb();
                 }
-                int rnumb = randomize(tList.size()) + 1;
-                String str = "break t" + rnumb;
-                processCmd(str);
+                int rnumb = randomize(tList.size()-1);
+                breakTecton((Tecton)tList.get(rnumb));
 
             }
 

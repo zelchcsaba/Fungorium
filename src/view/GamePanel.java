@@ -188,6 +188,10 @@ public class GamePanel extends JPanel{
         drawingPanel.repaint();
     }
 
+    public void breakTecton(Tecton source, Tecton created1, Tecton created2){
+        drawingPanel.breakTecton(source, created1, created2);
+    }
+
     public void addMushroom(Mushroom m){
         GMushroom gmush = new GMushroom();
         gmush.setMushroom(m);
