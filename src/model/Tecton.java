@@ -158,10 +158,12 @@ public abstract class Tecton implements ITectonController, ITectonView {
         // végigmegy a szomzsédokon, és lekéri a threads tömbjüket, ha ebben benne van
         // f, akkor hozzáadja a tectons listához
         for (int i = 0; i < neighbors.size(); i++) {
-            List<FungalThread> list = neighbors.get(i).getThreads();
-            if (list != null) {
-                if (list.contains(f)) {
-                    tectons.add(neighbors.get(i));
+            if(neighbors.get(i)!= null){
+                List<FungalThread> list = neighbors.get(i).getThreads();
+                if (list != null) {
+                    if (list.contains(f)) {
+                        tectons.add(neighbors.get(i));
+                    }
                 }
             }
         }
