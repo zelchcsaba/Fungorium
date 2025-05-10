@@ -108,7 +108,7 @@ public class DrawingPanel extends JPanel{
 
         for(Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()){
                 GTecton val = entry.getValue();
-                val.draw(g);
+                val.draw(g, controller);
             }
 
             for(Map.Entry<Mushroom, GMushroom> entry : mushCombo.entrySet()){
@@ -120,6 +120,7 @@ public class DrawingPanel extends JPanel{
                 GInsect val = entry.getValue();
                 val.draw(g, controller);
             }
+
             
     }
 
