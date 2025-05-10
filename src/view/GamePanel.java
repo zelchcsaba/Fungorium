@@ -117,6 +117,10 @@ public class GamePanel extends JPanel{
         setVisibility();
     }
 
+    public void tectontTranslateTransform(){
+        drawingPanel.tectontTranslateTransform();
+    }
+
     public void setState(GameState state){
         this.state = state;
     }

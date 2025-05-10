@@ -18,6 +18,11 @@ public class DrawingPanel extends JPanel{
     private GamePanel gPanel;
     private GTecton selectedSource;
     private GTecton targetSource;
+    private double currentWidth;
+    private double currentHeight;
+    private double xTranslate;
+    private double yTranslate;
+    private boolean firstpaint;
 
     public DrawingPanel(Controller controller, GamePanel gPanel){
         tectCombo = new HashMap();
@@ -25,6 +30,9 @@ public class DrawingPanel extends JPanel{
         insCombo = new HashMap();
         this.controller = controller;
         this.gPanel = gPanel;
+        currentWidth = 1920;
+        currentHeight = 1080;
+
 
         selectedSource = null;
         targetSource = null;
@@ -34,6 +42,22 @@ public class DrawingPanel extends JPanel{
                 handleClickEvent(e);
             }       
         });
+    }
+
+    public void tectontTranslateTransform(){
+        double width = getWidth();
+        double height = getHeight();
+        xTranslate = width/currentWidth;
+        yTranslate = height/currentHeight;
+        for(Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()){
+                GTecton val = entry.getValue();
+                
+                for (int i = 0; i < val.npoints; i++) {
+                    val.xpoints[i] = (int)(val.xpoints[i] * xTranslate);
+                    val.ypoints[i] = (int)(val.ypoints[i] * yTranslate);
+
+                }       
+        }
     }
 
     public void addTecton(Tecton t, GTecton gtect){
@@ -85,6 +109,7 @@ public class DrawingPanel extends JPanel{
                 GInsect val = entry.getValue();
                 val.draw(g, controller);
             }
+            
     }
 
     private void handleClickEvent(MouseEvent e) {
@@ -110,7 +135,7 @@ public class DrawingPanel extends JPanel{
             break;
             case GameState.MOVEINSECT:
                 targetSource = selected;
-                controller.move(selectedSource.getTecton().getInsect(), targetSource.getTecton());
+                controller.move(selectedSource.getTecton().getInsect(), (Tecton)targetSource.getTecton());
                 gPanel.setState(GameState.WAITINSECTCOMMAND);
             break;
             case GameState.SELECTINSECTFORCUT:
@@ -119,11 +144,11 @@ public class DrawingPanel extends JPanel{
             break;
             case GameState.CUTTHREAD:
                 targetSource = selected;
-                controller.cut(selectedSource.getTecton().getInsect(), targetSource.getTecton());
+                controller.cut(selectedSource.getTecton().getInsect(), (Tecton)targetSource.getTecton());
                 gPanel.setState(GameState.WAITINSECTCOMMAND);
             break;
             case GameState.BRANCHTHREAD:
-                controller.branchThread(selected.getTecton());
+                controller.branchThread((Tecton)selected.getTecton());
                 gPanel.setState(GameState.WAITFUNGALCOMMAND);
             break;
             case GameState.EATINSECT:
@@ -136,18 +161,18 @@ public class DrawingPanel extends JPanel{
             break;
             case GameState.SHOOTSPORE:
                 targetSource = selected;
-                controller.shootSpore(selectedSource.getTecton().getMushroom(), targetSource.getTecton());
+                controller.shootSpore(selectedSource.getTecton().getMushroom(), (Tecton)targetSource.getTecton());
                 gPanel.setState(GameState.WAITFUNGALCOMMAND);
             break;
             case GameState.GROWMUSHROOM:
-                controller.growMushroom(selected.getTecton());
+                controller.growMushroom((Tecton)selected.getTecton());
                 gPanel.setState(GameState.WAITFUNGALCOMMAND);
             break;
             case GameState.PUTFIRSTINSECT:
-                controller.putFirstInsect(selected.getTecton());
+                controller.putFirstInsect((Tecton)selected.getTecton());
             break;
             case GameState.PUTFIRSTMUSHROOM:
-                controller.putFirstMushroom("ShortLifeThread", selected.getTecton());
+                controller.putFirstMushroom("ShortLifeThread", (Tecton)selected.getTecton());
             break;
             default:
             break;

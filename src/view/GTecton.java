@@ -65,6 +65,7 @@ public class GTecton extends Polygon {
     }
 
     public void draw(Graphics g) {
+
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(selected ? Color.RED : Color.BLUE);
         g2.fillPolygon(this);
