@@ -264,7 +264,6 @@ public class GamePanel extends JPanel{
 
             if (e.getSource() == closeButton) {
                 controller.closestep();
-                refreshTopPanel();
             } else if (e.getSource() == moveButton) {
                 state = GameState.SELECTINSECTFORMOVE;
             } else if (e.getSource() == cutButton) {
