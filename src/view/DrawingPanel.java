@@ -92,6 +92,13 @@ public class DrawingPanel extends JPanel{
         return insCombo.get(i);
     }
 
+    public void breakTecton(Tecton source, Tecton created1, Tecton created2){
+        GTecton g1 = new GTecton();
+        GTecton g2 = new GTecton();
+
+        
+    }
+
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 

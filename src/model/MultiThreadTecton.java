@@ -181,20 +181,22 @@ public class MultiThreadTecton extends Tecton {
         // valamint kivéve a kettétötött tektont
         neighborList.add(t6);
         for (int i = 0; i < centre; i++) {
+            if(neighbors.get(i)!=null){
+                neighbors.get(i).addNeighbor(neighborList);
 
-            neighbors.get(i).addNeighbor(neighborList);
-
-            neighbors.get(i).removeNeighbor(this);
+                neighbors.get(i).removeNeighbor(this);
+            }
         }
 
         neighborList.clear();
 
         neighborList.add(t7);
         for (int i = centre; i < neighbors.size(); i++) {
+            if(neighbors.get(i)!=null){
+                neighbors.get(i).addNeighbor(neighborList);
 
-            neighbors.get(i).addNeighbor(neighborList);
-
-            neighbors.get(i).removeNeighbor(this);
+                neighbors.get(i).removeNeighbor(this);
+            }
         }
 
         // a tektonon levő bogarat ráhelyezem a t6-ra
