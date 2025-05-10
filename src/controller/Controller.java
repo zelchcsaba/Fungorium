@@ -486,7 +486,7 @@ public class Controller {
 
                 gPanel.removeMushroom(m);
 
-                objects.entrySet().removeIf(entry -> entry.getValue() == m); 
+                objects.entrySet().removeIf(entry -> entry.getValue() == m);
                 gPanel.repaint();           
             }
         }

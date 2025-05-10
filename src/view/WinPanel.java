@@ -73,7 +73,7 @@ public class WinPanel extends JPanel{
         }
     }
 
-    private void loadPlayers(){
+    public void loadPlayers(){
         // fungalScores.put("huszi", 100);
         // fungalScores.put("goldi", 1010);
         // fungalScores.put("huszii", 1010);
@@ -94,7 +94,9 @@ public class WinPanel extends JPanel{
         this.parent = parent;
         this.controller = controller;
         setLayout(new BorderLayout());
+    }
 
+    public void refresh(){
         loadPlayers();
 
         // Top panel: Cím és háttérkép

@@ -64,6 +64,14 @@ public class GTecton extends Polygon {
         return selected;
     }
 
+    public void setSelected(boolean b) {
+        selected = b;
+    }
+
+    public void switchSelected(){
+        selected = !selected;
+    }
+
     public void toggleSelected() {
         selected = !selected;
     }
