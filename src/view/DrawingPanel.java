@@ -92,6 +92,10 @@ public class DrawingPanel extends JPanel{
         return insCombo.get(i);
     }
 
+    public GamePanel getGPanel(){
+        return gPanel;
+    }
+
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -111,6 +115,7 @@ public class DrawingPanel extends JPanel{
             }
             
     }
+
 
     private void handleClickEvent(MouseEvent e) {
     Point click = e.getPoint();

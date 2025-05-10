@@ -6,6 +6,7 @@ import controller.Player;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
@@ -39,6 +40,7 @@ public class GamePanel extends JPanel{
         this.parent = parent;
         this.controller = controller;
         state = GameState.PUTFIRSTMUSHROOM;
+        players = new HashMap<>();
 
         setLayout(new BorderLayout()); 
 
