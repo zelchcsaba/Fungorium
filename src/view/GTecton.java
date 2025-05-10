@@ -12,9 +12,18 @@ public class GTecton extends Polygon {
     private ITectonView t;
     private int lineCount;
     private DrawingPanel drawingPanel;
+    private Color color;
 
     public GTecton() {
         super();
+    }
+
+    public void setColor(Color color){
+        this.color = color;
+    }
+
+    public Color getColor(){
+        return color;
     }
 
     public void setDrawingPanel(DrawingPanel drawingPanel){
@@ -67,7 +76,7 @@ public class GTecton extends Polygon {
     public void draw(Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(selected ? Color.RED : Color.BLUE);
+        g2.setColor(selected ? Color.RED : color);
         g2.fillPolygon(this);
         g2.setColor(Color.BLACK);
         g2.drawPolygon(this);
