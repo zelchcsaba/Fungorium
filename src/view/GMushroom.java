@@ -18,17 +18,19 @@ import model.Mushroom;
 public class GMushroom {
     private IMushroomView m;
     private DrawingPanel drawingPanel;
-    public GMushroom(){}
 
-    public void setDrawingPanel(DrawingPanel drawingPanel){
+    public GMushroom() {
+    }
+
+    public void setDrawingPanel(DrawingPanel drawingPanel) {
         this.drawingPanel = drawingPanel;
     }
 
-    public void setMushroom(Mushroom m){
+    public void setMushroom(Mushroom m) {
         this.m = m;
     }
 
-    public IMushroomView getMushroom(){
+    public IMushroomView getMushroom() {
         return m;
     }
 
@@ -36,31 +38,31 @@ public class GMushroom {
         Graphics2D g2 = (Graphics2D) g;
         Point center = drawingPanel.getGTecton(m.getPosition()).getCenter();
         FungusPlayer fPlayer = null;
-        for(int i = 0; i < controller.getFungusPlayers().size(); i++){
-            for(int j = 0; j < controller.getFungusPlayers().get(i).getMushrooms().size(); j++){
-                if(controller.getFungusPlayers().get(i).getMushrooms().get(j).getMushroom() == m){
+        for (int i = 0; i < controller.getFungusPlayers().size(); i++) {
+            for (int j = 0; j < controller.getFungusPlayers().get(i).getMushrooms().size(); j++) {
+                if (controller.getFungusPlayers().get(i).getMushrooms().get(j).getMushroom() == m) {
                     fPlayer = controller.getFungusPlayers().get(i);
                     break;
                 }
             }
         }
 
-        if(fPlayer == null){
+        if (fPlayer == null) {
             return;
         }
-        
+
         Color playerColor = null;
-        for(Entry<Player, Color> entry : drawingPanel.getGPanel().players.entrySet()){
-            if(entry.getKey() == fPlayer){
+        for (Entry<Player, Color> entry : drawingPanel.getGPanel().players.entrySet()) {
+            if (entry.getKey() == fPlayer) {
                 playerColor = entry.getValue();
                 break;
             }
         }
 
-        if(playerColor == null){
+        if (playerColor == null) {
             return;
         }
-        
+
         String pathName = null;
         switch (playerColor.getRGB()) {
             case 0xFFFF0000: // Color.RED
@@ -78,12 +80,12 @@ public class GMushroom {
         }
 
         BufferedImage img = null;
-        try{
+        try {
             img = ImageIO.read(new File(pathName));
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        g2.drawImage(img, center.x-28, center.y-28, 23, 23, null);
+        g2.drawImage(img, center.x - 28, center.y - 28, 23, 23, null);
     }
 
 }

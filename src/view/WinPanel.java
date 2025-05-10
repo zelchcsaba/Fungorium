@@ -22,8 +22,7 @@ import javax.swing.border.Border;
 
 import controller.Controller;
 
-
-public class WinPanel extends JPanel{
+public class WinPanel extends JPanel {
     private MainWindow parent;
     private Controller controller;
 
@@ -33,7 +32,7 @@ public class WinPanel extends JPanel{
     private int maxFungalScore;
     private int maxInsectScore;
 
-    public JLabel createLabel(String text){
+    public JLabel createLabel(String text) {
         JLabel field = new JLabel(text);
         field.setPreferredSize(new Dimension(120, 60));
         field.setFont(new Font("Arial", Font.BOLD, 13));
@@ -48,8 +47,9 @@ public class WinPanel extends JPanel{
 
     public void sortFungal() {
         List<Map.Entry<String, Integer>> entryList = new ArrayList<>(fungalScores.entrySet());
-        entryList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())); // Érték szerint csökkenő sorrend
-    
+        entryList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())); // Érték szerint csökkenő
+                                                                                            // sorrend
+
         maxFungalScore = entryList.get(0).getValue(); // mellékesen kiszedjük a max score-t
 
         // Töröljük az eredeti térképet és hozzáadjuk a rendezett elemeket
@@ -62,8 +62,9 @@ public class WinPanel extends JPanel{
 
     public void sortInsect() {
         List<Map.Entry<String, Integer>> entryList = new ArrayList<>(insectScores.entrySet());
-        entryList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())); // Érték szerint csökkenő sorrend
-    
+        entryList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())); // Érték szerint csökkenő
+                                                                                            // sorrend
+
         maxInsectScore = entryList.get(0).getValue();
 
         // Töröljük az eredeti térképet és hozzáadjuk a rendezett elemeket
@@ -73,7 +74,7 @@ public class WinPanel extends JPanel{
         }
     }
 
-    public void loadPlayers(){
+    public void loadPlayers() {
         // fungalScores.put("huszi", 100);
         // fungalScores.put("goldi", 1010);
         // fungalScores.put("huszii", 1010);
@@ -86,8 +87,10 @@ public class WinPanel extends JPanel{
         insectScores = controller.getInsectScores();
         fungalScores = controller.getFungalScores();
 
-        if(insectScores.size()>0)sortInsect();
-        if(fungalScores.size()>0)sortFungal();
+        if (insectScores.size() > 0)
+            sortInsect();
+        if (fungalScores.size() > 0)
+            sortFungal();
     }
 
     public WinPanel(MainWindow parent, Controller controller) {
@@ -96,7 +99,7 @@ public class WinPanel extends JPanel{
         setLayout(new BorderLayout());
     }
 
-    public void refresh(){
+    public void refresh() {
         loadPlayers();
 
         // Top panel: Cím és háttérkép
@@ -114,14 +117,14 @@ public class WinPanel extends JPanel{
         topPanel.add(titleL, BorderLayout.CENTER);
 
         add(topPanel, BorderLayout.NORTH);
-        
+
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(Color.BLACK);
         // GridBagConstraints konfigurálása
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(0,0, 0, 0); // Margók a komponensek körül
+        gbc.insets = new Insets(0, 0, 0, 0); // Margók a komponensek körül
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.BOTH;
 
@@ -144,14 +147,14 @@ public class WinPanel extends JPanel{
             gbc.gridx = 0;
             gbc.gridy++;
             JLabel player = createLabel(entry.getKey());
-            
+
             mainPanel.add(player, gbc);
             gbc.gridx++;
             JLabel point = createLabel(Integer.toString(entry.getValue()));
-            if(entry.getValue()==maxFungalScore){
+            if (entry.getValue() == maxFungalScore) {
                 player.setForeground(Color.YELLOW);
                 point.setForeground(Color.YELLOW);
-            } 
+            }
             mainPanel.add(point, gbc);
             gbc.gridx++;
         }
@@ -162,20 +165,18 @@ public class WinPanel extends JPanel{
             gbc.gridx = 2;
             gbc.gridy++;
             JLabel player = createLabel(entry.getKey());
-            
+
             mainPanel.add(player, gbc);
             gbc.gridx++;
             JLabel point = createLabel(Integer.toString(entry.getValue()));
-            if(entry.getValue()==maxInsectScore){
+            if (entry.getValue() == maxInsectScore) {
                 player.setForeground(Color.YELLOW);
                 point.setForeground(Color.YELLOW);
-            } 
+            }
             mainPanel.add(point, gbc);
             gbc.gridx++;
         }
         add(mainPanel, BorderLayout.CENTER);
 
     }
-
-    
 }

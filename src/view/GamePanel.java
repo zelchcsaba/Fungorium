@@ -1,4 +1,5 @@
 package view;
+
 import controller.Controller;
 import controller.FungusPlayer;
 import controller.InsectPlayer;
@@ -9,15 +10,17 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import model.Insect;
 import model.Mushroom;
 import model.Tecton;
 
-
-public class GamePanel extends JPanel{
+public class GamePanel extends JPanel {
     private MainWindow parent;
     private DrawingPanel drawingPanel;
     private Controller controller;
@@ -36,13 +39,16 @@ public class GamePanel extends JPanel{
 
     Map<Player, Color> players;
 
+    Random rand;
+
     public GamePanel(MainWindow parent, Controller controller) {
         this.parent = parent;
         this.controller = controller;
         state = GameState.PUTFIRSTMUSHROOM;
         players = new HashMap<>();
+        rand =new Random();
 
-        setLayout(new BorderLayout()); 
+        setLayout(new BorderLayout());
 
         // játékos, körszám
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -57,9 +63,9 @@ public class GamePanel extends JPanel{
         JLabel currentPlayer = new JLabel("Current Player:");
         currentPlayer.setForeground(Color.BLACK);
         playerPanel.add(currentPlayer);
-        
+
         player = new JLabel();
-        player.setForeground(Color.BLACK); 
+        player.setForeground(Color.BLACK);
         playerPanel.add(player);
 
         // kör
@@ -85,10 +91,10 @@ public class GamePanel extends JPanel{
                 handleButtonClick(e);
             }
         };
-        
+
         // akció gombok
-        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));    
-        actionsPanel.setBackground(Color.BLACK);    
+        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        actionsPanel.setBackground(Color.BLACK);
         add(actionsPanel, BorderLayout.SOUTH);
 
         moveButton = new JButton("Move");
@@ -121,83 +127,95 @@ public class GamePanel extends JPanel{
 
     }
 
-    public Color returnColor(Player p){
+    public void showError(String str) {
+        JOptionPane.showMessageDialog(this, str, "Valami nem jó!", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showInformation(String str) {
+        JOptionPane.showMessageDialog(this, str);
+    }
+
+    public int randomize() {
+        return rand.nextInt(1000);
+    }
+
+    public Color returnColor(Player p) {
         return players.get(p);
     }
 
-    public void endGame(){
+    public void endGame() {
         parent.showWinPanel();
     }
 
-    public boolean canBreakTecton(Tecton t){
-        if(drawingPanel.getGTecton(t).getLineCount()>3){
+    public boolean canBreakTecton(Tecton t) {
+        if (drawingPanel.getGTecton(t).getLineCount() > 3) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public void refreshTopPanel(){
+    public void refreshTopPanel() {
         player.setText(controller.getCurrentPlayerName());
         round.setText(Integer.toString(controller.getRound()));
     }
 
-    public void tectontTranslateTransform(){
+    public void tectontTranslateTransform() {
         drawingPanel.tectontTranslateTransform();
     }
 
-    public void setState(GameState state){
+    public void setState(GameState state) {
         this.state = state;
         System.out.println(this.state);
     }
 
-    public GameState getState(){
+    public GameState getState() {
         return state;
     }
 
-    public void setPlayerColors(){
-        Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW};
+    public void setPlayerColors() {
+        Color[] colors = { Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW };
 
         List<InsectPlayer> iPlayers = controller.getInsectPlayers();
         List<FungusPlayer> fPlayers = controller.getFungusPlayers();
 
         int i = 0;
-        for(InsectPlayer iPlayer : iPlayers){
+        for (InsectPlayer iPlayer : iPlayers) {
             players.put(iPlayer, colors[i++]);
         }
 
         i = 0;
-        for(FungusPlayer fPlayer : fPlayers){
+        for (FungusPlayer fPlayer : fPlayers) {
             players.put(fPlayer, colors[i++]);
         }
     }
 
-    public void addTecton(List<Integer> points, Tecton t, String type){
+    public void addTecton(List<Integer> points, Tecton t, String type) {
 
         GTecton gtect = new GTecton();
         int lineCount = 0;
-        for(int i=0; i<points.size()-1; i=i+2){
+        for (int i = 0; i < points.size() - 1; i = i + 2) {
             int x = points.get(i);
-            int y = points.get(i+1);
-            gtect.addPoint(x,y);
+            int y = points.get(i + 1);
+            gtect.addPoint(x, y);
             lineCount++;
         }
         gtect.setLineCount(lineCount);
         gtect.setTecton(t);
 
-        switch(type){
-            case("MultiThreadTecton"):
-                gtect.setColor(Color.CYAN);
-            break;
-            case("SingleThreadTecton"):
-                gtect.setColor(Color.MAGENTA);
-            break;
-            case("AbsorbingTecton"):
+        switch (type) {
+            case ("MultiThreadTecton"):
+                gtect.setColor(Color.LIGHT_GRAY);
+                break;
+            case ("SingleThreadTecton"):
+                gtect.setColor(new Color(23, 45, 62));
+                break;
+            case ("AbsorbingTecton"):
                 gtect.setColor(Color.BLACK);
-            break;
-            case("KeepThreadTecton"):
-                gtect.setColor(Color.GRAY);
-            break;
+                break;
+            case ("KeepThreadTecton"):
+                gtect.setColor(Color.DARK_GRAY);
+                break;
         }
 
         gtect.setDrawingPanel(drawingPanel);
@@ -206,11 +224,11 @@ public class GamePanel extends JPanel{
         drawingPanel.repaint();
     }
 
-    public void breakTecton(Tecton source, Tecton created1, Tecton created2){
+    public void breakTecton(Tecton source, Tecton created1, Tecton created2) {
         drawingPanel.breakTecton(source, created1, created2);
     }
 
-    public void addMushroom(Mushroom m){
+    public void addMushroom(Mushroom m) {
         GMushroom gmush = new GMushroom();
         gmush.setMushroom(m);
         gmush.setDrawingPanel(drawingPanel);
@@ -219,12 +237,12 @@ public class GamePanel extends JPanel{
         drawingPanel.repaint();
     }
 
-    public void removeMushroom(Mushroom m){
+    public void removeMushroom(Mushroom m) {
         drawingPanel.removeMushroom(m);
         drawingPanel.repaint();
     }
 
-    public void addInsect(Insect i){
+    public void addInsect(Insect i) {
         GInsect gins = new GInsect();
         gins.setInsect(i);
         gins.setDrawingPanel(drawingPanel);
@@ -233,7 +251,7 @@ public class GamePanel extends JPanel{
         drawingPanel.repaint();
     }
 
-    public void removeInsect(Insect i){
+    public void removeInsect(Insect i) {
         drawingPanel.removeInsect(i);
         drawingPanel.repaint();
     }
@@ -244,14 +262,15 @@ public class GamePanel extends JPanel{
         super.paintComponent(g);
     }
 
-    private void setVisibility(){
-        if(state == GameState.BRANCHTHREAD || 
-        state == GameState.GROWMUSHROOM ||
-        state == GameState.SELECTMUSHROOMFORSHOOT ||
-        state == GameState.CUTTHREAD ||
-        state == GameState.SHOOTSPORE ||
-        state == GameState.EATINSECT ||
-        state == GameState.WAITFUNGALCOMMAND){
+    private void setVisibility() {
+        if (state == GameState.BRANCHTHREAD ||
+                state == GameState.GROWMUSHROOM ||
+                state == GameState.SELECTMUSHROOMFORSHOOT ||
+                state == GameState.CUTTHREAD ||
+                state == GameState.SHOOTSPORE ||
+                state == GameState.EATINSECT ||
+                state == GameState.WAITFUNGALCOMMAND) {
+
             closeButton.setVisible(true);
             moveButton.setVisible(false);
             cutButton.setVisible(false);
@@ -259,9 +278,13 @@ public class GamePanel extends JPanel{
             growButton.setVisible(true);
             shootButton.setVisible(true);
             eatButton.setVisible(true);
-        }else if(state == GameState.SELECTINSECTFORMOVE ||
-        state == GameState.SELECTINSECTFORCUT ||
-        state == GameState.WAITINSECTCOMMAND){
+
+        } else if (state == GameState.SELECTINSECTFORMOVE ||
+                state == GameState.SELECTINSECTFORCUT ||
+                state == GameState.WAITINSECTCOMMAND ||
+                state == GameState.MOVEINSECT ||
+                state == GameState.CUTTHREAD) {
+
             closeButton.setVisible(true);
             moveButton.setVisible(true);
             cutButton.setVisible(true);
@@ -269,7 +292,9 @@ public class GamePanel extends JPanel{
             growButton.setVisible(false);
             shootButton.setVisible(false);
             eatButton.setVisible(false);
-        }else{
+
+        } else {
+
             closeButton.setVisible(false);
             moveButton.setVisible(false);
             cutButton.setVisible(false);
@@ -277,29 +302,35 @@ public class GamePanel extends JPanel{
             growButton.setVisible(false);
             shootButton.setVisible(false);
             eatButton.setVisible(false);
+
         }
     }
 
     public void handleButtonClick(ActionEvent e) {
 
-            if (e.getSource() == closeButton) {
-                controller.closestep();
-                drawingPanel.clearSelection();
-            } else if (e.getSource() == moveButton) {
-                state = GameState.SELECTINSECTFORMOVE;
-            } else if (e.getSource() == cutButton) {
-                 state = GameState.SELECTINSECTFORCUT;
-            }  else if (e.getSource() == branchButton) {
-                 state = GameState.BRANCHTHREAD;
-            } else if (e.getSource() == growButton) {
-                 state = GameState.GROWMUSHROOM;
-            } else if (e.getSource() == shootButton) {
-                 state = GameState.SELECTMUSHROOMFORSHOOT;
-            } else if (e.getSource() == eatButton) {
-                 state = GameState.EATINSECT;
-            } 
+        if (e.getSource() == closeButton) {
+            controller.closestep();
+            drawingPanel.clearSelection();
+        } else if (e.getSource() == moveButton) {
+            state = GameState.SELECTINSECTFORMOVE;
+            drawingPanel.clearSelection();
+        } else if (e.getSource() == cutButton) {
+            state = GameState.SELECTINSECTFORCUT;
+            drawingPanel.clearSelection();
+        } else if (e.getSource() == branchButton) {
+            state = GameState.BRANCHTHREAD;
+            drawingPanel.clearSelection();
+        } else if (e.getSource() == growButton) {
+            state = GameState.GROWMUSHROOM;
+            drawingPanel.clearSelection();
+        } else if (e.getSource() == shootButton) {
+            state = GameState.SELECTMUSHROOMFORSHOOT;
+            drawingPanel.clearSelection();
+        } else if (e.getSource() == eatButton) {
+            state = GameState.EATINSECT;
+            drawingPanel.clearSelection();
+        }
+        repaint();
     }
 
 }
-
-

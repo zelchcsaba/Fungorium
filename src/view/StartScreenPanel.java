@@ -1,4 +1,5 @@
 package view;
+
 import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -12,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class StartScreenPanel extends JPanel implements ActionListener{
+public class StartScreenPanel extends JPanel implements ActionListener {
     private MainWindow parent;
     Controller controller;
     JTextField fPlayerCount;
@@ -39,7 +40,6 @@ public class StartScreenPanel extends JPanel implements ActionListener{
         nextButton = new JButton("Next");
         nextButton.addActionListener(this);
         this.add(nextButton);
-       
 
         setLayout(new BorderLayout());
 
@@ -50,58 +50,56 @@ public class StartScreenPanel extends JPanel implements ActionListener{
         layout.setAutoCreateContainerGaps(true);
 
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                .addComponent(titleLabel)
-                .addGroup(layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addComponent(fLabel)
-                        .addComponent(iLabel)
-                        .addComponent(rLabel))
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(fPlayerCount)
-                        .addComponent(iPlayerCount)
-                        .addComponent(maxRounds)))
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(200)
-                    .addComponent(nextButton))
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(titleLabel)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addComponent(fLabel)
+                                        .addComponent(iLabel)
+                                        .addComponent(rLabel))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(fPlayerCount)
+                                        .addComponent(iPlayerCount)
+                                        .addComponent(maxRounds)))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(200)
+                                .addComponent(nextButton)));
 
         layout.setVerticalGroup(
-            layout.createSequentialGroup()
-                .addComponent(titleLabel)
-                .addGap(20)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(fLabel)
-                    .addComponent(fPlayerCount))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(iLabel)
-                    .addComponent(iPlayerCount))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(rLabel)
-                    .addComponent(maxRounds))
-                .addGap(20)
-                .addComponent(nextButton)
-        );
+                layout.createSequentialGroup()
+                        .addComponent(titleLabel)
+                        .addGap(20)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(fLabel)
+                                .addComponent(fPlayerCount))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(iLabel)
+                                .addComponent(iPlayerCount))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(rLabel)
+                                .addComponent(maxRounds))
+                        .addGap(20)
+                        .addComponent(nextButton));
 
         add(centerPanel, BorderLayout.CENTER);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e){
-        if(e.getSource() == nextButton){
-             try {
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == nextButton) {
+            try {
                 int fCount = Integer.parseInt(fPlayerCount.getText());
                 int iCount = Integer.parseInt(iPlayerCount.getText());
                 int maxRound = Integer.parseInt(maxRounds.getText());
-                if(fCount < 0 || fCount > 4){
+                if (fCount < 0 || fCount > 4) {
                     throw new IllegalArgumentException();
                 }
 
-                if(iCount < 0 || iCount > 4){
+                if (iCount < 0 || iCount > 4) {
                     throw new IllegalArgumentException();
                 }
 
-                if(maxRound < 0){
+                if (maxRound < 0) {
                     throw new IllegalArgumentException();
                 }
 
@@ -110,15 +108,12 @@ public class StartScreenPanel extends JPanel implements ActionListener{
                 controller.setMaxRound(maxRound);
                 parent.showNameEntryPanel();
 
-                
-               
             } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(this, "Please enter valid numbers!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please enter valid numbers!", "Input Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
-            
-            
-            
+
         }
     }
-        
+
 }
