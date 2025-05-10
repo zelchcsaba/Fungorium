@@ -121,6 +121,10 @@ public class GamePanel extends JPanel{
 
     }
 
+    public void endGame(){
+        parent.showWinPanel();
+    }
+
     public boolean canBreakTecton(Tecton t){
         if(drawingPanel.getGTecton(t).getLineCount()>3){
             return true;

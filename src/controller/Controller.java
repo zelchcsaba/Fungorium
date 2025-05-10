@@ -1024,6 +1024,7 @@ public class Controller {
             }
 
         } else {
+            gPanel.endGame();
             FungusPlayer fWinner = null;
             InsectPlayer iWinner = null;
             int fMaxPoint = 0;
