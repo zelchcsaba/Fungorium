@@ -216,11 +216,12 @@ public class AbsorbingTecton extends Tecton {
             }
         }
 
-        // a tektonon levő bogarat ráhelyezem a t6-ra
-        t6.setInsect(i);
-
-        // beállítom a bogár pozícióját
-        i.setPosition(t6);
+        if(i!=null){
+            // a tektonon levő bogarat ráhelyezem a t6-ra
+            t6.setInsect(i);
+            // beállítom a bogár pozícióját
+            i.setPosition(t6);
+        }
 
         // kitörlöm a tektont a fonálról
         for (int i = 0; i < threads.size(); i++) {

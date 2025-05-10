@@ -145,6 +145,8 @@ public class KeepThreadTecton extends Tecton {
 
         List<Tecton> ret = new ArrayList<>();
 
+        if(mushroom == null){
+
         // létrejön a két új tekton
         Tecton t6 = new KeepThreadTecton();
         Tecton t7 = new KeepThreadTecton();
@@ -199,11 +201,12 @@ public class KeepThreadTecton extends Tecton {
             }
         }
 
-        // a tektonon levő bogarat ráhelyezem a t6-ra
-        t6.setInsect(i);
-
-        // beállítom a bogár pozícióját
-        i.setPosition(t6);
+        if(i!=null){
+            // a tektonon levő bogarat ráhelyezem a t6-ra
+            t6.setInsect(i);
+            // beállítom a bogár pozícióját
+            i.setPosition(t6);
+        }
 
         // kitörlöm a tektont a fonálról
         for (int i = 0; i < threads.size(); i++) {
@@ -215,7 +218,7 @@ public class KeepThreadTecton extends Tecton {
         for (int i = 0; i < threads.size(); i++) {
             threads.get(i).deleteUnnecessaryThreads();
         }
-
+    }
         return ret;
     }
 

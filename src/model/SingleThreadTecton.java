@@ -160,6 +160,7 @@ public class SingleThreadTecton extends Tecton {
      */
     public List<Tecton> breakTecton() {
         List<Tecton> ret = new ArrayList<>();
+        if(mushroom == null){
 
         // létrejön a két új tekton
         Tecton t6 = new SingleThreadTecton();
@@ -215,20 +216,24 @@ public class SingleThreadTecton extends Tecton {
             }
         }
 
-        // a tektonon levő bogarat ráhelyezem a t6-ra
-        t6.setInsect(i);
-        // beállítom a bogár pozícióját
-        i.setPosition(t6);
-
+        if(i!=null){
+            // a tektonon levő bogarat ráhelyezem a t6-ra
+            t6.setInsect(i);
+            // beállítom a bogár pozícióját
+            i.setPosition(t6);
+        }
         // kitörlöm a tektont a fonálról
-        thread.removeTecton(this);
+        if(thread!=null){
+            thread.removeTecton(this);
 
         // ha keletkezett olyan fonálrész, amely a kettétörés során már nem kapcsolódik
         // gombatesthez ezt eltávolítom
 
-        thread.deleteUnnecessaryThreads();
+            thread.deleteUnnecessaryThreads();
+        }
+    }
+    return ret;
 
-        return ret;
     }
 
 

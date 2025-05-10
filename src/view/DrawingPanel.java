@@ -3,6 +3,7 @@ package view;
 import controller.Controller;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
@@ -16,10 +17,13 @@ public class DrawingPanel extends JPanel{
     private HashMap<Insect, GInsect> insCombo;
     private Controller controller;
     private GamePanel gPanel;
+
     private GTecton selectedSource;
     private GTecton targetSource;
+
     private double currentWidth;
     private double currentHeight;
+
     private double xTranslate;
     private double yTranslate;
     private boolean firstpaint;
@@ -60,6 +64,10 @@ public class DrawingPanel extends JPanel{
         }
     }
 
+    public GamePanel getGPanel(){
+        return gPanel;
+    }
+
     public void addTecton(Tecton t, GTecton gtect){
         tectCombo.put(t,gtect);
     }
@@ -92,15 +100,72 @@ public class DrawingPanel extends JPanel{
         return insCombo.get(i);
     }
 
+    public Point shiftPoint(Point from, Point to) {
+        double dx = to.x - from.x;
+        double dy = to.y - from.y;
+        double length = Math.sqrt(dx * dx + dy * dy);
+        dx = dx/length;
+        dy = dy/length;
+        int newX = (int)(from.x + dx*15);
+        int newY = (int)(from.y + dy*15);
+        return new Point(newX, newY);
+    }
+
     public void breakTecton(Tecton source, Tecton created1, Tecton created2){
         GTecton g1 = new GTecton();
         GTecton g2 = new GTecton();
 
-        
-    }
+        GTecton src = tectCombo.get(source);
 
-    public GamePanel getGPanel(){
-        return gPanel;
+        int centre = src.npoints / 2;
+        int lineCount=0;
+        Point p1 = new Point(src.xpoints[0], src.ypoints[0]);
+        Point p2 = new Point(src.xpoints[1], src.ypoints[1]);
+        g1.addPoint(shiftPoint(p1,p2).x, shiftPoint(p1,p2).y);
+        lineCount++;
+
+        for (int i = 1; i < centre; i++) {
+            int x = src.xpoints[i];
+            int y = src.ypoints[i];
+            g1.addPoint(x,y);
+            lineCount++;
+        }
+
+        p1 = new Point(src.xpoints[centre], src.ypoints[centre]);
+        p2 = new Point(src.xpoints[centre-1], src.ypoints[centre-1]);
+        g1.addPoint(shiftPoint(p1,p2).x, shiftPoint(p1,p2).y);
+        lineCount++;
+        g1.setLineCount(lineCount);
+        g1.setTecton(created1);
+        g1.setColor(src.getColor());
+
+
+        lineCount=0;
+        p1 = new Point(src.xpoints[0], src.ypoints[0]);
+        p2 = new Point(src.xpoints[src.npoints-1], src.ypoints[src.npoints-1]);
+
+        g2.addPoint(shiftPoint(p1,p2).x, shiftPoint(p1,p2).y);
+        lineCount++;
+
+        p1 = new Point(src.xpoints[centre], src.ypoints[centre]);
+        p2 = new Point(src.xpoints[centre+1], src.ypoints[centre+1]);
+        g2.addPoint(shiftPoint(p1,p2).x, shiftPoint(p1,p2).y);
+        lineCount++;
+
+        for (int i = centre+1; i < src.npoints; i++) {
+            int x = src.xpoints[i];
+            int y = src.ypoints[i];
+            g2.addPoint(x,y);
+            lineCount++;
+        }
+
+        g2.setLineCount(lineCount);
+        g2.setTecton(created2);
+        g2.setColor(src.getColor());
+
+        tectCombo.put(created1, g1);
+        tectCombo.put(created2, g2);
+        tectCombo.remove(source);
     }
 
     protected void paintComponent(Graphics g) {
@@ -122,7 +187,6 @@ public class DrawingPanel extends JPanel{
             }
             
     }
-
 
     private void handleClickEvent(MouseEvent e) {
     Point click = e.getPoint();

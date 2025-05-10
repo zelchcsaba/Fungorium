@@ -121,6 +121,14 @@ public class GamePanel extends JPanel{
 
     }
 
+    public boolean canBreakTecton(Tecton t){
+        if(drawingPanel.getGTecton(t).getLineCount()>3){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public void refreshTopPanel(){
         player.setText(controller.getCurrentPlayerName());
         round.setText(Integer.toString(controller.getRound()));
