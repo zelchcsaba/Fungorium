@@ -58,6 +58,7 @@ public class MainWindow extends JFrame{
         gamePanel.tectontTranslateTransform();
         controller.act();
         gamePanel.refreshTopPanel();
+        gamePanel.setPlayerColors();
         cardLayout.show(cardPanel, "game");
     }
 

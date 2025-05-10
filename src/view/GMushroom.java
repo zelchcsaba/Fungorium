@@ -49,9 +49,9 @@ public class GMushroom {
         }
 
         if(fPlayer == null){
-            System.out.println("Valami gatya!!!!");
             return;
         }
+        
         Color playerColor = null;
         for(Entry<Player, Color> entry : drawingPanel.getGPanel().players.entrySet()){
             if(entry.getKey() == fPlayer){

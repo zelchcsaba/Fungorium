@@ -1,18 +1,25 @@
 package view;
 
 import controller.Controller;
+import controller.FungusPlayer;
+import controller.InsectPlayer;
+import controller.Player;
+
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map.Entry;
+
 import javax.imageio.ImageIO;
 import model.IInsectView;
 import model.Insect;
 
 public class GInsect {
-    private IInsectView i;
+    private IInsectView insect;
     private DrawingPanel drawingPanel;
     public GInsect(){}
 
@@ -21,20 +28,63 @@ public class GInsect {
     }
 
     public void setInsect(Insect i){
-        this.i = i;
+        this.insect = i;
     }
 
     public IInsectView getInsect(){
-        return i;
+        return insect;
     }
 
     public void draw(Graphics g, Controller controller) {
         Graphics2D g2 = (Graphics2D) g;
-        Point center = drawingPanel.getGTecton(i.getPosition()).getCenter();
+        Point center = drawingPanel.getGTecton(insect.getPosition()).getCenter();
+
+        InsectPlayer iPlayer = null;
+        for(int i = 0; i < controller.getInsectPlayers().size(); i++){
+            for(int j = 0; j < controller.getInsectPlayers().get(i).getInsects().size(); j++){
+                if(controller.getInsectPlayers().get(i).getInsects().get(j).getInsect() == insect){
+                    iPlayer = controller.getInsectPlayers().get(i);
+                    break;
+                }
+            }
+        }
+
+        if(iPlayer == null){
+            return;
+        }
+        
+        Color playerColor = null;
+        for(Entry<Player, Color> entry : drawingPanel.getGPanel().players.entrySet()){
+            if(entry.getKey() == iPlayer){
+                playerColor = entry.getValue();
+                break;
+            }
+        }
+
+        if(playerColor == null){
+            return;
+        }
+        
+        String pathName = null;
+        switch (playerColor.getRGB()) {
+            case 0xFFFF0000: // Color.RED
+                pathName = "bug1.png";
+                break;
+            case 0xFF00FF00: // Color.GREEN
+                pathName = "bug3.png";
+                break;
+            case 0xFF0000FF: // Color.BLUE
+                pathName = "bug2.png";
+                break;
+            case 0xFFFFFF00: // Color.YELLOW
+                pathName = "bug4.png";
+                break;
+        }
+
         
         BufferedImage img = null;
         try{
-            img = ImageIO.read(new File("bug1.png"));
+            img = ImageIO.read(new File(pathName));
         }catch(IOException e){
             e.printStackTrace();
         }
