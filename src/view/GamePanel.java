@@ -121,6 +121,10 @@ public class GamePanel extends JPanel{
 
     }
 
+    public Color returnColor(Player p){
+        return players.get(p);
+    }
+
     public void endGame(){
         parent.showWinPanel();
     }

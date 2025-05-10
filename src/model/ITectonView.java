@@ -15,4 +15,5 @@ public interface ITectonView {
     List<FungalThread> getThreads();
 
     List<Spore> getSpores();
+    List<Tecton> getNeighbors();
 }

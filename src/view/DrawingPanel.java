@@ -64,6 +64,10 @@ public class DrawingPanel extends JPanel{
         }
     }
 
+    public HashMap<Tecton, GTecton> getTectCombo(){
+        return tectCombo;
+    }
+
     public GamePanel getGPanel(){
         return gPanel;
     }
@@ -171,9 +175,19 @@ public class DrawingPanel extends JPanel{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for(Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()){
+            for(Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()){
                 GTecton val = entry.getValue();
                 val.draw(g, controller);
+            }
+
+            for(Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()){
+                GTecton val = entry.getValue();
+                val.drawThreads(g, controller);
+            }
+
+            for(Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()){
+                GTecton val = entry.getValue();
+                val.setDone(false);;
             }
 
             for(Map.Entry<Mushroom, GMushroom> entry : mushCombo.entrySet()){
