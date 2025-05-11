@@ -1,12 +1,12 @@
 package view;
+
 import controller.Controller;
 import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class MainWindow extends JFrame{
-    
-    
+public class MainWindow extends JFrame {
+
     Controller controller;
 
     private CardLayout cardLayout;
@@ -57,12 +57,12 @@ public class MainWindow extends JFrame{
         controller.loadTecton("ok.txt");
         gamePanel.tectontTranslateTransform();
         controller.act();
-        gamePanel.refreshTopPanel();
         gamePanel.setPlayerColors();
         cardLayout.show(cardPanel, "game");
     }
 
     public void showWinPanel() {
+        winPanel.refresh();
         cardLayout.show(cardPanel, "winPanel");
     }
 }

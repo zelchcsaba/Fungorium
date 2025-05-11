@@ -21,17 +21,19 @@ import model.Insect;
 public class GInsect {
     private IInsectView insect;
     private DrawingPanel drawingPanel;
-    public GInsect(){}
 
-    public void setDrawingPanel(DrawingPanel drawingPanel){
+    public GInsect() {
+    }
+
+    public void setDrawingPanel(DrawingPanel drawingPanel) {
         this.drawingPanel = drawingPanel;
     }
 
-    public void setInsect(Insect i){
+    public void setInsect(Insect i) {
         this.insect = i;
     }
 
-    public IInsectView getInsect(){
+    public IInsectView getInsect() {
         return insect;
     }
 
@@ -40,31 +42,31 @@ public class GInsect {
         Point center = drawingPanel.getGTecton(insect.getPosition()).getCenter();
 
         InsectPlayer iPlayer = null;
-        for(int i = 0; i < controller.getInsectPlayers().size(); i++){
-            for(int j = 0; j < controller.getInsectPlayers().get(i).getInsects().size(); j++){
-                if(controller.getInsectPlayers().get(i).getInsects().get(j).getInsect() == insect){
+        for (int i = 0; i < controller.getInsectPlayers().size(); i++) {
+            for (int j = 0; j < controller.getInsectPlayers().get(i).getInsects().size(); j++) {
+                if (controller.getInsectPlayers().get(i).getInsects().get(j).getInsect() == insect) {
                     iPlayer = controller.getInsectPlayers().get(i);
                     break;
                 }
             }
         }
 
-        if(iPlayer == null){
+        if (iPlayer == null) {
             return;
         }
-        
+
         Color playerColor = null;
-        for(Entry<Player, Color> entry : drawingPanel.getGPanel().players.entrySet()){
-            if(entry.getKey() == iPlayer){
+        for (Entry<Player, Color> entry : drawingPanel.getGPanel().players.entrySet()) {
+            if (entry.getKey() == iPlayer) {
                 playerColor = entry.getValue();
                 break;
             }
         }
 
-        if(playerColor == null){
+        if (playerColor == null) {
             return;
         }
-        
+
         String pathName = null;
         switch (playerColor.getRGB()) {
             case 0xFFFF0000: // Color.RED
@@ -81,13 +83,12 @@ public class GInsect {
                 break;
         }
 
-        
         BufferedImage img = null;
-        try{
+        try {
             img = ImageIO.read(new File(pathName));
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        g2.drawImage(img, center.x+3, center.y-28, 23, 23, null);
+        g2.drawImage(img, center.x + 3, center.y - 28, 23, 23, null);
     }
 }

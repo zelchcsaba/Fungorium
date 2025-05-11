@@ -3,7 +3,6 @@ package view;
 import controller.Controller;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
@@ -11,12 +10,14 @@ import model.Insect;
 import model.Mushroom;
 import model.Tecton;
 
-public class DrawingPanel extends JPanel{
+public class DrawingPanel extends JPanel {
     private HashMap<Tecton, GTecton> tectCombo;
     private HashMap<Mushroom, GMushroom> mushCombo;
     private HashMap<Insect, GInsect> insCombo;
     private Controller controller;
     private GamePanel gPanel;
+
+    private GTecton lastClicked;
 
     private GTecton selectedSource;
     private GTecton targetSource;
@@ -28,7 +29,7 @@ public class DrawingPanel extends JPanel{
     private double yTranslate;
     private boolean firstpaint;
 
-    public DrawingPanel(Controller controller, GamePanel gPanel){
+    public DrawingPanel(Controller controller, GamePanel gPanel) {
         tectCombo = new HashMap();
         mushCombo = new HashMap();
         insCombo = new HashMap();
@@ -37,66 +38,69 @@ public class DrawingPanel extends JPanel{
         currentWidth = 1920;
         currentHeight = 1080;
 
-
         selectedSource = null;
         targetSource = null;
 
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 handleClickEvent(e);
-            }       
+            }
         });
     }
 
-    public void tectontTranslateTransform(){
+    public void tectontTranslateTransform() {
         double width = getWidth();
         double height = getHeight();
-        xTranslate = width/currentWidth;
-        yTranslate = height/currentHeight;
-        for(Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()){
-                GTecton val = entry.getValue();
-                
-                for (int i = 0; i < val.npoints; i++) {
-                    val.xpoints[i] = (int)(val.xpoints[i] * xTranslate);
-                    val.ypoints[i] = (int)(val.ypoints[i] * yTranslate);
+        xTranslate = width / currentWidth;
+        yTranslate = height / currentHeight;
+        for (Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()) {
+            GTecton val = entry.getValue();
 
-                }       
+            for (int i = 0; i < val.npoints; i++) {
+                val.xpoints[i] = (int) (val.xpoints[i] * xTranslate);
+                val.ypoints[i] = (int) (val.ypoints[i] * yTranslate);
+
+            }
         }
     }
 
-    public GamePanel getGPanel(){
+    public HashMap<Tecton, GTecton> getTectCombo() {
+        return tectCombo;
+    }
+
+    public GamePanel getGPanel() {
         return gPanel;
     }
 
-    public void addTecton(Tecton t, GTecton gtect){
-        tectCombo.put(t,gtect);
+    public void addTecton(Tecton t, GTecton gtect) {
+        tectCombo.put(t, gtect);
     }
 
-    public void addMushroom(Mushroom m, GMushroom gmush){
+    public void addMushroom(Mushroom m, GMushroom gmush) {
         mushCombo.put(m, gmush);
     }
 
-    public void addInsect(Insect i, GInsect gins){
+    public void addInsect(Insect i, GInsect gins) {
         insCombo.put(i, gins);
     }
 
-    public void removeMushroom(Mushroom m){
+    public void removeMushroom(Mushroom m) {
         mushCombo.remove(m);
     }
 
-    public void removeInsect(Insect i){
+    public void removeInsect(Insect i) {
         insCombo.remove(i);
     }
 
-    public GTecton getGTecton(Tecton t){
+    public GTecton getGTecton(Tecton t) {
         return tectCombo.get(t);
     }
 
-    public GMushroom getGMushroom(Mushroom m){
+    public GMushroom getGMushroom(Mushroom m) {
         return mushCombo.get(m);
     }
 
-    public GInsect getGInsect(Insect i){
+    public GInsect getGInsect(Insect i) {
         return insCombo.get(i);
     }
 
@@ -104,64 +108,65 @@ public class DrawingPanel extends JPanel{
         double dx = to.x - from.x;
         double dy = to.y - from.y;
         double length = Math.sqrt(dx * dx + dy * dy);
-        dx = dx/length;
-        dy = dy/length;
-        int newX = (int)(from.x + dx*15);
-        int newY = (int)(from.y + dy*15);
+        dx = dx / length;
+        dy = dy / length;
+        int newX = (int) (from.x + dx * 15);
+        int newY = (int) (from.y + dy * 15);
         return new Point(newX, newY);
     }
 
-    public void breakTecton(Tecton source, Tecton created1, Tecton created2){
+    public void breakTecton(Tecton source, Tecton created1, Tecton created2) {
         GTecton g1 = new GTecton();
         GTecton g2 = new GTecton();
 
         GTecton src = tectCombo.get(source);
 
         int centre = src.npoints / 2;
-        int lineCount=0;
+        int lineCount = 0;
         Point p1 = new Point(src.xpoints[0], src.ypoints[0]);
         Point p2 = new Point(src.xpoints[1], src.ypoints[1]);
-        g1.addPoint(shiftPoint(p1,p2).x, shiftPoint(p1,p2).y);
+        g1.addPoint(shiftPoint(p1, p2).x, shiftPoint(p1, p2).y);
         lineCount++;
 
         for (int i = 1; i < centre; i++) {
             int x = src.xpoints[i];
             int y = src.ypoints[i];
-            g1.addPoint(x,y);
+            g1.addPoint(x, y);
             lineCount++;
         }
 
         p1 = new Point(src.xpoints[centre], src.ypoints[centre]);
-        p2 = new Point(src.xpoints[centre-1], src.ypoints[centre-1]);
-        g1.addPoint(shiftPoint(p1,p2).x, shiftPoint(p1,p2).y);
+        p2 = new Point(src.xpoints[centre - 1], src.ypoints[centre - 1]);
+        g1.addPoint(shiftPoint(p1, p2).x, shiftPoint(p1, p2).y);
         lineCount++;
         g1.setLineCount(lineCount);
         g1.setTecton(created1);
         g1.setColor(src.getColor());
+        g1.setDrawingPanel(this);
 
-
-        lineCount=0;
+        lineCount = 0;
         p1 = new Point(src.xpoints[0], src.ypoints[0]);
-        p2 = new Point(src.xpoints[src.npoints-1], src.ypoints[src.npoints-1]);
+        p2 = new Point(src.xpoints[src.npoints - 1], src.ypoints[src.npoints - 1]);
 
-        g2.addPoint(shiftPoint(p1,p2).x, shiftPoint(p1,p2).y);
+        g2.addPoint(shiftPoint(p1, p2).x, shiftPoint(p1, p2).y);
         lineCount++;
 
         p1 = new Point(src.xpoints[centre], src.ypoints[centre]);
-        p2 = new Point(src.xpoints[centre+1], src.ypoints[centre+1]);
-        g2.addPoint(shiftPoint(p1,p2).x, shiftPoint(p1,p2).y);
+        p2 = new Point(src.xpoints[centre + 1], src.ypoints[centre + 1]);
+        g2.addPoint(shiftPoint(p1, p2).x, shiftPoint(p1, p2).y);
         lineCount++;
 
-        for (int i = centre+1; i < src.npoints; i++) {
+        for (int i = centre + 1; i < src.npoints; i++) {
             int x = src.xpoints[i];
             int y = src.ypoints[i];
-            g2.addPoint(x,y);
+            g2.addPoint(x, y);
             lineCount++;
         }
 
         g2.setLineCount(lineCount);
         g2.setTecton(created2);
         g2.setColor(src.getColor());
+        g2.setDrawingPanel(this);
 
         tectCombo.put(created1, g1);
         tectCombo.put(created2, g2);
@@ -171,91 +176,120 @@ public class DrawingPanel extends JPanel{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for(Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()){
-                GTecton val = entry.getValue();
-                val.draw(g, controller);
-            }
+        for (Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()) {
+            GTecton val = entry.getValue();
+            val.draw(g, controller);
+        }
 
-            for(Map.Entry<Mushroom, GMushroom> entry : mushCombo.entrySet()){
-                GMushroom val = entry.getValue();
-                val.draw(g, controller);
-            }
+        for (Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()) {
+            GTecton val = entry.getValue();
+            val.drawThreads(g, controller);
+        }
 
-            for(Map.Entry<Insect, GInsect> entry : insCombo.entrySet()){
-                GInsect val = entry.getValue();
-                val.draw(g, controller);
-            }
+        for (Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()) {
+            GTecton val = entry.getValue();
+            val.setDone(false);
+            ;
+        }
 
-            
+        for (Map.Entry<Mushroom, GMushroom> entry : mushCombo.entrySet()) {
+            GMushroom val = entry.getValue();
+            val.draw(g, controller);
+        }
+
+        for (Map.Entry<Insect, GInsect> entry : insCombo.entrySet()) {
+            GInsect val = entry.getValue();
+            val.draw(g, controller);
+        }
+
     }
 
     private void handleClickEvent(MouseEvent e) {
-    Point click = e.getPoint();
-    GTecton selected = null;
-    for (Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()) {
-        GTecton val = entry.getValue();
-        if (val.contains(click)) {
-            val.toggleSelected();
-            selected = val;
+        Point click = e.getPoint();
+        GTecton selected = null;
+        for (GTecton gt : tectCombo.values()) {
+            if (gt.contains(click)) {
+                selected = gt;
+                break;
+            }
+        }
+
+        if (selected != null) {
+            GameState state = gPanel.getState();
+
+            switch (state) {
+                case GameState.SELECTINSECTFORMOVE:
+                    selectedSource = selected;
+                    selected.setSelected(true);
+                    gPanel.setState(GameState.MOVEINSECT);
+                    break;
+                case GameState.MOVEINSECT:
+                    clearSelection();
+                    targetSource = selected;
+                    controller.move(selectedSource.getTecton().getInsect(), (Tecton) targetSource.getTecton());
+                    gPanel.setState(GameState.WAITINSECTCOMMAND);
+                    break;
+                case GameState.SELECTINSECTFORCUT:
+                    selectedSource = selected;
+                    selected.setSelected(true);
+                    gPanel.setState(GameState.CUTTHREAD);
+                    break;
+                case GameState.CUTTHREAD:
+                    clearSelection();
+                    targetSource = selected;
+                    controller.cut(selectedSource.getTecton().getInsect(), (Tecton) targetSource.getTecton());
+                    gPanel.setState(GameState.WAITINSECTCOMMAND);
+                    break;
+                case GameState.BRANCHTHREAD:
+                    controller.branchThread((Tecton) selected.getTecton());
+                    gPanel.setState(GameState.WAITFUNGALCOMMAND);
+                    break;
+                case GameState.EATINSECT:
+                    controller.eatInsect(selected.getTecton().getInsect());
+                    gPanel.setState(GameState.WAITFUNGALCOMMAND);
+                    break;
+                case GameState.SELECTMUSHROOMFORSHOOT:
+                    selectedSource = selected;
+                    selected.setSelected(true);
+                    gPanel.setState(GameState.SHOOTSPORE);
+                    break;
+                case GameState.SHOOTSPORE:
+                    clearSelection();
+                    targetSource = selected;
+                    controller.shootSpore(selectedSource.getTecton().getMushroom(), (Tecton) targetSource.getTecton());
+                    gPanel.setState(GameState.WAITFUNGALCOMMAND);
+                    break;
+                case GameState.GROWMUSHROOM:
+                    controller.growMushroom((Tecton) selected.getTecton());
+                    gPanel.setState(GameState.WAITFUNGALCOMMAND);
+                    break;
+                case GameState.PUTFIRSTINSECT:
+                    controller.putFirstInsect((Tecton) selected.getTecton());
+                    break;
+                case GameState.PUTFIRSTMUSHROOM:
+                    int rand = gPanel.randomize() % 2;
+                    System.out.println(rand);
+                    if (rand == 0) {
+                        if(controller.putFirstMushroom("ShortLifeThread", (Tecton) selected.getTecton())){
+                            gPanel.showInformation("ShortLifeThread típusú gombafonál jött létre");
+                        }
+                    } else {
+                        if(controller.putFirstMushroom("LongLifeThread", (Tecton) selected.getTecton())){
+                            gPanel.showInformation("LongLifeThread típusú gombafonál jött létre");
+                        }
+                    }
+
+                    break;
+                default:
+                    break;
+            }
             repaint();
-            break;
         }
     }
 
-    if(selected!=null){
-        GameState state= gPanel.getState();
-
-        switch (state){
-            case GameState.SELECTINSECTFORMOVE:
-                selectedSource = selected;
-                gPanel.setState(GameState.MOVEINSECT);
-            break;
-            case GameState.MOVEINSECT:
-                targetSource = selected;
-                controller.move(selectedSource.getTecton().getInsect(), (Tecton)targetSource.getTecton());
-                gPanel.setState(GameState.WAITINSECTCOMMAND);
-            break;
-            case GameState.SELECTINSECTFORCUT:
-                selectedSource = selected;
-                gPanel.setState(GameState.CUTTHREAD);
-            break;
-            case GameState.CUTTHREAD:
-                targetSource = selected;
-                controller.cut(selectedSource.getTecton().getInsect(), (Tecton)targetSource.getTecton());
-                gPanel.setState(GameState.WAITINSECTCOMMAND);
-            break;
-            case GameState.BRANCHTHREAD:
-                controller.branchThread((Tecton)selected.getTecton());
-                gPanel.setState(GameState.WAITFUNGALCOMMAND);
-            break;
-            case GameState.EATINSECT:
-                controller.eatInsect(selected.getTecton().getInsect());
-                gPanel.setState(GameState.WAITFUNGALCOMMAND);
-            break;
-            case GameState.SELECTMUSHROOMFORSHOOT:
-                selectedSource = selected;
-                gPanel.setState(GameState.SHOOTSPORE);
-            break;
-            case GameState.SHOOTSPORE:
-                targetSource = selected;
-                controller.shootSpore(selectedSource.getTecton().getMushroom(), (Tecton)targetSource.getTecton());
-                gPanel.setState(GameState.WAITFUNGALCOMMAND);
-            break;
-            case GameState.GROWMUSHROOM:
-                controller.growMushroom((Tecton)selected.getTecton());
-                gPanel.setState(GameState.WAITFUNGALCOMMAND);
-            break;
-            case GameState.PUTFIRSTINSECT:
-                controller.putFirstInsect((Tecton)selected.getTecton());
-            break;
-            case GameState.PUTFIRSTMUSHROOM:
-                controller.putFirstMushroom("ShortLifeThread", (Tecton)selected.getTecton());
-            break;
-            default:
-            break;
+    public void clearSelection() {
+        for (GTecton gt : tectCombo.values()) {
+            gt.setSelected(false);
         }
     }
-
-}
-
 }

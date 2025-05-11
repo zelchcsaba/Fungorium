@@ -1,4 +1,5 @@
 package view;
+
 import controller.Controller;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class NameEntryPanel extends JPanel implements ActionListener{
+public class NameEntryPanel extends JPanel implements ActionListener {
     private MainWindow parent;
     private Controller controller;
     private List<JTextField> fPlayerNameFields;
@@ -77,7 +78,7 @@ public class NameEntryPanel extends JPanel implements ActionListener{
         }
 
         namesPanel.revalidate(); // újrarajzolás
-        namesPanel.repaint();    // újrarajzolás
+        namesPanel.repaint(); // újrarajzolás
     }
 
     @Override
@@ -88,16 +89,18 @@ public class NameEntryPanel extends JPanel implements ActionListener{
 
             try {
                 for (JTextField fField : fPlayerNameFields) {
-                    String name = fField.getText().trim(); //A trim() nem fix hogy kell!!!
-                    if (name.isEmpty()) throw new IllegalArgumentException("All fungus player names must be filled in.");
+                    String name = fField.getText().trim(); // A trim() nem fix hogy kell!!!
+                    if (name.isEmpty())
+                        throw new IllegalArgumentException("All fungus player names must be filled in.");
                     fungusNames.add(name);
                 }
                 for (JTextField iField : iPlayerNameFields) {
                     String name = iField.getText().trim();
-                    if (name.isEmpty()) throw new IllegalArgumentException("All insect player names must be filled in.");
+                    if (name.isEmpty())
+                        throw new IllegalArgumentException("All insect player names must be filled in.");
                     insectNames.add(name);
                 }
-                
+
                 controller.createFungusPlayers(fungusNames);
                 controller.createInsectPlayers(insectNames);
 

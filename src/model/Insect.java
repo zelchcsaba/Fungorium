@@ -108,6 +108,7 @@ public class Insect implements IInsectController, IInsectView {
 
             list1 = t.getThreads();
             list2 = position.getThreads();
+            boolean isCut = false;
 
             //megnézzük, hogy a list2-ben mely elemek szerepelnek a list1-ből
             for (int i = 0; i < list1.size(); i++) {
@@ -115,12 +116,16 @@ public class Insect implements IInsectController, IInsectView {
                 //ha valamely elem a list1-ből szerepel a list2-ben is
                 if (list2.contains(list1.get(i))) {
                     //kivesszük a fonál tekton listájából a t tektont
-
+                    isCut = true;
                     list1.get(i).sendToDie(t);
                 }
             }
             //ha sikerült fonalat vágni true értékkel tér vissza
-            return true;
+            if(isCut){
+                return true;
+            }else{
+                return false;
+            }
         } else {
             //ha nem akkor false-val
             return false;
@@ -142,15 +147,16 @@ public class Insect implements IInsectController, IInsectView {
         boolean attached = false;
         int j = 0;
         while (j < tlist.size() && attached == false) {
-            if (tlist.get(j).getInsect() == null) {
-                i = new Insect();
-                i.setPosition(tlist.get(j));
-                tlist.get(j).setInsect(i);
-                attached = true;
+            if(tlist.get(j)!=null){
+                if (tlist.get(j).getInsect() == null) {
+                    i = new Insect();
+                    i.setPosition(tlist.get(j));
+                    tlist.get(j).setInsect(i);
+                    attached = true;
+                }
+                j = j + 1;
             }
-            j = j + 1;
         }
-
         return i;
     }
 
