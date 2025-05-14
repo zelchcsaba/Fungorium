@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+
+/**
+ * A StartScreenPanel osztály a játék kezdőképernyőjéért felelős.
+ * Egy JPanel kiterjesztés, amely lehetővé teszi a játékosok számának
+ * és a maximális körök számának megadását.
+ */
 public class StartScreenPanel extends JPanel implements ActionListener {
     private MainWindow parent;
     Controller controller;
@@ -21,6 +28,17 @@ public class StartScreenPanel extends JPanel implements ActionListener {
     JTextField maxRounds;
     JButton nextButton;
 
+
+    /**
+     * A StartScreenPanel konstruktor létrehozza a játék kezdőképernyőjét tartalmazó panelt.
+     * A panel tartalmaz címfeliratot, mezőket az adatok megadására, valamint egy gombot a
+     * továbblépéshez. A GroupLayout elrendezést használja.
+     *
+     * @param parent     A MainWindow osztály példánya, amely a panel szülője,
+     *                   és lehetővé teszi a különböző panelek közötti váltást.
+     * @param controller A Controller osztály példánya, amely a játék logikáját
+     *                   és működését kezeli.
+     */
     public StartScreenPanel(MainWindow parent, Controller controller) {
         this.parent = parent;
         this.controller = controller;
@@ -84,6 +102,13 @@ public class StartScreenPanel extends JPanel implements ActionListener {
         add(centerPanel, BorderLayout.CENTER);
     }
 
+
+    /**
+     * Kezeli a felhasználói interakciókat, különösen a nextButton gomb lenyomását,
+     * a bevitt adatok érvényességének ellenőrzésével és az adatok vezérlőn keresztül való továbbításával.
+     *
+     * @param e Az ActionEvent objektum, amely az eseményt reprezentálja.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == nextButton) {
@@ -91,6 +116,7 @@ public class StartScreenPanel extends JPanel implements ActionListener {
                 int fCount = Integer.parseInt(fPlayerCount.getText());
                 int iCount = Integer.parseInt(iPlayerCount.getText());
                 int maxRound = Integer.parseInt(maxRounds.getText());
+
                 if (fCount < 0 || fCount > 4) {
                     throw new IllegalArgumentException();
                 }

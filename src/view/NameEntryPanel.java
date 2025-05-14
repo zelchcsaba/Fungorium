@@ -9,17 +9,35 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
+/**
+ * A NameEntryPanel osztály egy JPanel leszármazott, amely a játékosok neveinek beviteléért
+ * felelős grafikus komponens. Ebben a panelben lehetőség van a felhasználóknak
+ * a Gombász és Rovarász játékosok neveinek megadására, valamint
+ * a névbeviteli mezők dinamikus kezelésére a játékosok számának megfelelően..
+ */
 public class NameEntryPanel extends JPanel implements ActionListener {
     private MainWindow parent;
     private Controller controller;
     private List<JTextField> fPlayerNameFields;
     private List<JTextField> iPlayerNameFields;
+
     private JButton backButton;
     private JButton startButton;
     private JPanel namesPanel;
     private int fungusCount;
     private int insectCount;
 
+
+    /**
+     * NameEntryPanel konstruktor, amely lehetővé teszi a játékosok számára,
+     * hogy megadják a nevüket a játék elindítása előtt. A panel tartalmaz egy címet,
+     * névbeviteli mezőket és navigációs gombokat.
+     *
+     * @param parent     A szülő ablak, amely a fő keretet képviseli, és amelyhez ez a panel tartozik.
+     * @param controller A játék folyamatait és logikai részeit vezérlő Controller objektum,
+     *                   amely együttműködik a névbeviteli panellel.
+     */
     public NameEntryPanel(MainWindow parent, Controller controller) {
         this.parent = parent;
         this.controller = controller;
@@ -48,6 +66,12 @@ public class NameEntryPanel extends JPanel implements ActionListener {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+
+    /**
+     * Frissíti a játékos névmezőket és a mezőket tároló panel kinézetét a jelenlegi játékosok számának
+     * megfelelően. Beállítja a gombászokhoz és rovarászokhoz tartozó játékosok számát, majd ennek alapján
+     * újrarajzolja a névpaneleket.
+     */
     public void updatePlayerFields() {
         fPlayerNameFields.clear();
         iPlayerNameFields.clear();
@@ -81,6 +105,17 @@ public class NameEntryPanel extends JPanel implements ActionListener {
         namesPanel.repaint(); // újrarajzolás
     }
 
+
+    /**
+     * Kezeli a felhasználói interakciókat az akciógombokra kattintva.
+     * Az eseménytípus alapján végrehajtja a megfelelő logikát, például:
+     * - A játékosnevek összegyűjtése és az új játék elkezdése.
+     * - A kezdőképernyőre való visszalépés.
+     *
+     * @param e Az akcióeseményt reprezentáló objektum, amely tartalmazza az eseményforrást
+     *          és más vonatkozó információkat.
+     * @throws IllegalArgumentException Ha a felhasználó által megadott játékosnevek nem érvényesek.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startButton) {
@@ -113,4 +148,5 @@ public class NameEntryPanel extends JPanel implements ActionListener {
             parent.showStartScreen();
         }
     }
+
 }

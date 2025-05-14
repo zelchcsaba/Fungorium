@@ -26,6 +26,12 @@ import model.Tecton;
 
 import java.util.ArrayList;
 
+
+/**
+ * A GTecton osztály a tektonokat reprezentálja a játékban.
+ * Ez az osztály öröklődik a Polygon osztályból, és tartalmazza a tektonokkal kapcsolatos
+ * információkat és műveleteket.
+ */
 public class GTecton extends Polygon {
     private boolean selected = false;
     private ITectonView tecton;
@@ -34,66 +40,163 @@ public class GTecton extends Polygon {
     private Color color;
     private boolean done = false;
 
+
+    /**
+     * A GTecton konstruktora.
+     */
     public GTecton() {
         super();
     }
 
+
+    /**
+     * Visszaadja, hogy a "done" állapot igaz vagy hamis értéket tartalmaz,
+     * amely azt jelzi, hogy a tektonon kirajzolásra került-e gombafonal.
+     *
+     * @return true, ha rajzoltunk gombafonalat, ellenkező esetben false
+     */
     public boolean getDone() {
         return done;
     }
 
+
+    /**
+     * Beállítja az objektum "done" állapotát.
+     *
+     * @param done Egy logikai érték, ami jelzi, hogy rajzoltunk már gombafonalat.
+     */
     public void setDone(boolean done) {
         this.done = done;
     }
 
+
+    /**
+     * Beállítja a tekton színét.
+     *
+     * @param color A kívánt szín, amelyet a tektonhoz kell rendelni.
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+
+    /**
+     * Visszaadja a GTecton objektumhoz társított színt.
+     *
+     * @return A GTecton színeként definiált Color objektum.
+     */
     public Color getColor() {
         return color;
     }
 
+
+    /**
+     * Beállítja a megadott DrawingPanel objektumot a példányhoz.
+     *
+     * @param drawingPanel A DrawingPanel típusú objektum, amelyet be kell állítani.
+     */
     public void setDrawingPanel(DrawingPanel drawingPanel) {
         this.drawingPanel = drawingPanel;
     }
 
+
+    /**
+     * Beállítja a tekton objektumot az aktuális példányhoz.
+     *
+     * @param t A beállítandó Tecton objektum.
+     */
     public void setTecton(Tecton t) {
         tecton = t;
     }
 
+
+    /**
+     * Visszaadja a tektonhoz tartozó nézetet reprezentáló objektumot.
+     *
+     * @return Az ITectonView interfész implementációját adja vissza, amely a tekton nézetével kapcsolatos
+     * információkat és elemeket biztosít.
+     */
     public ITectonView getTecton() {
         return tecton;
     }
 
+
+    /**
+     * Beállítja az osztályhoz tartozó sorok számát.
+     *
+     * @param lineCount Az új sorok száma, amelyet be kell állítani.
+     */
     public void setLineCount(int lineCount) {
         this.lineCount = lineCount;
     }
 
+
+    /**
+     * Visszaadja az oldalak számát, amelyeket a "GTecton" objektum tartalmaz.
+     *
+     * @return Az oldalak száma, mint egész szám.
+     */
     public int getLineCount() {
         return lineCount;
     }
 
+
+    /**
+     * Létrehoz egy új GTecton objektumot a megadott pontok alapján.
+     *
+     * @param xpoints Az x koordináták tömbje, amelyek meghatározzák a sokszög csúcsait.
+     * @param ypoints Az y koordináták tömbje, amelyek meghatározzák a sokszög csúcsait.
+     * @param npoints A csúcspontok száma, amelyek a sokszöget alkotják.
+     */
     public GTecton(int[] xpoints, int[] ypoints, int npoints) {
         super(xpoints, ypoints, npoints);
     }
 
+
+    /**
+     * Ellenőrzi, hogy az aktuális objektum ki van-e választva.
+     *
+     * @return true, ha az objektum ki van választva, különben false
+     */
     public boolean isSelected() {
         return selected;
     }
 
+
+    /**
+     * Beállítja az objektum kijelölt állapotát.
+     *
+     * @param b Igaz, ha az objektum kijelölése aktív legyen, hamis, ha nem.
+     */
     public void setSelected(boolean b) {
         selected = b;
     }
 
+
+    /**
+     * Ez a metódus megváltoztatja a selected attribútum értékét.
+     * Ha a selected jelenleg igaz, akkor hamisra állítja, és fordítva.
+     */
     public void switchSelected() {
         selected = !selected;
     }
 
+
+    /**
+     * Ez a metódus megváltoztatja a selected attribútum értékét.
+     * Ha a selected jelenleg igaz, akkor hamisra állítja, és fordítva.
+     */
     public void toggleSelected() {
         selected = !selected;
     }
 
+
+    /**
+     * Kiszámítja és visszaadja a sokszög középpontját.
+     * A középpontot az x és y koordináták átlagának meghatározásával számolja ki.
+     *
+     * @return A számított középpontot reprezentáló Point objektum.
+     */
     public Point getCenter() {
         int sumX = 0;
         int sumY = 0;
@@ -109,6 +212,13 @@ public class GTecton extends Polygon {
         return new Point(centerX, centerY);
     }
 
+
+    /**
+     * Megrajzolja a fonalakat a megfelelő tektonokra a megadott vezérlő alapján.
+     *
+     * @param g          A rajzoláshoz használt Graphics objektum.
+     * @param controller A megjelenítéshez szükséges vezérlő, amely tartalmazza a játékosok és szálak állapotát.
+     */
     public void drawThreads(Graphics g, Controller controller) {
 
         Graphics2D g2 = (Graphics2D) g;
@@ -219,9 +329,19 @@ public class GTecton extends Polygon {
                 }
             }
         }
+
         done = true;
     }
 
+
+    /**
+     * A tekton kirajzolásáért felelős eljárás. Meghatározza a színezést,
+     * a kirajzolást és a spórák hozzáadott képeit a játékosokhoz társított színek alapján.
+     *
+     * @param g          A grafikus objektum, amelyre a rajzolási műveletek végrehajtásra kerülnek.
+     * @param controller A vezérlő, amely tartalmazza a játékosokat és azokkal kapcsolatos információkat,
+     *                   amelyeket a rajzolási folyamat során használunk.
+     */
     public void draw(Graphics g, Controller controller) {
 
         Graphics2D g2 = (Graphics2D) g;
@@ -240,11 +360,12 @@ public class GTecton extends Polygon {
                 if (s.getThread() == fPlayer.getThread()) { // ha ez a spóra rajta van a tektonon
                     Color playerColor = null;
                     for (Entry<Player, Color> entry : drawingPanel.getGPanel().players.entrySet()) { // kiszedjük a
-                                                                                                     // színét
+                        // színét
                         if (entry.getKey() == fPlayer) {
                             Point center = getCenter();
                             playerColor = entry.getValue();
                             BufferedImage img = null;
+
                             switch (playerColor.getRGB()) {
                                 case 0xFFFF0000: // Color.RED
                                     try {
@@ -254,6 +375,7 @@ public class GTecton extends Polygon {
                                     }
                                     g2.drawImage(img, center.x - 23, center.y + 3, 10, 10, null);
                                     break;
+
                                 case 0xFF00FF00: // Color.GREEN
                                     try {
                                         img = ImageIO.read(new File("spore3.png"));
@@ -262,6 +384,7 @@ public class GTecton extends Polygon {
                                     }
                                     g2.drawImage(img, center.x - 11, center.y + 3, 10, 10, null);
                                     break;
+
                                 case 0xFF0000FF: // Color.BLUE
                                     try {
                                         img = ImageIO.read(new File("spore2.png"));
@@ -270,6 +393,7 @@ public class GTecton extends Polygon {
                                     }
                                     g2.drawImage(img, center.x + 1, center.y + 3, 10, 10, null);
                                     break;
+
                                 case 0xFFFFFF00: // Color.YELLOW
                                     try {
                                         img = ImageIO.read(new File("spore4.png"));
@@ -285,4 +409,5 @@ public class GTecton extends Polygon {
             }
         }
     }
+
 }
