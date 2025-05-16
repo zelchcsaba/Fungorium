@@ -3,7 +3,6 @@ package view;
 import controller.Controller;
 import controller.FungusPlayer;
 import controller.Player;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,17 +13,14 @@ import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Map.Entry;
 import javax.imageio.ImageIO;
-
 import model.FungalThread;
 import model.ITectonView;
 import model.Spore;
 import model.Tecton;
-
-import java.util.ArrayList;
 
 
 /**
