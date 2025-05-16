@@ -3,22 +3,18 @@ package view;
 import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
+import static view.FieldCreator.*;
 
 
 /**
@@ -53,13 +49,9 @@ public class StartScreenPanel extends JPanel implements ActionListener {
         setBackground(Color.BLACK);
 
         // Cím hozzáadása (felül)
-        JLabel titleLabel = new JLabel("Fungorium");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        titleLabel.setForeground(Color.WHITE);
-        titleLabel.setBackground(Color.BLACK);
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel titleLabel = createTitle("Welcome to Fungorium");
         add(titleLabel, BorderLayout.NORTH);
-
+        
         // Fő panel létrehozása
         JPanel mainP = new JPanel(new GridBagLayout());
         mainP.setBackground(Color.BLACK);
@@ -146,52 +138,4 @@ public class StartScreenPanel extends JPanel implements ActionListener {
 
         }
     }
-
-     public JLabel createLabel(String text) {
-        JLabel field = new JLabel(text);
-
-        field.setPreferredSize(new Dimension(300, 60));
-        field.setFont(new Font("Arial", Font.BOLD, 15));
-        field.setBackground(Color.BLACK);
-        field.setForeground(Color.WHITE);
-        field.setOpaque(true);
-        field.setHorizontalAlignment(SwingConstants.CENTER); // Szöveg középre igazítása vízszintesen
-        Border border = BorderFactory.createLineBorder(Color.WHITE, 1); // Fehér vonalas keret, 1 pixel vastagság
-        field.setBorder(border);
-
-        return field;
-    }
-
-    public JTextField createTextField() {
-        JTextField field = new JTextField();
-
-        field.setPreferredSize(new Dimension(300, 60));
-        field.setFont(new Font("Arial", Font.BOLD, 15));
-        field.setBackground(Color.BLACK);
-        field.setForeground(Color.WHITE);
-        field.setOpaque(true);
-        field.setHorizontalAlignment(SwingConstants.CENTER); // Szöveg középre igazítása vízszintesen
-        Border border = BorderFactory.createLineBorder(Color.WHITE, 1); // Fehér vonalas keret, 1 pixel vastagság
-        field.setBorder(border);
-        field.setCaretColor(Color.WHITE);
-
-        return field;
-    }
-
-       public JButton createButton(String s) {
-        JButton field = new JButton(s);
-
-        field.setPreferredSize(new Dimension(300, 60));
-        field.setFont(new Font("Arial", Font.BOLD, 15));
-        field.setBackground(Color.BLACK);
-        field.setForeground(Color.WHITE);
-        field.setOpaque(true);
-        field.setHorizontalAlignment(SwingConstants.CENTER); // Szöveg középre igazítása vízszintesen
-        Border border = BorderFactory.createLineBorder(Color.WHITE, 1); // Fehér vonalas keret, 1 pixel vastagság
-        field.setBorder(border);
-
-        return field;
-    }
-
-
 }

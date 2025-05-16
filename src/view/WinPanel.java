@@ -19,8 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-
 import controller.Controller;
+import static view.FieldCreator.*; // createLabel
 
 
 /**
@@ -37,29 +37,6 @@ public class WinPanel extends JPanel {
 
     private int maxFungalScore;
     private int maxInsectScore;
-
-
-    /**
-     * Létrehoz egy egyedi formázású JLabel példányt, amely adott szöveget jelenít meg.
-     * A címke különféle paraméterekkel személyre szabottan van konfigurálva.
-     *
-     * @param text A címkében megjelenítendő szöveg.
-     * @return A konfigurált JLabel objektum.
-     */
-    public JLabel createLabel(String text) {
-        JLabel field = new JLabel(text);
-
-        field.setPreferredSize(new Dimension(120, 60));
-        field.setFont(new Font("Arial", Font.BOLD, 13));
-        field.setBackground(Color.BLACK);
-        field.setForeground(Color.WHITE);
-        field.setOpaque(true);
-        field.setHorizontalAlignment(SwingConstants.CENTER); // Szöveg középre igazítása vízszintesen
-        Border border = BorderFactory.createLineBorder(Color.WHITE, 1); // Fehér vonalas keret, 1 pixel vastagság
-        field.setBorder(border);
-
-        return field;
-    }
 
 
     /**
@@ -127,7 +104,6 @@ public class WinPanel extends JPanel {
             sortFungal();
     }
 
-
     /**
      * A WinPanel osztály konstruktora, amely inicializálja a győzelmi panelt.
      * Beállítja az elrendezést, és kapcsolja a főablakhoz, valamint a vezérlőhöz.
@@ -141,7 +117,6 @@ public class WinPanel extends JPanel {
         setLayout(new BorderLayout());
     }
 
-
     /**
      * A metódus frissíti a nyertes panel tartalmát, új adatokat töltve be és újrarajzolva
      * a felhasználói felületet.
@@ -149,18 +124,11 @@ public class WinPanel extends JPanel {
     public void refresh() {
         loadPlayers();
 
-        // Top panel: Cím és háttérkép
+        // Top panel: Cím 
         JPanel topPanel = new JPanel(new BorderLayout());
 
         // Cím hozzáadása
-        JLabel titleL = new JLabel("Leaderboard", SwingConstants.CENTER);
-        titleL.setFont(new Font("Arial", Font.BOLD, 50));
-        titleL.setForeground(Color.WHITE);
-        titleL.setOpaque(true);
-        titleL.setBackground(Color.BLACK);
-
-        titleL.setHorizontalTextPosition(SwingConstants.CENTER);
-        titleL.setVerticalTextPosition(SwingConstants.CENTER);
+        JLabel titleL = createTitle("Leaderboard");
         topPanel.add(titleL, BorderLayout.CENTER);
 
         add(topPanel, BorderLayout.NORTH);
@@ -176,15 +144,11 @@ public class WinPanel extends JPanel {
         gbc.fill = GridBagConstraints.BOTH;
 
         JLabel fungusPlayers = createLabel("fungus players");
-        fungusPlayers.setBackground(Color.BLACK);
-        fungusPlayers.setForeground(Color.white);
         gbc.gridwidth = 2;
         mainPanel.add(fungusPlayers, gbc);
         gbc.gridx++;
         gbc.gridx++;
         JLabel insectPlayers = createLabel("insect players");
-        insectPlayers.setBackground(Color.BLACK);
-        insectPlayers.setForeground(Color.white);
         mainPanel.add(insectPlayers, gbc);
 
         gbc.gridwidth = 1;
