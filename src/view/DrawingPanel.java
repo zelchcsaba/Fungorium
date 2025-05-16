@@ -1,15 +1,23 @@
 package view;
 
 import controller.Controller;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
+
 import model.Insect;
 import model.Mushroom;
 import model.Tecton;
 
+
+/**
+ * A DrawingPanel osztály a játék grafikus felhasználói felületének megjelenítésére szolgál.
+ * Ez az osztály kezeli a Tecton, Mushroom és Insect objektumok vizuális reprezentációját,
+ * valamint az egérkattintási események kezelését.
+ */
 public class DrawingPanel extends JPanel {
     private HashMap<Tecton, GTecton> tectCombo;
     private HashMap<Mushroom, GMushroom> mushCombo;
@@ -18,7 +26,6 @@ public class DrawingPanel extends JPanel {
     private GamePanel gPanel;
 
     private GTecton lastClicked;
-
     private GTecton selectedSource;
     private GTecton targetSource;
 
@@ -29,10 +36,18 @@ public class DrawingPanel extends JPanel {
     private double yTranslate;
     private boolean firstpaint;
 
+
+    /**
+     * A DrawingPanel osztály konstruktora. Feladata az osztály attribútumainak inicializálása,
+     * az egérkattintási események figyelése, és az alapértelmezett szélesség és magasság beállítása.
+     *
+     * @param controller a logikát vezérlő Controller objektum
+     * @param gPanel a GamePanel objektum, amely a rajzelemeket és interakciókat kezeli a panelen belül
+     */
     public DrawingPanel(Controller controller, GamePanel gPanel) {
-        tectCombo = new HashMap();
-        mushCombo = new HashMap();
-        insCombo = new HashMap();
+        tectCombo = new HashMap<>();
+        mushCombo = new HashMap<>();
+        insCombo = new HashMap<>();
         this.controller = controller;
         this.gPanel = gPanel;
         currentWidth = 1920;
@@ -48,6 +63,13 @@ public class DrawingPanel extends JPanel {
         });
     }
 
+
+    /**
+     * Ez a metódus felelős a DrawingPanel méreteihez viszonyított
+     * transzformáció végrehajtásáért a Tecton és GTecton objektumok koordinátáin.
+     * A transzformáció során az aktuális szélesség és magasság arányában skálázza
+     * az egyes objektumok pontjait.
+     */
     public void tectontTranslateTransform() {
         double width = getWidth();
         double height = getHeight();
@@ -64,46 +86,126 @@ public class DrawingPanel extends JPanel {
         }
     }
 
+
+    /**
+     * Visszaadja a Tecton és GTecton objektumok közötti megfeleltetéseket.
+     *
+     * @return HashMap amely tartalmazza a Tecton típusú kulcsokat és
+     *         a hozzájuk tartozó GTecton típusú értékeket.
+     */
     public HashMap<Tecton, GTecton> getTectCombo() {
         return tectCombo;
     }
 
+
+    /**
+     * Visszaadja a DrawingPanel osztályhoz tartozó GamePanel objektumot,
+     * amely felelős a játékbeli interakciók megvalósításáért.
+     *
+     * @return a GamePanel típusú objektum, amely a DrawingPanelhez tartozik
+     */
     public GamePanel getGPanel() {
         return gPanel;
     }
 
+
+    /**
+     * Ez a metódus hozzáad egy Tecton objektumot és a hozzárendelt GTecton elemet
+     * a tectCombo attribútumhoz.
+     *
+     * @param t a Tecton objektum, amelyet hozzá szeretnénk adni
+     * @param gtect a GTecton objektum, amely a megadott Tecton objektumhoz tartozik
+     */
     public void addTecton(Tecton t, GTecton gtect) {
         tectCombo.put(t, gtect);
     }
 
+
+    /**
+     * Hozzáad egy Mushroom és GMushroom párost a tárolóhoz, amely a gombák
+     * és azok vizuális reprezentációjának hozzárendelésére szolgál.
+     *
+     * @param m a hozzáadni kívánt Mushroom objektum
+     * @param gmush a Mushroom objektumhoz tartozó GMushroom objektum
+     */
     public void addMushroom(Mushroom m, GMushroom gmush) {
         mushCombo.put(m, gmush);
     }
 
+
+    /**
+     * Egy Insect és GInsect pár hozzáadása az insCombo attribútumhoz.
+     *
+     * @param i az Insect típusú objektum, amelyet hozzáadunk
+     * @param gins a gins a hozzátartozó GInsect típusú objektum
+     */
     public void addInsect(Insect i, GInsect gins) {
         insCombo.put(i, gins);
     }
 
+
+    /**
+     * Eltávolít egy adott gombát a panelen tárolt gombák közül.
+     *
+     * @param m az eltávolítandó Mushroom típusú objektum
+     */
     public void removeMushroom(Mushroom m) {
         mushCombo.remove(m);
     }
 
+
+    /**
+     * Eltávolít egy rovart az aktuális insCombo listából.
+     *
+     * @param i az Insect objektum, amelyet el akarunk távolítani
+     */
     public void removeInsect(Insect i) {
         insCombo.remove(i);
     }
 
+
+    /**
+     * Visszaadja a megadott Tecton objektumhoz tartozó GTecton példányt.
+     *
+     * @param t a lekérdezendő Tecton objektum
+     * @return a Tecton objektumhoz tartozó GTecton példány, vagy null, ha nem található ilyen
+     */
     public GTecton getGTecton(Tecton t) {
         return tectCombo.get(t);
     }
 
+
+    /**
+     * Visszaadja az adott Mushroom példányhoz tartozó GMushroom objektumot.
+     *
+     * @param m A Mushroom objektum, amelyhez a GMushroom példányt keressük.
+     * @return A megadott Mushroom objektumhoz tartozó GMushroom példány.
+     */
     public GMushroom getGMushroom(Mushroom m) {
         return mushCombo.get(m);
     }
 
+
+    /**
+     * Visszaadja a megadott rovarhoz tartozó GInsect példányt.
+     *
+     * @param i A rovar objektum, amelyhez tartozó GInsect-et vissza kell adni.
+     * @return A megadott rovarhoz tartozó GInsect példány, vagy null, ha nincs ilyen kapcsolat.
+     */
     public GInsect getGInsect(Insect i) {
         return insCombo.get(i);
     }
 
+
+    /**
+     * Ezt a metódust egy kezdő pontnak egy másik ponthoz viszonyított eltolására használjuk.
+     * Az eltolás egy 15 egységnyi távolságot jelent a megadott irányban,
+     * amely az első és a második pont közötti vektor alapján számítódik.
+     *
+     * @param from az eltolás kiindulópontja
+     * @param to a célpont, amely meghatározza az eltolás irányát
+     * @return egy új Point objektum, amely az eltolás eredményeként létrejövő koordinátákat tartalmazza
+     */
     public Point shiftPoint(Point from, Point to) {
         double dx = to.x - from.x;
         double dy = to.y - from.y;
@@ -115,6 +217,14 @@ public class DrawingPanel extends JPanel {
         return new Point(newX, newY);
     }
 
+
+    /**
+     * Ez a metódus egy meglévő Tecton objektumot két új Tecton objektumra bont.
+     *
+     * @param source Az eredeti Tecton objektum, amelyet fel kell bontani.
+     * @param created1 Az első létrehozott Tecton objektum a bontás után.
+     * @param created2 A második létrehozott Tecton objektum a bontás után.
+     */
     public void breakTecton(Tecton source, Tecton created1, Tecton created2) {
         GTecton g1 = new GTecton();
         GTecton g2 = new GTecton();
@@ -173,6 +283,14 @@ public class DrawingPanel extends JPanel {
         tectCombo.remove(source);
     }
 
+
+    /**
+     * Feladata a DrawingPanel eleminek megrajzolása, beleértve a Tecton-ok, Mushroom-ok és
+     * Insect-ek vizuális reprezentációit. A metódus külön-külön meghívja a draw és
+     * drawThreads metódusokat, valamint alaphelyzetbe állít bizonyos állapotokat.
+     *
+     * @param g A Graphics objektum, amely a komponensek megrajzolásához használt eszközöket biztosítja
+     */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -189,7 +307,6 @@ public class DrawingPanel extends JPanel {
         for (Map.Entry<Tecton, GTecton> entry : tectCombo.entrySet()) {
             GTecton val = entry.getValue();
             val.setDone(false);
-            ;
         }
 
         for (Map.Entry<Mushroom, GMushroom> entry : mushCombo.entrySet()) {
@@ -201,9 +318,15 @@ public class DrawingPanel extends JPanel {
             GInsect val = entry.getValue();
             val.draw(g, controller);
         }
-
     }
 
+
+    /**
+     * Kezeli az egérkattintás eseményeket és a játékmenet állapotának megfelelő műveletet hajt végre.
+     *
+     * @param e Az egérkattintás eseményt reprezentáló MouseEvent objektum, amely
+     *          tartalmazza a kattintás helyét.
+     */
     private void handleClickEvent(MouseEvent e) {
         Point click = e.getPoint();
         GTecton selected = null;
@@ -223,63 +346,73 @@ public class DrawingPanel extends JPanel {
                     selected.setSelected(true);
                     gPanel.setState(GameState.MOVEINSECT);
                     break;
+
                 case GameState.MOVEINSECT:
                     clearSelection();
                     targetSource = selected;
                     controller.move(selectedSource.getTecton().getInsect(), (Tecton) targetSource.getTecton());
                     gPanel.setState(GameState.WAITINSECTCOMMAND);
                     break;
+
                 case GameState.SELECTINSECTFORCUT:
                     selectedSource = selected;
                     selected.setSelected(true);
                     gPanel.setState(GameState.CUTTHREAD);
                     break;
+
                 case GameState.CUTTHREAD:
                     clearSelection();
                     targetSource = selected;
                     controller.cut(selectedSource.getTecton().getInsect(), (Tecton) targetSource.getTecton());
                     gPanel.setState(GameState.WAITINSECTCOMMAND);
                     break;
+
                 case GameState.BRANCHTHREAD:
                     controller.branchThread((Tecton) selected.getTecton());
                     gPanel.setState(GameState.WAITFUNGALCOMMAND);
                     break;
+
                 case GameState.EATINSECT:
                     controller.eatInsect(selected.getTecton().getInsect());
                     gPanel.setState(GameState.WAITFUNGALCOMMAND);
                     break;
+
                 case GameState.SELECTMUSHROOMFORSHOOT:
                     selectedSource = selected;
                     selected.setSelected(true);
                     gPanel.setState(GameState.SHOOTSPORE);
                     break;
+
                 case GameState.SHOOTSPORE:
                     clearSelection();
                     targetSource = selected;
                     controller.shootSpore(selectedSource.getTecton().getMushroom(), (Tecton) targetSource.getTecton());
                     gPanel.setState(GameState.WAITFUNGALCOMMAND);
                     break;
+
                 case GameState.GROWMUSHROOM:
                     controller.growMushroom((Tecton) selected.getTecton());
                     gPanel.setState(GameState.WAITFUNGALCOMMAND);
                     break;
+
                 case GameState.PUTFIRSTINSECT:
                     controller.putFirstInsect((Tecton) selected.getTecton());
                     break;
+
                 case GameState.PUTFIRSTMUSHROOM:
                     int rand = gPanel.randomize() % 2;
                     System.out.println(rand);
                     if (rand == 0) {
-                        if(controller.putFirstMushroom("ShortLifeThread", (Tecton) selected.getTecton())){
+                        if (controller.putFirstMushroom("ShortLifeThread", (Tecton) selected.getTecton())) {
                             gPanel.showInformation("ShortLifeThread típusú gombafonál jött létre");
                         }
                     } else {
-                        if(controller.putFirstMushroom("LongLifeThread", (Tecton) selected.getTecton())){
+                        if (controller.putFirstMushroom("LongLifeThread", (Tecton) selected.getTecton())) {
                             gPanel.showInformation("LongLifeThread típusú gombafonál jött létre");
                         }
                     }
-
                     break;
+
                 default:
                     break;
             }
@@ -287,9 +420,14 @@ public class DrawingPanel extends JPanel {
         }
     }
 
+
+    /**
+     * Törli az összes GTecton objektum kijelölését a tectCombo attribútumban
+     */
     public void clearSelection() {
         for (GTecton gt : tectCombo.values()) {
             gt.setSelected(false);
         }
     }
+
 }
