@@ -19,9 +19,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-
 import controller.Controller;
+import static view.FieldCreator.*; // createLabel
 
+
+/**
+ * A WinPanel osztály a játék eredménylistájának (leaderboard) megjelenítésére szolgál.
+ * A JPanel osztályból öröklődik, és keretet biztosít a játékosok pontszámainak kezeléséhez és vizualizálásához.
+ * A panel két külön leaderboardot jelenít meg: az egyiket gombász, a másikat rovarász játékosok szerint.
+ */
 public class WinPanel extends JPanel {
     private MainWindow parent;
     private Controller controller;
@@ -32,23 +38,17 @@ public class WinPanel extends JPanel {
     private int maxFungalScore;
     private int maxInsectScore;
 
-    public JLabel createLabel(String text) {
-        JLabel field = new JLabel(text);
-        field.setPreferredSize(new Dimension(120, 60));
-        field.setFont(new Font("Arial", Font.BOLD, 13));
-        field.setBackground(Color.BLACK);
-        field.setForeground(Color.WHITE);
-        field.setOpaque(true);
-        field.setHorizontalAlignment(SwingConstants.CENTER); // Szöveg középre igazítása vízszintesen
-        Border border = BorderFactory.createLineBorder(Color.WHITE, 1); // Fekete vonalas keret, 2 pixel vastagság
-        field.setBorder(border);
-        return field;
-    }
 
+    /**
+     * A metódus a fungalScores nevű Map elemeit érték szerint
+     * csökkenő sorrendbe rendezi. A rendezési folyamat során az eredeti Map
+     * elemei eltávolításra kerülnek, majd a rendezett elemek visszaírásra
+     * kerülnek ugyanabba a Map-be.
+     */
     public void sortFungal() {
         List<Map.Entry<String, Integer>> entryList = new ArrayList<>(fungalScores.entrySet());
         entryList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())); // Érték szerint csökkenő
-                                                                                            // sorrend
+        // sorrend
 
         maxFungalScore = entryList.get(0).getValue(); // mellékesen kiszedjük a max score-t
 
@@ -60,10 +60,16 @@ public class WinPanel extends JPanel {
 
     }
 
+
+    /**
+     * A rovarokhoz tartozó pontszámokat tartalmazó Map-et
+     * rendezi csökkenő sorrendbe az értékek alapján, majd
+     * frissíti az eredeti térképet a rendezett sorrenddel.
+     */
     public void sortInsect() {
         List<Map.Entry<String, Integer>> entryList = new ArrayList<>(insectScores.entrySet());
         entryList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())); // Érték szerint csökkenő
-                                                                                            // sorrend
+        // sorrend
 
         maxInsectScore = entryList.get(0).getValue();
 
@@ -74,6 +80,11 @@ public class WinPanel extends JPanel {
         }
     }
 
+
+    /**
+     * A metódus betölti a rovarász és gombász játékosok pontszámait
+     * a controller objektumtól, és átrendezi azokat, ha nem üres adatokat tartalmaznak.
+     */
     public void loadPlayers() {
         // fungalScores.put("huszi", 100);
         // fungalScores.put("goldi", 1010);
@@ -93,27 +104,31 @@ public class WinPanel extends JPanel {
             sortFungal();
     }
 
+    /**
+     * A WinPanel osztály konstruktora, amely inicializálja a győzelmi panelt.
+     * Beállítja az elrendezést, és kapcsolja a főablakhoz, valamint a vezérlőhöz.
+     *
+     * @param parent     A főablak, amelyhez ez a panel tartozik.
+     * @param controller A játékmenetet irányító vezérlő, amely biztosítja az adatokat és a logikát.
+     */
     public WinPanel(MainWindow parent, Controller controller) {
         this.parent = parent;
         this.controller = controller;
         setLayout(new BorderLayout());
     }
 
+    /**
+     * A metódus frissíti a nyertes panel tartalmát, új adatokat töltve be és újrarajzolva
+     * a felhasználói felületet.
+     */
     public void refresh() {
         loadPlayers();
 
-        // Top panel: Cím és háttérkép
+        // Top panel: Cím 
         JPanel topPanel = new JPanel(new BorderLayout());
 
         // Cím hozzáadása
-        JLabel titleL = new JLabel("Leaderboard", SwingConstants.CENTER);
-        titleL.setFont(new Font("Arial", Font.BOLD, 50));
-        titleL.setForeground(Color.WHITE);
-        titleL.setOpaque(true);
-        titleL.setBackground(Color.BLACK);
-
-        titleL.setHorizontalTextPosition(SwingConstants.CENTER);
-        titleL.setVerticalTextPosition(SwingConstants.CENTER);
+        JLabel titleL = createTitle("Leaderboard");
         topPanel.add(titleL, BorderLayout.CENTER);
 
         add(topPanel, BorderLayout.NORTH);
@@ -129,15 +144,11 @@ public class WinPanel extends JPanel {
         gbc.fill = GridBagConstraints.BOTH;
 
         JLabel fungusPlayers = createLabel("fungus players");
-        fungusPlayers.setBackground(Color.BLACK);
-        fungusPlayers.setForeground(Color.white);
         gbc.gridwidth = 2;
         mainPanel.add(fungusPlayers, gbc);
         gbc.gridx++;
         gbc.gridx++;
         JLabel insectPlayers = createLabel("insect players");
-        insectPlayers.setBackground(Color.BLACK);
-        insectPlayers.setForeground(Color.white);
         mainPanel.add(insectPlayers, gbc);
 
         gbc.gridwidth = 1;
@@ -176,7 +187,8 @@ public class WinPanel extends JPanel {
             mainPanel.add(point, gbc);
             gbc.gridx++;
         }
-        add(mainPanel, BorderLayout.CENTER);
 
+        add(mainPanel, BorderLayout.CENTER);
     }
+
 }

@@ -167,35 +167,39 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
      */
     public boolean growMushroom(Tecton t, Mushroom m) {
 
-        if (t.getMushroom() == null) {
-            List<Spore> slist = t.getSpores();
-            int thisSporeCount = 0;
+        if (t.canPutMushroom() && t.getThreads().contains(this)) {
+            if (t.getMushroom() == null) {
+                List<Spore> slist = t.getSpores();
+                int thisSporeCount = 0;
 
-            for (int i = 0; i < slist.size(); i++) {
-                if (slist.get(i).getThread() == this) {
-                    thisSporeCount += 1;
+                for (int i = 0; i < slist.size(); i++) {
+                    if (slist.get(i).getThread() == this) {
+                        thisSporeCount += 1;
+                    }
                 }
-            }
 
-            boolean canGrow = false;
-            if (thisSporeCount >= 3) {
-                canGrow = true;
-            }
+                boolean canGrow = false;
+                if (thisSporeCount >= 3) {
+                    canGrow = true;
+                }
 
-            if (!canGrow) {
+                if (!canGrow) {
+                    return false;
+                }
+
+                m.setPosition(t);
+                m.setThread(this);
+
+                List<FungalThread> thisThread = new ArrayList<>();
+                thisThread.add(this);
+                t.setThreads(thisThread);
+
+                t.putMushroom(m);
+
+                return true;
+            } else {
                 return false;
             }
-
-            m.setPosition(t);
-            m.setThread(this);
-
-            List<FungalThread> thisThread = new ArrayList<>();
-            thisThread.add(this);
-            t.setThreads(thisThread);
-
-            t.putMushroom(m);
-
-            return true;
         } else {
             return false;
         }

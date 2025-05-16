@@ -2,17 +2,26 @@ package view;
 
 import controller.Controller;
 import java.awt.BorderLayout;
-import java.awt.Font;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import static view.FieldCreator.*;
 
+
+/**
+ * A StartScreenPanel osztály a játék kezdőképernyőjéért felelős.
+ * Egy JPanel kiterjesztés, amely lehetővé teszi a játékosok számának
+ * és a maximális körök számának megadását.
+ */
 public class StartScreenPanel extends JPanel implements ActionListener {
     private MainWindow parent;
     Controller controller;
@@ -21,69 +30,82 @@ public class StartScreenPanel extends JPanel implements ActionListener {
     JTextField maxRounds;
     JButton nextButton;
 
+
+    /**
+     * A StartScreenPanel konstruktor létrehozza a játék kezdőképernyőjét tartalmazó panelt.
+     * A panel tartalmaz címfeliratot, mezőket az adatok megadására, valamint egy gombot a
+     * továbblépéshez. A GroupLayout elrendezést használja.
+     *
+     * @param parent     A MainWindow osztály példánya, amely a panel szülője,
+     *                   és lehetővé teszi a különböző panelek közötti váltást.
+     * @param controller A Controller osztály példánya, amely a játék logikáját
+     *                   és működését kezeli.
+     */
     public StartScreenPanel(MainWindow parent, Controller controller) {
         this.parent = parent;
         this.controller = controller;
 
-        JLabel titleLabel = new JLabel("Fungorium");
-        titleLabel.setFont(new Font("Serif", Font.BOLD, 32));
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JLabel fLabel = new JLabel("Number of fungus-players:");
-        JLabel iLabel = new JLabel("Number of insect-players:");
-        JLabel rLabel = new JLabel("Number of maximum rounds:");
-
-        fPlayerCount = new JTextField(10);
-        iPlayerCount = new JTextField(10);
-        maxRounds = new JTextField(10);
-
-        nextButton = new JButton("Next");
-        nextButton.addActionListener(this);
-        this.add(nextButton);
-
         setLayout(new BorderLayout());
+        setBackground(Color.BLACK);
 
-        JPanel centerPanel = new JPanel();
-        GroupLayout layout = new GroupLayout(centerPanel);
-        centerPanel.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
+        // Cím hozzáadása (felül)
+        JLabel titleLabel = createTitle("Welcome to Fungorium");
+        add(titleLabel, BorderLayout.NORTH);
+        
+        // Fő panel létrehozása
+        JPanel mainP = new JPanel(new GridBagLayout());
+        mainP.setBackground(Color.BLACK);
+        add(mainP, BorderLayout.CENTER);
 
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(titleLabel)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                        .addComponent(fLabel)
-                                        .addComponent(iLabel)
-                                        .addComponent(rLabel))
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(fPlayerCount)
-                                        .addComponent(iPlayerCount)
-                                        .addComponent(maxRounds)))
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(200)
-                                .addComponent(nextButton)));
+        // Gombok létrehozása
+        JLabel fLabel = createLabel("Number of fungus-players:");
+        JLabel iLabel = createLabel("Number of insect-players:");
+        JLabel rLabel = createLabel("Number of max rounds:");
 
-        layout.setVerticalGroup(
-                layout.createSequentialGroup()
-                        .addComponent(titleLabel)
-                        .addGap(20)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(fLabel)
-                                .addComponent(fPlayerCount))
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(iLabel)
-                                .addComponent(iPlayerCount))
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(rLabel)
-                                .addComponent(maxRounds))
-                        .addGap(20)
-                        .addComponent(nextButton));
+        fPlayerCount = createTextField();
+        iPlayerCount = createTextField();
+        maxRounds = createTextField();
 
-        add(centerPanel, BorderLayout.CENTER);
+        // GridBagConstraints konfigurálása
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 0, 0, 00); // Margók a komponensek körül
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        // Gombok elhelyezése
+        mainP.add(fLabel, gbc);
+        gbc.gridy++;
+        mainP.add(iLabel, gbc);
+        gbc.gridy++;
+        mainP.add(rLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        mainP.add(fPlayerCount, gbc);
+        gbc.gridy++;
+        mainP.add(iPlayerCount, gbc);
+        gbc.gridy++;
+        mainP.add(maxRounds, gbc);
+        add(mainP, BorderLayout.CENTER);
+
+        // Next gomb létrehozása
+        JPanel nextPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        nextPanel.setBackground(Color.BLACK);
+        add(nextPanel, BorderLayout.SOUTH);
+
+        nextButton = createButton("Next");
+        nextButton.addActionListener(this);
+        nextPanel.add(nextButton);
     }
 
+
+    /**
+     * Kezeli a felhasználói interakciókat, különösen a nextButton gomb lenyomását,
+     * a bevitt adatok érvényességének ellenőrzésével és az adatok vezérlőn keresztül való továbbításával.
+     *
+     * @param e Az ActionEvent objektum, amely az eseményt reprezentálja.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == nextButton) {
@@ -91,6 +113,7 @@ public class StartScreenPanel extends JPanel implements ActionListener {
                 int fCount = Integer.parseInt(fPlayerCount.getText());
                 int iCount = Integer.parseInt(iPlayerCount.getText());
                 int maxRound = Integer.parseInt(maxRounds.getText());
+
                 if (fCount < 0 || fCount > 4) {
                     throw new IllegalArgumentException();
                 }
@@ -115,5 +138,4 @@ public class StartScreenPanel extends JPanel implements ActionListener {
 
         }
     }
-
 }
