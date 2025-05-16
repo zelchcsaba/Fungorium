@@ -4,7 +4,6 @@ import controller.Controller;
 import controller.FungusPlayer;
 import controller.InsectPlayer;
 import controller.Player;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,15 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import model.Insect;
 import model.Mushroom;
 import model.Tecton;
+import static view.FieldCreator.*;
 
 
 /**
@@ -71,37 +69,33 @@ public class GamePanel extends JPanel {
 
         // játékos, körszám
         JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(Color.CYAN);
+        topPanel.setBackground(Color.BLACK);
         add(topPanel, BorderLayout.NORTH);
 
         // játékos
-        JPanel playerPanel = new JPanel(new FlowLayout());
-        playerPanel.setBackground(Color.CYAN);
+        JPanel playerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        playerPanel.setBackground(Color.BLACK);
         topPanel.add(playerPanel, BorderLayout.WEST);
 
-        JLabel currentPlayer = new JLabel("Current Player:");
-        currentPlayer.setForeground(Color.BLACK);
+        JLabel currentPlayer = createLabel("Current Player:");
         playerPanel.add(currentPlayer);
 
-        player = new JLabel();
-        player.setForeground(Color.BLACK);
+        player = createLabel("");
         playerPanel.add(player);
 
         // kör
-        JPanel roundPanel = new JPanel(new FlowLayout());
-        roundPanel.setBackground(Color.CYAN);
+        JPanel roundPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        roundPanel.setBackground(Color.BLACK);
         topPanel.add(roundPanel, BorderLayout.EAST);
 
-        JLabel roundNumber = new JLabel("Round:");
-        roundNumber.setForeground(Color.BLACK);
+        JLabel roundNumber = createLabel("Round:");
         roundPanel.add(roundNumber);
 
-        round = new JLabel();
-        round.setForeground(Color.BLACK);
+        round = createLabel("");
         roundPanel.add(round);
 
         drawingPanel = new DrawingPanel(controller, this);
-        drawingPanel.setBackground(Color.WHITE); // vagy amit szeretnél
+        drawingPanel.setBackground(Color.BLACK); 
         add(drawingPanel, BorderLayout.CENTER);
 
         ActionListener buttonListener = new ActionListener() {
@@ -116,31 +110,31 @@ public class GamePanel extends JPanel {
         actionsPanel.setBackground(Color.BLACK);
         add(actionsPanel, BorderLayout.SOUTH);
 
-        moveButton = new JButton("Move");
+        moveButton = createButton("Move");
         moveButton.addActionListener(buttonListener);
         actionsPanel.add(moveButton);
 
-        cutButton = new JButton("Cut");
+        cutButton = createButton("Cut");
         cutButton.addActionListener(buttonListener);
         actionsPanel.add(cutButton);
 
-        branchButton = new JButton("BranchThread");
+        branchButton = createButton("Branch Thread");
         branchButton.addActionListener(buttonListener);
         actionsPanel.add(branchButton);
 
-        growButton = new JButton("GrowMushroom");
+        growButton = createButton("Grow Mushroom");
         growButton.addActionListener(buttonListener);
         actionsPanel.add(growButton);
 
-        shootButton = new JButton("ShootSpore");
+        shootButton = createButton("Shoot Spore");
         shootButton.addActionListener(buttonListener);
         actionsPanel.add(shootButton);
 
-        eatButton = new JButton("EatInsect");
+        eatButton = createButton("Eat Insect");
         eatButton.addActionListener(buttonListener);
         actionsPanel.add(eatButton);
 
-        closeButton = new JButton("Closestep");
+        closeButton = createButton("Close Step");
         closeButton.addActionListener(buttonListener);
         actionsPanel.add(closeButton);
     }
@@ -317,7 +311,7 @@ public class GamePanel extends JPanel {
                 break;
 
             case ("AbsorbingTecton"):
-                gtect.setColor(Color.BLACK);
+                gtect.setColor(new Color(40, 20, 50));
                 break;
 
             case ("KeepThreadTecton"):
