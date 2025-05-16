@@ -73,7 +73,7 @@ public class GamePanel extends JPanel {
         add(topPanel, BorderLayout.NORTH);
 
         // játékos
-        JPanel playerPanel = new JPanel(new FlowLayout());
+        JPanel playerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         playerPanel.setBackground(Color.BLACK);
         topPanel.add(playerPanel, BorderLayout.WEST);
 
@@ -84,7 +84,7 @@ public class GamePanel extends JPanel {
         playerPanel.add(player);
 
         // kör
-        JPanel roundPanel = new JPanel(new FlowLayout());
+        JPanel roundPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         roundPanel.setBackground(Color.BLACK);
         topPanel.add(roundPanel, BorderLayout.EAST);
 
