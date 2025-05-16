@@ -55,7 +55,7 @@ public class WinPanel extends JPanel {
         field.setForeground(Color.WHITE);
         field.setOpaque(true);
         field.setHorizontalAlignment(SwingConstants.CENTER); // Szöveg középre igazítása vízszintesen
-        Border border = BorderFactory.createLineBorder(Color.WHITE, 1); // Fekete vonalas keret, 2 pixel vastagság
+        Border border = BorderFactory.createLineBorder(Color.WHITE, 1); // Fehér vonalas keret, 1 pixel vastagság
         field.setBorder(border);
 
         return field;

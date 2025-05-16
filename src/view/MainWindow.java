@@ -1,7 +1,6 @@
 package view;
 
 import controller.Controller;
-
 import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -44,7 +43,7 @@ public class MainWindow extends JFrame {
         cardPanel.add(gamePanel, "game");
         cardPanel.add(winPanel, "winPanel");
 
-        setTitle("Gombász vs Rovarász");
+        setTitle("Fungorium");
         this.setContentPane(cardPanel);
         this.setSize(800, 600);
         setLocationRelativeTo(null); // Képernyő közepére

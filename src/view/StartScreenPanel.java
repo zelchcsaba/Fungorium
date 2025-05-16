@@ -1,18 +1,24 @@
 package view;
 
 import controller.Controller;
-
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.GroupLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 
 /**
@@ -43,63 +49,62 @@ public class StartScreenPanel extends JPanel implements ActionListener {
         this.parent = parent;
         this.controller = controller;
 
-        JLabel titleLabel = new JLabel("Fungorium");
-        titleLabel.setFont(new Font("Serif", Font.BOLD, 32));
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JLabel fLabel = new JLabel("Number of fungus-players:");
-        JLabel iLabel = new JLabel("Number of insect-players:");
-        JLabel rLabel = new JLabel("Number of maximum rounds:");
-
-        fPlayerCount = new JTextField(10);
-        iPlayerCount = new JTextField(10);
-        maxRounds = new JTextField(10);
-
-        nextButton = new JButton("Next");
-        nextButton.addActionListener(this);
-        this.add(nextButton);
-
         setLayout(new BorderLayout());
+        setBackground(Color.BLACK);
 
-        JPanel centerPanel = new JPanel();
-        GroupLayout layout = new GroupLayout(centerPanel);
-        centerPanel.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
+        // Cím hozzáadása (felül)
+        JLabel titleLabel = new JLabel("Fungorium");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 50));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setBackground(Color.BLACK);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(titleLabel, BorderLayout.NORTH);
 
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(titleLabel)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                        .addComponent(fLabel)
-                                        .addComponent(iLabel)
-                                        .addComponent(rLabel))
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(fPlayerCount)
-                                        .addComponent(iPlayerCount)
-                                        .addComponent(maxRounds)))
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(200)
-                                .addComponent(nextButton)));
+        // Fő panel létrehozása
+        JPanel mainP = new JPanel(new GridBagLayout());
+        mainP.setBackground(Color.BLACK);
+        add(mainP, BorderLayout.CENTER);
 
-        layout.setVerticalGroup(
-                layout.createSequentialGroup()
-                        .addComponent(titleLabel)
-                        .addGap(20)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(fLabel)
-                                .addComponent(fPlayerCount))
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(iLabel)
-                                .addComponent(iPlayerCount))
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(rLabel)
-                                .addComponent(maxRounds))
-                        .addGap(20)
-                        .addComponent(nextButton));
+        // Gombok létrehozása
+        JLabel fLabel = createLabel("Number of fungus-players:");
+        JLabel iLabel = createLabel("Number of insect-players:");
+        JLabel rLabel = createLabel("Number of max rounds:");
 
-        add(centerPanel, BorderLayout.CENTER);
+        fPlayerCount = createTextField();
+        iPlayerCount = createTextField();
+        maxRounds = createTextField();
+
+        // GridBagConstraints konfigurálása
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 0, 0, 00); // Margók a komponensek körül
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        // Gombok elhelyezése
+        mainP.add(fLabel, gbc);
+        gbc.gridy++;
+        mainP.add(iLabel, gbc);
+        gbc.gridy++;
+        mainP.add(rLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        mainP.add(fPlayerCount, gbc);
+        gbc.gridy++;
+        mainP.add(iPlayerCount, gbc);
+        gbc.gridy++;
+        mainP.add(maxRounds, gbc);
+        add(mainP, BorderLayout.CENTER);
+
+        // Next gomb létrehozása
+        JPanel nextPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        nextPanel.setBackground(Color.BLACK);
+        add(nextPanel, BorderLayout.SOUTH);
+
+        nextButton = createButton("Next");
+        nextButton.addActionListener(this);
+        nextPanel.add(nextButton);
     }
 
 
@@ -141,5 +146,52 @@ public class StartScreenPanel extends JPanel implements ActionListener {
 
         }
     }
+
+     public JLabel createLabel(String text) {
+        JLabel field = new JLabel(text);
+
+        field.setPreferredSize(new Dimension(300, 60));
+        field.setFont(new Font("Arial", Font.BOLD, 15));
+        field.setBackground(Color.BLACK);
+        field.setForeground(Color.WHITE);
+        field.setOpaque(true);
+        field.setHorizontalAlignment(SwingConstants.CENTER); // Szöveg középre igazítása vízszintesen
+        Border border = BorderFactory.createLineBorder(Color.WHITE, 1); // Fehér vonalas keret, 1 pixel vastagság
+        field.setBorder(border);
+
+        return field;
+    }
+
+    public JTextField createTextField() {
+        JTextField field = new JTextField();
+
+        field.setPreferredSize(new Dimension(300, 60));
+        field.setFont(new Font("Arial", Font.BOLD, 15));
+        field.setBackground(Color.BLACK);
+        field.setForeground(Color.WHITE);
+        field.setOpaque(true);
+        field.setHorizontalAlignment(SwingConstants.CENTER); // Szöveg középre igazítása vízszintesen
+        Border border = BorderFactory.createLineBorder(Color.WHITE, 1); // Fehér vonalas keret, 1 pixel vastagság
+        field.setBorder(border);
+        field.setCaretColor(Color.WHITE);
+
+        return field;
+    }
+
+       public JButton createButton(String s) {
+        JButton field = new JButton(s);
+
+        field.setPreferredSize(new Dimension(300, 60));
+        field.setFont(new Font("Arial", Font.BOLD, 15));
+        field.setBackground(Color.BLACK);
+        field.setForeground(Color.WHITE);
+        field.setOpaque(true);
+        field.setHorizontalAlignment(SwingConstants.CENTER); // Szöveg középre igazítása vízszintesen
+        Border border = BorderFactory.createLineBorder(Color.WHITE, 1); // Fehér vonalas keret, 1 pixel vastagság
+        field.setBorder(border);
+
+        return field;
+    }
+
 
 }
