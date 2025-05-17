@@ -123,7 +123,9 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
      *         csatlakozás nem sikerült.
      */
     public boolean branchThread(Tecton t) {
-
+        if(t.getThreads().contains(this)){
+            return false;
+        }
         if (!t.putThread(this)) {
             return false;
         } else {
