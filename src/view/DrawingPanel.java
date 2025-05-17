@@ -456,7 +456,7 @@ public class DrawingPanel extends JPanel {
                                 if (sporePlayer != null) {
                                     Color playerColor = gPanel.returnColor(sporePlayer);
                                     String colorName = getColorName(playerColor);
-                                    if (sporesInfo.length() > 0 && !sporesInfo.toString().contains(colorName)) {
+                                    if (sporesInfo.length() > 0) {
                                         sporesInfo.append(", ");
                                         sporesInfo.append(colorName);
                                     } else if (sporesInfo.length() == 0) {
@@ -477,7 +477,7 @@ public class DrawingPanel extends JPanel {
                             if (threadPlayer != null) {
                                 Color playerColor = gPanel.returnColor(threadPlayer);
                                 String colorName = getColorName(playerColor);
-                                if (threadsInfo.length() > 0 && !threadsInfo.toString().contains(colorName)) {
+                                if (threadsInfo.length() > 0) {
                                     threadsInfo.append(", ");
                                     threadsInfo.append(colorName);
                                 } else if (threadsInfo.length() == 0) {
@@ -496,7 +496,11 @@ public class DrawingPanel extends JPanel {
                             "Fungal Threads: " + threadsInfoStr;
 
                     gPanel.showInformation(info);
-                    gPanel.setState(GameState.WAITFUNGALCOMMAND);
+
+                    if (controller.getFungalScores().containsKey(controller.getCurrentPlayerName()))
+                        gPanel.setState(GameState.WAITFUNGALCOMMAND);
+                    else
+                        gPanel.setState(GameState.WAITINSECTCOMMAND);
                     break;
 
                 default:

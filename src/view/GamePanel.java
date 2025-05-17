@@ -417,7 +417,7 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
 
     }
-    
+
 
 
     /**
@@ -428,14 +428,39 @@ public class GamePanel extends JPanel {
      */
     private void setVisibility() {
 
-        if (state == GameState.BRANCHTHREAD ||
+        if (state == GameState.TECTON_INFO) {
+
+            if (controller.getFungalScores().containsKey(controller.getCurrentPlayerName())) {
+
+                infoButton.setVisible(true);
+                moveButton.setVisible(false);
+                cutButton.setVisible(false);
+                branchButton.setVisible(true);
+                growButton.setVisible(true);
+                shootButton.setVisible(true);
+                eatButton.setVisible(true);
+                closeButton.setVisible(true);
+
+            } else {
+
+                infoButton.setVisible(true);
+                moveButton.setVisible(true);
+                cutButton.setVisible(true);
+                branchButton.setVisible(false);
+                growButton.setVisible(false);
+                shootButton.setVisible(false);
+                eatButton.setVisible(false);
+                closeButton.setVisible(true);
+
+            }
+
+        } else if (state == GameState.BRANCHTHREAD ||
                 state == GameState.GROWMUSHROOM ||
                 state == GameState.SELECTMUSHROOMFORSHOOT ||
                 state == GameState.CUTTHREAD ||
                 state == GameState.SHOOTSPORE ||
                 state == GameState.EATINSECT ||
-                state == GameState.WAITFUNGALCOMMAND ||
-                state == GameState.TECTON_INFO) {
+                state == GameState.WAITFUNGALCOMMAND) {
 
             infoButton.setVisible(true);
             closeButton.setVisible(true);
@@ -450,8 +475,7 @@ public class GamePanel extends JPanel {
                 state == GameState.SELECTINSECTFORCUT ||
                 state == GameState.WAITINSECTCOMMAND ||
                 state == GameState.MOVEINSECT ||
-                state == GameState.CUTTHREAD ||
-                state == GameState.TECTON_INFO) {
+                state == GameState.CUTTHREAD) {
 
             infoButton.setVisible(true);
             closeButton.setVisible(true);
