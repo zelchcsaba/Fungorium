@@ -1,15 +1,20 @@
 package view;
 
 import controller.Controller;
+import controller.FungusPlayer;
+import controller.InsectPlayer;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JPanel;
 
+import model.FungalThread;
 import model.Insect;
 import model.Mushroom;
+import model.Spore;
 import model.Tecton;
 
 
@@ -42,7 +47,7 @@ public class DrawingPanel extends JPanel {
      * az egérkattintási események figyelése, és az alapértelmezett szélesség és magasság beállítása.
      *
      * @param controller a logikát vezérlő Controller objektum
-     * @param gPanel a GamePanel objektum, amely a rajzelemeket és interakciókat kezeli a panelen belül
+     * @param gPanel     a GamePanel objektum, amely a rajzelemeket és interakciókat kezeli a panelen belül
      */
     public DrawingPanel(Controller controller, GamePanel gPanel) {
         tectCombo = new HashMap<>();
@@ -91,7 +96,7 @@ public class DrawingPanel extends JPanel {
      * Visszaadja a Tecton és GTecton objektumok közötti megfeleltetéseket.
      *
      * @return HashMap amely tartalmazza a Tecton típusú kulcsokat és
-     *         a hozzájuk tartozó GTecton típusú értékeket.
+     * a hozzájuk tartozó GTecton típusú értékeket.
      */
     public HashMap<Tecton, GTecton> getTectCombo() {
         return tectCombo;
@@ -113,7 +118,7 @@ public class DrawingPanel extends JPanel {
      * Ez a metódus hozzáad egy Tecton objektumot és a hozzárendelt GTecton elemet
      * a tectCombo attribútumhoz.
      *
-     * @param t a Tecton objektum, amelyet hozzá szeretnénk adni
+     * @param t     a Tecton objektum, amelyet hozzá szeretnénk adni
      * @param gtect a GTecton objektum, amely a megadott Tecton objektumhoz tartozik
      */
     public void addTecton(Tecton t, GTecton gtect) {
@@ -125,7 +130,7 @@ public class DrawingPanel extends JPanel {
      * Hozzáad egy Mushroom és GMushroom párost a tárolóhoz, amely a gombák
      * és azok vizuális reprezentációjának hozzárendelésére szolgál.
      *
-     * @param m a hozzáadni kívánt Mushroom objektum
+     * @param m     a hozzáadni kívánt Mushroom objektum
      * @param gmush a Mushroom objektumhoz tartozó GMushroom objektum
      */
     public void addMushroom(Mushroom m, GMushroom gmush) {
@@ -136,7 +141,7 @@ public class DrawingPanel extends JPanel {
     /**
      * Egy Insect és GInsect pár hozzáadása az insCombo attribútumhoz.
      *
-     * @param i az Insect típusú objektum, amelyet hozzáadunk
+     * @param i    az Insect típusú objektum, amelyet hozzáadunk
      * @param gins a gins a hozzátartozó GInsect típusú objektum
      */
     public void addInsect(Insect i, GInsect gins) {
@@ -203,7 +208,7 @@ public class DrawingPanel extends JPanel {
      * amely az első és a második pont közötti vektor alapján számítódik.
      *
      * @param from az eltolás kiindulópontja
-     * @param to a célpont, amely meghatározza az eltolás irányát
+     * @param to   a célpont, amely meghatározza az eltolás irányát
      * @return egy új Point objektum, amely az eltolás eredményeként létrejövő koordinátákat tartalmazza
      */
     public Point shiftPoint(Point from, Point to) {
@@ -221,7 +226,7 @@ public class DrawingPanel extends JPanel {
     /**
      * Ez a metódus egy meglévő Tecton objektumot két új Tecton objektumra bont.
      *
-     * @param source Az eredeti Tecton objektum, amelyet fel kell bontani.
+     * @param source   Az eredeti Tecton objektum, amelyet fel kell bontani.
      * @param created1 Az első létrehozott Tecton objektum a bontás után.
      * @param created2 A második létrehozott Tecton objektum a bontás után.
      */
@@ -413,20 +418,123 @@ public class DrawingPanel extends JPanel {
                     }
                     break;
 
+                case GameState.TECTON_INFO:
+                    Tecton tecton = (Tecton) selected.getTecton();
+                    String tectonType = tecton.getClass().getSimpleName();
+
+                    Mushroom mushroom = tecton.getMushroom();
+                    String mushroomInfo = "-";
+                    if (mushroom != null) {
+                        FungusPlayer mushroomPlayer = controller.getMushroomPlayer(mushroom);
+                        if (mushroomPlayer != null) {
+                            Color playerColor = gPanel.returnColor(mushroomPlayer);
+                            mushroomInfo = getColorName(playerColor);
+                        }
+                    }
+
+                    Insect insect = tecton.getInsect();
+                    String insectInfo = "-";
+                    if (insect != null) {
+                        InsectPlayer insectPlayer = controller.getInsectPlayer(insect);
+                        if (insectPlayer != null) {
+                            Color playerColor = gPanel.returnColor(insectPlayer);
+                            insectInfo = getColorName(playerColor);
+                        }
+                    }
+
+                    List<Spore> spores = tecton.getSpores();
+                    StringBuilder sporesInfo = new StringBuilder();
+                    if (spores != null && !spores.isEmpty()) {
+                        for (Spore spore : spores) {
+                            FungalThread thread = spore.getThread();
+                            if (thread != null) {
+                                FungusPlayer sporePlayer = controller.getThreadPlayer(thread);
+                                if (sporePlayer != null) {
+                                    Color playerColor = gPanel.returnColor(sporePlayer);
+                                    String colorName = getColorName(playerColor);
+                                    if (sporesInfo.length() > 0 && !sporesInfo.toString().contains(colorName)) {
+                                        sporesInfo.append(", ");
+                                        sporesInfo.append(colorName);
+                                    } else if (sporesInfo.length() == 0) {
+                                        sporesInfo.append(colorName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    String sporesInfoStr = sporesInfo.length() > 0 ? sporesInfo.toString() : "-";
+
+                    List<FungalThread> threads = tecton.getThreads();
+                    StringBuilder threadsInfo = new StringBuilder();
+                    if (threads != null && !threads.isEmpty()) {
+                        for (FungalThread thread : threads) {
+                            FungusPlayer threadPlayer = controller.getThreadPlayer(thread);
+                            if (threadPlayer != null) {
+                                Color playerColor = gPanel.returnColor(threadPlayer);
+                                String colorName = getColorName(playerColor);
+                                if (threadsInfo.length() > 0 && !threadsInfo.toString().contains(colorName)) {
+                                    threadsInfo.append(", ");
+                                    threadsInfo.append(colorName);
+                                } else if (threadsInfo.length() == 0) {
+                                    threadsInfo.append(colorName);
+                                }
+                            }
+                        }
+                    }
+
+                    String threadsInfoStr = threadsInfo.length() > 0 ? threadsInfo.toString() : "-";
+
+                    String info = "Tecton type: " + tectonType + "\n\n" +
+                            "Mushroom: " + mushroomInfo + "\n" +
+                            "Insect: " + insectInfo + "\n" +
+                            "Spores: " + sporesInfoStr + "\n" +
+                            "Fungal Threads: " + threadsInfoStr;
+
+                    gPanel.showInformation(info);
+                    gPanel.setState(GameState.WAITFUNGALCOMMAND);
+                    break;
+
                 default:
                     break;
             }
+
             repaint();
         }
     }
 
 
     /**
-     * Törli az összes GTecton objektum kijelölését a tectCombo attribútumban
+     * Törli az összes GTecton objektum kijelölését a tectCombo attribútumban.
      */
     public void clearSelection() {
         for (GTecton gt : tectCombo.values()) {
             gt.setSelected(false);
+        }
+    }
+
+
+    /**
+     * Visszaadja a szín nevét az adott Color objektum alapján.
+     * Amennyiben a szín nem ismert, vagy a bemeneti paraméter null,
+     * a visszatérési érték "unknown".
+     *
+     * @param color Az a Color objektum, amelynek nevét le szeretnénk kérdezni.
+     * @return A szín neve szövegként.
+     */
+    private String getColorName(Color color) {
+        if (color == null) return "unknown";
+
+        if (color.equals(Color.RED)) {
+            return "red";
+        } else if (color.equals(Color.GREEN)) {
+            return "green";
+        } else if (color.equals(Color.BLUE)) {
+            return "blue";
+        } else if (color.equals(Color.YELLOW)) {
+            return "yellow";
+        } else {
+            return "unknown";
         }
     }
 

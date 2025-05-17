@@ -53,7 +53,7 @@ public class FieldCreator {
 
     public static JButton createButton(String text) {
         JButton field = new JButton(text);
-        field.setPreferredSize(new Dimension(300, 60));
+        field.setPreferredSize(new Dimension(250, 60));
         field.setFont(new Font("Arial", Font.BOLD, 15));
         field.setBackground(Color.BLACK);
         field.setForeground(Color.WHITE);

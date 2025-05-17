@@ -38,6 +38,7 @@ public class GamePanel extends JPanel {
 
     private JButton moveButton;
     private JButton cutButton;
+    private JButton infoButton;
     private JButton branchButton;
     private JButton growButton;
     private JButton shootButton;
@@ -109,6 +110,10 @@ public class GamePanel extends JPanel {
         JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         actionsPanel.setBackground(Color.BLACK);
         add(actionsPanel, BorderLayout.SOUTH);
+
+        infoButton = createButton("Info");
+        infoButton.addActionListener(buttonListener);
+        actionsPanel.add(infoButton);
 
         moveButton = createButton("Move");
         moveButton.addActionListener(buttonListener);
@@ -419,14 +424,17 @@ public class GamePanel extends JPanel {
      * játékállapothoz, biztosítva a felhasználói interakció szabályszerűségét és folyamatosságát.
      */
     private void setVisibility() {
+
         if (state == GameState.BRANCHTHREAD ||
                 state == GameState.GROWMUSHROOM ||
                 state == GameState.SELECTMUSHROOMFORSHOOT ||
                 state == GameState.CUTTHREAD ||
                 state == GameState.SHOOTSPORE ||
                 state == GameState.EATINSECT ||
-                state == GameState.WAITFUNGALCOMMAND) {
+                state == GameState.WAITFUNGALCOMMAND ||
+                state == GameState.TECTON_INFO) {
 
+            infoButton.setVisible(true);
             closeButton.setVisible(true);
             moveButton.setVisible(false);
             cutButton.setVisible(false);
@@ -439,8 +447,10 @@ public class GamePanel extends JPanel {
                 state == GameState.SELECTINSECTFORCUT ||
                 state == GameState.WAITINSECTCOMMAND ||
                 state == GameState.MOVEINSECT ||
-                state == GameState.CUTTHREAD) {
+                state == GameState.CUTTHREAD ||
+                state == GameState.TECTON_INFO) {
 
+            infoButton.setVisible(true);
             closeButton.setVisible(true);
             moveButton.setVisible(true);
             cutButton.setVisible(true);
@@ -451,6 +461,7 @@ public class GamePanel extends JPanel {
 
         } else {
 
+            infoButton.setVisible(false);
             closeButton.setVisible(false);
             moveButton.setVisible(false);
             cutButton.setVisible(false);
@@ -471,7 +482,10 @@ public class GamePanel extends JPanel {
      * @param e Az esemény, amely tartalmazza a nyomott gombhoz tartozó információkat.
      */
     public void handleButtonClick(ActionEvent e) {
-        if (e.getSource() == closeButton) {
+        if (e.getSource() == infoButton) {
+            state = GameState.TECTON_INFO;
+            drawingPanel.clearSelection();
+        } else if (e.getSource() == closeButton) {
             controller.closestep();
             drawingPanel.clearSelection();
         } else if (e.getSource() == moveButton) {
