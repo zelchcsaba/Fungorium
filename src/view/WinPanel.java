@@ -79,14 +79,6 @@ public class WinPanel extends JPanel {
      * a controller objektumtól, és átrendezi azokat, ha nem üres adatokat tartalmaznak.
      */
     public void loadPlayers() {
-        // fungalScores.put("huszi", 100);
-        // fungalScores.put("goldi", 1010);
-        // fungalScores.put("huszii", 1010);
-
-        // insectScores.put("ruszi", 100);
-        // insectScores.put("puli", 100);
-        // insectScores.put("rudi", 10);
-        // insectScores.put("asa", 80);
 
         insectScores = controller.getInsectScores();
         fungalScores = controller.getFungalScores();

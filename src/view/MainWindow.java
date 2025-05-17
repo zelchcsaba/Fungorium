@@ -78,7 +78,7 @@ public class MainWindow extends JFrame {
      * elindításához szükséges beállításokat és adatokat.
      */
     public void showGamePanel() {
-        controller.loadTecton("ok.txt");
+        controller.loadTecton("tectons.txt");
         gamePanel.tectontTranslateTransform();
         controller.act();
         gamePanel.setPlayerColors();
