@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.JPanel;
 
 import model.Insect;
@@ -35,6 +36,7 @@ public class DrawingPanel extends JPanel {
     private double xTranslate;
     private double yTranslate;
     private boolean firstpaint;
+
 
 
     /**
@@ -281,6 +283,7 @@ public class DrawingPanel extends JPanel {
         tectCombo.put(created1, g1);
         tectCombo.put(created2, g2);
         tectCombo.remove(source);
+
     }
 
 
@@ -318,6 +321,7 @@ public class DrawingPanel extends JPanel {
             GInsect val = entry.getValue();
             val.draw(g, controller);
         }
+
     }
 
 

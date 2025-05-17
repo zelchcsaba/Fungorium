@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -409,7 +410,9 @@ public class GamePanel extends JPanel {
         refreshTopPanel();
         setVisibility();
         super.paintComponent(g);
+
     }
+    
 
 
     /**
