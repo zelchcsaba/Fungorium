@@ -51,17 +51,30 @@ public class FieldCreator {
         return field;
     }
 
-    public static JButton createButton(String text) {
-        JButton field = new JButton(text);
-        field.setPreferredSize(new Dimension(250, 60));
-        field.setFont(new Font("Arial", Font.BOLD, 15));
-        field.setBackground(Color.BLACK);
-        field.setForeground(Color.WHITE);
-        field.setOpaque(true);
-        field.setHorizontalAlignment(SwingConstants.CENTER);
-        Border border = BorderFactory.createLineBorder(Color.WHITE, 1);
-        field.setBorder(border);
-        return field;
-    }
+   public static JButton createButton(String text) {
+    JButton field = new JButton(text);
+
+    // Szöveg szélességének pontosabb kiszámítása
+    Font font = new Font("Arial", Font.BOLD, 15);
+    field.setFont(font);
+
+    FontMetrics fm = field.getFontMetrics(font);
+    int textWidth = fm.stringWidth(text);
+    int padding = 30; // extra hely a margóknak
+
+    int width = textWidth + padding;
+    int height = 60;
+
+    field.setPreferredSize(new Dimension(width, height));
+    field.setMargin(new Insets(2, 5, 2, 5));
+    field.setBackground(Color.BLACK);
+    field.setForeground(Color.WHITE);
+    field.setOpaque(true);
+    field.setHorizontalAlignment(SwingConstants.CENTER);
+    Border border = BorderFactory.createLineBorder(Color.WHITE, 1);
+    field.setBorder(border);
+
+    return field;
+}
 
 }

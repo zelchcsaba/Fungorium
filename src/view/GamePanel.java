@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,7 +33,9 @@ public class GamePanel extends JPanel {
     private Controller controller;
     private GameState state;
 
+    JLabel currentPlayer;
     JLabel player;
+    JLabel roundNumber;
     JLabel round;
 
     private JButton moveButton;
@@ -70,6 +71,8 @@ public class GamePanel extends JPanel {
         setLayout(new BorderLayout());
 
         // játékos, körszám
+        int labelWidth = getWidth()/5;
+
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(Color.BLACK);
         add(topPanel, BorderLayout.NORTH);
@@ -79,10 +82,12 @@ public class GamePanel extends JPanel {
         playerPanel.setBackground(Color.BLACK);
         topPanel.add(playerPanel, BorderLayout.WEST);
 
-        JLabel currentPlayer = createLabel("Current Player:");
+        currentPlayer = createLabel("Current Player:");
+        currentPlayer.setPreferredSize(new Dimension(labelWidth, 60));
         playerPanel.add(currentPlayer);
 
         player = createLabel("");
+        player.setPreferredSize(new Dimension(labelWidth, 60));
         playerPanel.add(player);
 
         // kör
@@ -90,15 +95,18 @@ public class GamePanel extends JPanel {
         roundPanel.setBackground(Color.BLACK);
         topPanel.add(roundPanel, BorderLayout.EAST);
 
-        JLabel roundNumber = createLabel("Round:");
+        roundNumber = createLabel("Round:");
+        roundNumber.setPreferredSize(new Dimension(labelWidth, 60));
         roundPanel.add(roundNumber);
 
         round = createLabel("");
+        round.setPreferredSize(new Dimension(labelWidth, 60));
         roundPanel.add(round);
 
-        drawingPanel = new DrawingPanel(controller, this);
-        drawingPanel.setBackground(Color.BLACK); 
-        add(drawingPanel, BorderLayout.CENTER);
+        //info
+        JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        infoPanel.setBackground(Color.BLACK);
+        topPanel.add(infoPanel, BorderLayout.CENTER);
 
         ActionListener buttonListener = new ActionListener() {
             @Override
@@ -107,14 +115,22 @@ public class GamePanel extends JPanel {
             }
         };
 
+        infoButton = createButton("Info");
+        infoButton.setPreferredSize(new Dimension(labelWidth, 60));
+        infoButton.addActionListener(buttonListener);
+        infoPanel.add(infoButton);
+
+
+        drawingPanel = new DrawingPanel(controller, this);
+        drawingPanel.setBackground(Color.BLACK); 
+        add(drawingPanel, BorderLayout.CENTER);
+
+
+
         // akció gombok
         JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         actionsPanel.setBackground(Color.BLACK);
         add(actionsPanel, BorderLayout.SOUTH);
-
-        infoButton = createButton("Info");
-        infoButton.addActionListener(buttonListener);
-        actionsPanel.add(infoButton);
 
         moveButton = createButton("Move");
         moveButton.addActionListener(buttonListener);
@@ -224,6 +240,13 @@ public class GamePanel extends JPanel {
     public void refreshTopPanel() {
         player.setText(controller.getCurrentPlayerName());
         round.setText(Integer.toString(controller.getRound()));
+        int labelWidth = getWidth() / 5;
+        currentPlayer.setPreferredSize(new Dimension(labelWidth, 60));
+        player.setPreferredSize(new Dimension(labelWidth, 60));
+        roundNumber.setPreferredSize(new Dimension(labelWidth, 60));
+        round.setPreferredSize(new Dimension(labelWidth, 60));
+        infoButton.setPreferredSize(new Dimension(labelWidth, 60));
+        revalidate();
     }
 
 
