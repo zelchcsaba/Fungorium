@@ -246,7 +246,6 @@ public class GamePanel extends JPanel {
      */
     public void setState(GameState state) {
         this.state = state;
-        System.out.println(this.state);
     }
 
 

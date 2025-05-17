@@ -214,13 +214,11 @@ public class Controller {
         if (gPanel.canBreakTecton((Tecton) tecton)) {
 
             if (tecton == null || !objects.containsValue(tecton)) {
-                System.out.println("Baj a tektonnal");
                 return false;
             }
 
             List<Tecton> pieces = tecton.breakTecton();
             if (pieces == null || pieces.size() != 2) {
-                System.out.println("Baj a tekton töréssel");
                 return false;
             }
 
@@ -262,7 +260,6 @@ public class Controller {
 
             gPanel.addInsect(insect2);
         } else {
-            System.out.println("Sikertelen kettéválás!");
         }
     }
 
@@ -273,7 +270,6 @@ public class Controller {
      */
     public boolean putFirstMushroom(String type, ITectonController tecton) {
         if (round != 0) {
-            System.out.println("Sikertelen, ez nem a 0. kör");
             return false;
         }
 
@@ -315,7 +311,6 @@ public class Controller {
      */
     public void putFirstInsect(ITectonController tecton) {
         if (round != 0) {
-            System.out.println("Sikertelen, ez nem a 0. kör");
             return;
         }
 
@@ -351,7 +346,6 @@ public class Controller {
         }
 
         if (round == 0) {
-            System.out.println("Sikertelen, 0. körben nem lehet elágaztatni");
             return;
         }
 
@@ -365,7 +359,6 @@ public class Controller {
         }
 
         if (mushroomPlayer != currentPlayer) {
-            System.out.println("Sikertelen");
             return;
         }
 
@@ -397,7 +390,6 @@ public class Controller {
     /** Shoots a spore from a mushroom onto a tecton. */
     public void shootSpore(Mushroom m, ITectonController t) {
         if (round == 0) {
-            System.out.println("Sikertelen, 0. körben nem lehet lőni");
             return;
         }
         // Meg kell találni a gomba playerét, és meg kell nézni hogy a currentPlayer
@@ -444,7 +436,6 @@ public class Controller {
         }
 
         if (round == 0) {
-            System.out.println("Sikertelen, ez a 0. kör");
             return;
         }
 
@@ -456,7 +447,6 @@ public class Controller {
         }
 
         if (mushroomPlayer != currentPlayer) {
-            System.out.println("Sikertelen, nem te jössz");
             return;
         }
 
@@ -530,7 +520,6 @@ public class Controller {
         }
 
         if (mushroomPlayer != currentPlayer) {
-            System.out.println("Sikertelen, nem te jössz");
             return;
         }
 
@@ -588,7 +577,6 @@ public class Controller {
      */
     public void move(Insect insect, ITectonController tecton) {
         if (round == 0) {
-            System.out.println("Sikertelen, ez a 0. kör");
             return;
         }
 
@@ -680,7 +668,6 @@ public class Controller {
     /** Cuts a thread on a tecton with an insect. */
     public void cut(Insect insect, ITectonController tecton) {
         if (round == 0) {
-            System.out.println("Sikertelen, ez a 0. kör");
             return;
         }
 
@@ -994,7 +981,6 @@ public class Controller {
     public String getNewMushroomName() {
         mushroomCount++;
         String name = "m" + mushroomCount;
-        System.out.println(name);
         return name;
     }
 
@@ -1009,7 +995,6 @@ public class Controller {
     public String getNewThreadName() {
         fungalThreadCount++;
         String name = "f" + fungalThreadCount;
-        System.out.println(name);
         return name;
     }
 
@@ -1024,7 +1009,6 @@ public class Controller {
     public String getNewSporeName() {
         sporeCount++;
         String name = "s" + sporeCount;
-        System.out.println(name);
         return name;
     }
 
@@ -1039,7 +1023,6 @@ public class Controller {
     public String getNewInsectName() {
         insectCount++;
         String name = "i" + insectCount;
-        System.out.println(name);
         return name;
     }
 
@@ -1054,7 +1037,6 @@ public class Controller {
     public String getNewTectonName() {
         tectonCount++;
         String name = "t" + tectonCount;
-        System.out.println(name);
         return name;
     }
 

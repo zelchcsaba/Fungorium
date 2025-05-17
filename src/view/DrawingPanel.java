@@ -410,7 +410,6 @@ public class DrawingPanel extends JPanel {
 
                 case PUTFIRSTMUSHROOM:
                     int rand = gPanel.randomize() % 2;
-                    System.out.println(rand);
                     if (rand == 0) {
                         if (controller.putFirstMushroom("ShortLifeThread", (Tecton) selected.getTecton())) {
                             gPanel.showInformation("ShortLifeThread típusú gombafonál jött létre");

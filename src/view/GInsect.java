@@ -1,7 +1,6 @@
 package view;
 
 import controller.Controller;
-import controller.FungusPlayer;
 import controller.InsectPlayer;
 import controller.Player;
 

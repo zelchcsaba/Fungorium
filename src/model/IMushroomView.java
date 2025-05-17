@@ -5,9 +5,5 @@ public interface IMushroomView {
 
     public FungalThread getThread();
 
-    //public List<Spore> getSpores();
-
-    //public int getShootedSporesCount();
-
     public MushroomState getState();
 }
