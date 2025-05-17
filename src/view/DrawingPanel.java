@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.JPanel;
 
 import model.FungalThread;
@@ -40,6 +41,7 @@ public class DrawingPanel extends JPanel {
     private double xTranslate;
     private double yTranslate;
     private boolean firstpaint;
+
 
 
     /**
@@ -286,6 +288,7 @@ public class DrawingPanel extends JPanel {
         tectCombo.put(created1, g1);
         tectCombo.put(created2, g2);
         tectCombo.remove(source);
+
     }
 
 
@@ -323,6 +326,7 @@ public class DrawingPanel extends JPanel {
             GInsect val = entry.getValue();
             val.draw(g, controller);
         }
+
     }
 
 
@@ -346,65 +350,65 @@ public class DrawingPanel extends JPanel {
             GameState state = gPanel.getState();
 
             switch (state) {
-                case GameState.SELECTINSECTFORMOVE:
+                case SELECTINSECTFORMOVE:
                     selectedSource = selected;
                     selected.setSelected(true);
                     gPanel.setState(GameState.MOVEINSECT);
                     break;
 
-                case GameState.MOVEINSECT:
+                case MOVEINSECT:
                     clearSelection();
                     targetSource = selected;
                     controller.move(selectedSource.getTecton().getInsect(), (Tecton) targetSource.getTecton());
                     gPanel.setState(GameState.WAITINSECTCOMMAND);
                     break;
 
-                case GameState.SELECTINSECTFORCUT:
+                case SELECTINSECTFORCUT:
                     selectedSource = selected;
                     selected.setSelected(true);
                     gPanel.setState(GameState.CUTTHREAD);
                     break;
 
-                case GameState.CUTTHREAD:
+                case CUTTHREAD:
                     clearSelection();
                     targetSource = selected;
                     controller.cut(selectedSource.getTecton().getInsect(), (Tecton) targetSource.getTecton());
                     gPanel.setState(GameState.WAITINSECTCOMMAND);
                     break;
 
-                case GameState.BRANCHTHREAD:
+                case BRANCHTHREAD:
                     controller.branchThread((Tecton) selected.getTecton());
                     gPanel.setState(GameState.WAITFUNGALCOMMAND);
                     break;
 
-                case GameState.EATINSECT:
+                case EATINSECT:
                     controller.eatInsect(selected.getTecton().getInsect());
                     gPanel.setState(GameState.WAITFUNGALCOMMAND);
                     break;
 
-                case GameState.SELECTMUSHROOMFORSHOOT:
+                case SELECTMUSHROOMFORSHOOT:
                     selectedSource = selected;
                     selected.setSelected(true);
                     gPanel.setState(GameState.SHOOTSPORE);
                     break;
 
-                case GameState.SHOOTSPORE:
+                case SHOOTSPORE:
                     clearSelection();
                     targetSource = selected;
                     controller.shootSpore(selectedSource.getTecton().getMushroom(), (Tecton) targetSource.getTecton());
                     gPanel.setState(GameState.WAITFUNGALCOMMAND);
                     break;
 
-                case GameState.GROWMUSHROOM:
+                case GROWMUSHROOM:
                     controller.growMushroom((Tecton) selected.getTecton());
                     gPanel.setState(GameState.WAITFUNGALCOMMAND);
                     break;
 
-                case GameState.PUTFIRSTINSECT:
+                case PUTFIRSTINSECT:
                     controller.putFirstInsect((Tecton) selected.getTecton());
                     break;
 
-                case GameState.PUTFIRSTMUSHROOM:
+                case PUTFIRSTMUSHROOM:
                     int rand = gPanel.randomize() % 2;
                     System.out.println(rand);
                     if (rand == 0) {
