@@ -420,7 +420,7 @@ public class DrawingPanel extends JPanel {
                     }
                     break;
 
-                case GameState.TECTON_INFO:
+                case TECTON_INFO:
                     Tecton tecton = (Tecton) selected.getTecton();
                     String tectonType = tecton.getClass().getSimpleName();
 
