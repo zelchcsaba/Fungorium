@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -14,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import static view.FieldCreator.*;
 
 
@@ -51,7 +53,7 @@ public class StartScreenPanel extends JPanel implements ActionListener {
         // Cím hozzáadása (felül)
         JLabel titleLabel = createTitle("Welcome to Fungorium");
         add(titleLabel, BorderLayout.NORTH);
-        
+
         // Fő panel létrehozása
         JPanel mainP = new JPanel(new GridBagLayout());
         mainP.setBackground(Color.BLACK);

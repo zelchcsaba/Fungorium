@@ -8,10 +8,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import model.*;
 import static model.InsectState.*;
 import view.*;
 
+
+/**
+ * A Controller osztály a játék vezérléséért és logikájáért felelős.
+ * Kezeli a játékosokat, a játéktáblát, a gombákat és a rovarokat,
+ * valamint végrehajtja a játék során szükséges műveleteket.
+ */
 public class Controller {
     private int round;
     private HashMap<String, Object> objects;
@@ -30,11 +37,15 @@ public class Controller {
     private List<ITectonController> tList;
     private int fungusPlayerCount;
     private int insectPlayerCount;
-
     private GamePanel gPanel;
 
-    public Controller() {
 
+    /**
+     * A Controller osztály konstruktora.
+     * Inicializálja az osztály mezőit alapértelmezett értékekkel.
+     * Meghatározza a játék logikájához szükséges alapállapotot.
+     */
+    public Controller() {
         round = 0;
         objects = new HashMap<>();
         maxRound = 5;
@@ -51,111 +62,164 @@ public class Controller {
         fungusPlayers = new ArrayList<>();
         tList = new ArrayList<>();
         gPanel = null;
-
     }
 
+
+    /**
+     * Visszaadja az aktuális játékos nevét a játékosok nevéből és objektumaiból álló Map alapján.
+     *
+     * @return Az aktuális játékos neve, ha megtalálható, különben null.
+     */
     public String getCurrentPlayerName() {
-
-        for (Map.Entry<String, Object> entry : objects.entrySet()) {
-
-            if (entry.getValue() == currentPlayer) {
+        for (Map.Entry<String, Object> entry : objects.entrySet())
+            if (entry.getValue() == currentPlayer)
                 return entry.getKey();
 
-            }
-        }
-
         return null;
-
     }
 
+
+    /**
+     * Visszaadja az aktuális játékkört.
+     *
+     * @return Az aktuális játékkört reprezentáló egész szám.
+     */
     public int getRound() {
-
         return round;
-
     }
 
-    public Map<String, Integer> getInsectScores() {
 
+    /**
+     * Visszaad egy Map-et, amely a rovarok azonosítóit párosítja a pontszámaikkal.
+     *
+     * @return Egy Map, amelyben a kulcsok rovar azonosítók,
+     * az értékek pedig rovarokhoz tartozó pontszámok.
+     */
+    public Map<String, Integer> getInsectScores() {
         Map<String, Integer> insectScores = new LinkedHashMap<>();
 
-        for (Map.Entry<String, Object> entry : objects.entrySet()) {
-
-            if (entry.getValue() instanceof InsectPlayer player) {
-
+        for (Map.Entry<String, Object> entry : objects.entrySet())
+            if (entry.getValue() instanceof InsectPlayer player)
                 insectScores.put(entry.getKey(), player.getPoints());
-
-            }
-
-        }
 
         return insectScores;
     }
 
-    public Map<String, Integer> getFungalScores() {
 
+    /**
+     * Visszaadja a gombákhoz tartozó pontszámokat egy Map-ben.
+     * A Map kulcsai a játékosok nevei, az értékek pedig a hozzájuk tartozó pontszámok.
+     *
+     * @return Egy Map objektum, amely a játékosok neveit társítja a gombákhoz tartozó pontszámokhoz.
+     */
+    public Map<String, Integer> getFungalScores() {
         Map<String, Integer> fungalScores = new LinkedHashMap<>();
 
-        for (Map.Entry<String, Object> entry : objects.entrySet()) {
-
-            if (entry.getValue() instanceof FungusPlayer player) {
-
+        for (Map.Entry<String, Object> entry : objects.entrySet())
+            if (entry.getValue() instanceof FungusPlayer player)
                 fungalScores.put(entry.getKey(), player.getPoints());
-
-            }
-
-        }
 
         return fungalScores;
     }
 
+
+    /**
+     * Visszaadja az összes rendelkezésre álló rovar-játékost.
+     *
+     * @return A rovar-játékosok listája.
+     */
     public List<InsectPlayer> getInsectPlayers() {
         return insectPlayers;
     }
 
+
+    /**
+     * Visszaadja a FungusPlayer objektumok listáját.
+     *
+     * @return A FungusPlayer objektumokat tartalmazó lista.
+     */
     public List<FungusPlayer> getFungusPlayers() {
         return fungusPlayers;
     }
 
+
+    /**
+     * Lekéri a megfelelő FungusPlayer példányt, amely az adott IMushroomController példányhoz tartozik.
+     *
+     * @param m Az IMushroomController példány, amelyhez tartozó FungusPlayer-t meg kell találni.
+     * @return A megtalált FungusPlayer példány, vagy null, ha nem található ilyen.
+     */
     public FungusPlayer getMushroomPlayer(IMushroomController m) {
-        for (FungusPlayer fPlayer : fungusPlayers) {
-            for (MushroomAssociation mAssociation : fPlayer.getMushrooms()) {
+        for (FungusPlayer fPlayer : fungusPlayers)
+            for (MushroomAssociation mAssociation : fPlayer.getMushrooms())
                 if (m == mAssociation.getMushroom())
                     return fPlayer;
-            }
-        }
+
         return null;
     }
 
+
+    /**
+     * Megkeresi és visszaadja azt az InsectPlayer példányt, amelyikhez
+     * a megadott IInsectController tartozik.
+     *
+     * @param i Az IInsectController példány, amelyhez tartozó InsectPlayer-t keresni kell.
+     * @return Az InsectPlayer példány, amelyikhez a megadott IInsectController tartozik,
+     * vagy null, ha nincs ilyen.
+     */
     public InsectPlayer getInsectPlayer(IInsectController i) {
-        for (InsectPlayer iPlayer : insectPlayers) {
-            for (InsectAssociation insectAssociation : iPlayer.getInsects()) {
+        for (InsectPlayer iPlayer : insectPlayers)
+            for (InsectAssociation insectAssociation : iPlayer.getInsects())
                 if (i == insectAssociation.getInsect())
                     return iPlayer;
-            }
-        }
+
         return null;
     }
 
+
+    /**
+     * Visszaadja a fonalhoz tartozó játékost.
+     *
+     * @param f Az IFungalThreadController objektum, amely alapján a játékos kikeresésre kerül.
+     * @return A fonalhoz tartozó FungusPlayer objektum, vagy null, ha nem található ilyen játékos.
+     */
     public FungusPlayer getThreadPlayer(IFungalThreadController f) {
-        for (FungusPlayer fPlayer : fungusPlayers) {
-            for (MushroomAssociation mAssociation : fPlayer.getMushrooms()) {
+        for (FungusPlayer fPlayer : fungusPlayers)
+            for (MushroomAssociation mAssociation : fPlayer.getMushrooms())
                 if (f == mAssociation.getMushroom().getThread())
                     return fPlayer;
-            }
-        }
+
         return null;
     }
 
+
+    /**
+     * Beállítja a játékpanelt.
+     *
+     * @param gPanel a játékpanel objektum, amelyet beállítunk
+     */
     public void setGPanel(GamePanel gPanel) {
         this.gPanel = gPanel;
     }
 
+
+    /**
+     * Beállítja a maximális fordulók számát.
+     *
+     * @param n Az új maximális fordulószám, amelyet be kell állítani. Csak pozitív szám megengedett.
+     */
     public void setMaxRound(int n) {
-        if (n > 0) {
+        if (n > 0)
             maxRound = n;
-        }
     }
 
+
+    /**
+     * Meghatározza a játék aktuális játékosát a rendelkezésre álló játékosok listái alapján.
+     * Ha van gombász, az első lesz az aktuális játékos.
+     * Ha nincsenek gombászok, de vannak rovarászok, akkor az első rovarász lesz az aktuális játékos.
+     * Emellett ha rovarász kerül kiválasztásra, a játék állapota frissül a "PUTFIRSTINSECT" értékre.
+     */
     public void act() {
         if (!fungusPlayers.isEmpty()) {
             currentPlayer = fungusPlayers.get(0);
@@ -165,20 +229,38 @@ public class Controller {
         }
     }
 
+
+    /**
+     * Visszaadja a gombászok számát.
+     *
+     * @return A gombászok száma.
+     */
     public int getFungusPlayerCount() {
         return fungusPlayerCount;
     }
 
+
+    /**
+     * Beállítja a FungusPlayer játékosok számát.
+     *
+     * @param n a játékosok száma, amelyet be szeretnénk állítani. Csak nem negatív számot lehet megadni.
+     */
     public void setFungusPlayerCount(int n) {
-        if (n >= 0) {
+        if (n >= 0)
             fungusPlayerCount = n;
-        }
     }
 
+
+    /**
+     * Létrehozza az új FungusPlayer játékosokat a megadott nevek alapján.
+     *
+     * @param names A játékosok neveit tartalmazó lista, amely alapján az új FungusPlayer játékosok példányosításra kerülnek.
+     *              A lista méretének egyeznie kell a fungusPlayerCount változó értékével, és nem haladhatja meg a 4-et.
+     */
     public void createFungusPlayers(List<String> names) {
-        if (names.size() > 4 || names.size() != fungusPlayerCount) {
+        if (names.size() > 4 || names.size() != fungusPlayerCount)
             return;
-        }
+
         for (String name : names) {
             FungusPlayer fPlayer = new FungusPlayer();
             objects.put(name, fPlayer);
@@ -186,20 +268,38 @@ public class Controller {
         }
     }
 
+
+    /**
+     * Visszaadja a rovarászok számát.
+     *
+     * @return A rovarászok száma.
+     */
     public int getInsectPlayerCount() {
         return insectPlayerCount;
     }
 
+
+    /**
+     * Beállítja a rovarászok számát.
+     *
+     * @param n A rovarászok száma (nemnegatív), amit be kell állítani.
+     */
     public void setInsectPlayerCount(int n) {
-        if (n >= 0) {
+        if (n >= 0)
             insectPlayerCount = n;
-        }
     }
 
+
+    /**
+     * Létrehozza a rovarászokat az adott nevek alapján.
+     *
+     * @param names A rovarászok neveit tartalmazó lista. A lista mérete nem haladhatja meg a 4-et,
+     *              és pontosan meg kell egyeznie az elvárt rovarászok számával.
+     */
     public void createInsectPlayers(List<String> names) {
-        if (names.size() > 4 || names.size() != insectPlayerCount) {
+        if (names.size() > 4 || names.size() != insectPlayerCount)
             return;
-        }
+
         for (String name : names) {
             InsectPlayer iPlayer = new InsectPlayer();
             objects.put(name, iPlayer);
@@ -207,8 +307,12 @@ public class Controller {
         }
     }
 
+
     /**
-     * Breaks a tecton into two, registers them, and removes the original.
+     * Egy adott tecton elemet tör szét, ha megfelelnek a körülmények.
+     *
+     * @param tecton Az a tecton vezérlő interfész, amely az adott tecton-t kezeli.
+     * @return Igaz, ha a tecton sikeresen széttörésre került két darabra; hamis, ha a folyamat nem sikerült.
      */
     public boolean breakTecton(ITectonController tecton) {
         if (gPanel.canBreakTecton((Tecton) tecton)) {
@@ -237,36 +341,44 @@ public class Controller {
             objects.values().removeIf(o -> o == tecton);
             tList.remove(tecton);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    /** Divides an insect; returns the offspring or null. */
+
+    /**
+     * Az adott rovar osztódását végzi el. Ha az osztódás sikeres
+     * (az új rovar nem null), akkor az új rovart hozzáadja az objektumokhoz,
+     * a rovarászhoz, valamint a grafikus panelhez.
+     *
+     * @param insect A rovar példány, amely osztódni fog.
+     */
     public void divide(Insect insect) {
         Insect insect2 = insect.divide();
         if (insect2 != null) {
             objects.put(getNewInsectName(), insect2);
 
             InsectPlayer ip = null;
-            for (InsectPlayer iPlayer : insectPlayers) {
-                for (InsectAssociation insectA : iPlayer.getInsects()) {
-                    if (insectA.getInsect() == insect) {
-                        ip = iPlayer;
-                    }
-                }
-            }
-            ip.addInsect(insect2);
 
+            for (InsectPlayer iPlayer : insectPlayers)
+                for (InsectAssociation insectA : iPlayer.getInsects())
+                    if (insectA.getInsect() == insect)
+                        ip = iPlayer;
+
+            ip.addInsect(insect2);
             gPanel.addInsect(insect2);
-        } else {
         }
     }
 
+
     /**
-     * Places the first mushroom on the given tecton with a new thread of the
-     * specified type.
-     * Returns true on success, false otherwise.
+     * Lehelyezi az első gombát egy adott pozícióba a megadott típus alapján,
+     * feltéve, hogy ez az első körben történik, és a művelet érvényes.
+     *
+     * @param type   A gombafonal típusának neve.
+     * @param tecton Az a TectonController példány, amely a pozíció vezérléséért felelős.
+     * @return true, ha a gomba sikeresen lehelyezésre került, különben false.
      */
     public boolean putFirstMushroom(String type, ITectonController tecton) {
         if (round != 0) {
@@ -283,7 +395,6 @@ public class Controller {
         mushroom.setThread(thread);
         mushroom.setPosition((Tecton) tecton);
         if (((fungusPlayers.contains(currentPlayer)) && tecton.putFirstMushroom(thread, mushroom))) {
-
             objects.put(getNewMushroomName(), mushroom);
             objects.put(getNewThreadName(), thread);
 
@@ -293,11 +404,8 @@ public class Controller {
             currentPlayer.addPoint();
 
             gPanel.addMushroom(mushroom);
-
             setCurrentPlayer();
-
             gPanel.repaint();
-
             return true;
         } else {
             gPanel.showError("Sikertelen gombatest lehelyezés");
@@ -305,9 +413,11 @@ public class Controller {
         }
     }
 
+
     /**
-     * Places the first insect on the given tecton.
-     * Returns true on success.
+     * Az első rovar elhelyezése a játéktábla megfelelő helyére, ha a feltételek teljesülnek.
+     *
+     * @param tecton az ITectonController objektum, amely biztosítja a rovar lehelyezését.
      */
     public void putFirstInsect(ITectonController tecton) {
         if (round != 0) {
@@ -322,18 +432,22 @@ public class Controller {
             iPlayer.addInsect(insect);
 
             gPanel.addInsect(insect);
-
             setCurrentPlayer();
-
             gPanel.repaint();
         } else {
             gPanel.showError("Sikertelen rovar lehelyezés");
         }
     }
 
+
     /**
-     * Branches the given thread onto a new tecton.
-     * Returns true on success.
+     * Elágaztatja a játékos gombafonalát, amennyiben lehetséges. Ellenőrzi, hogy a
+     * megfelelő játékos gombafonalát próbálják-e elágaztatni, és kezeli az ehhez
+     * kapcsolódó feltételeket és hibákat.
+     *
+     * @param tecton az ITectonController interfészt megvalósító példány, amely a
+     *               gombafonalak és spórák kezeléséhez szükséges információkat
+     *               biztosítja.
      */
     public void branchThread(ITectonController tecton) {
         FungalThread thread;
@@ -341,28 +455,22 @@ public class Controller {
         if (fungusPlayers.contains(currentPlayer)) {
             FungusPlayer fp = (FungusPlayer) currentPlayer;
             thread = (FungalThread) fp.getThread();
-        } else {
-            return;
-        }
+        } else return;
 
-        if (round == 0) {
+        if (round == 0)
             return;
-        }
 
         // Megnézzük, hogy annak a játékosnak a fonalával akarunk lépni amelyik most van
         // soron
         FungusPlayer mushroomPlayer = null;
-        for (FungusPlayer fPlayer : fungusPlayers) {
-            if (fPlayer.getThread() == thread) {
+        for (FungusPlayer fPlayer : fungusPlayers)
+            if (fPlayer.getThread() == thread)
                 mushroomPlayer = fPlayer;
-            }
-        }
 
-        if (mushroomPlayer != currentPlayer) {
+        if (mushroomPlayer != currentPlayer)
             return;
-        }
 
-        if (mushroomPlayer.getBranchThread() != true) {
+        if (!mushroomPlayer.getBranchThread()) {
 
             // Ha sikertelen akkor kiírja
             if (!thread.branchThread((Tecton) tecton)) {
@@ -370,15 +478,14 @@ public class Controller {
             } else {
                 List<Spore> slist = new ArrayList<>();
                 slist = tecton.getSpores();
+
                 boolean isSpore = false;
-                for (int i = 0; i < slist.size(); i++) {
-                    if (slist.get(i).getThread() == thread) {
+                for (int i = 0; i < slist.size(); i++)
+                    if (slist.get(i).getThread() == thread)
                         isSpore = true;
-                    }
-                }
-                if (!isSpore) {
+
+                if (!isSpore)
                     mushroomPlayer.setBranchThread(true);
-                }
 
                 gPanel.repaint();
             }
@@ -387,21 +494,26 @@ public class Controller {
         }
     }
 
-    /** Shoots a spore from a mushroom onto a tecton. */
+
+    /**
+     * Kilövi a spórát egy adott gombából egy kiválasztott tecton célpontba.
+     * A metódus ellenőrzi, hogy a kijelölt gomba az éppen aktuális játékoshoz tartozik-e,
+     * valamint kezeli azokat a feltételeket, amelyek szükségesek a spóralövéshez.
+     *
+     * @param m Az a Mushroom objektum, amelyből a spóra kilövése történik.
+     * @param t Az a ITectonController objektum, amely a spóra célpontját képviseli.
+     */
     public void shootSpore(Mushroom m, ITectonController t) {
-        if (round == 0) {
+        if (round == 0)
             return;
-        }
+
         // Meg kell találni a gomba playerét, és meg kell nézni hogy a currentPlayer
         // az-e
         FungusPlayer mushroomPlayer = null;
-        for (FungusPlayer fPlayer : fungusPlayers) {
-            for (MushroomAssociation mushroomA : fPlayer.getMushrooms()) {
-                if (mushroomA.getMushroom() == m) {
+        for (FungusPlayer fPlayer : fungusPlayers)
+            for (MushroomAssociation mushroomA : fPlayer.getMushrooms())
+                if (mushroomA.getMushroom() == m)
                     mushroomPlayer = fPlayer;
-                }
-            }
-        }
 
         if (mushroomPlayer != currentPlayer) {
             gPanel.showError("Más játékos gombatestét jelölted ki vagy nem jelöltél ki gombatestet");
@@ -424,45 +536,43 @@ public class Controller {
         }
     }
 
-    /** Grows a mushroom from a thread on a tecton. */
+
+    /**
+     * Gombatestet növeszt egy adott ITectonController segítségével, amennyiben
+     * a feltételek teljesülnek. Elvégzi a szükséges ellenőrzéseket, a gombák és spórák
+     * frissítését, valamint értesítési és vizuális frissítési műveleteket.
+     *
+     * @param tecton az aktuális TectonController, amely a spórák és gombák kezelésére szolgál
+     */
     public void growMushroom(ITectonController tecton) {
         FungalThread thread;
 
         if (fungusPlayers.contains(currentPlayer)) {
             FungusPlayer fp = (FungusPlayer) currentPlayer;
             thread = (FungalThread) fp.getThread();
-        } else {
-            return;
-        }
+        } else return;
 
-        if (round == 0) {
+        if (round == 0)
             return;
-        }
 
         FungusPlayer mushroomPlayer = null;
-        for (FungusPlayer fPlayer : fungusPlayers) {
-            if (fPlayer.getThread() == thread) {
+        for (FungusPlayer fPlayer : fungusPlayers)
+            if (fPlayer.getThread() == thread)
                 mushroomPlayer = fPlayer;
-            }
-        }
 
-        if (mushroomPlayer != currentPlayer) {
+        if (mushroomPlayer != currentPlayer)
             return;
-        }
 
         Mushroom mushroom = new Mushroom();
-
         List<Spore> slist = tecton.getSpores();
         List<Spore> removable = new ArrayList<>();
 
         if (thread.growMushroom((Tecton) tecton, mushroom)) {
-
             objects.put(getNewMushroomName(), mushroom);
             mushroomPlayer.addMushroom(mushroom);
             mushroomPlayer.addPoint();
 
             gPanel.addMushroom(mushroom);
-
             int thisSporeCount = 0;
 
             for (int i = 0; i < slist.size(); i++) {
@@ -484,21 +594,24 @@ public class Controller {
                 }
                 objects.remove(str);
             }
-            for (int i = 0; i < 3; i++) {
+
+            for (int i = 0; i < 3; i++)
                 tecton.removeSpores(removable);
-            }
 
             gPanel.repaint();
-
         } else {
             gPanel.showError("Nem sikerült gombatestet növeszteni");
-            return;
         }
     }
 
+
     /**
-     * Eats an insect with a fungal thread and possibly spawns a mushroom.
-     * Returns true on success.
+     * Egy adott rovart megevését hajtja végre a metódus. Ellenőrzi, hogy a megfelelő játékos
+     * végzi-e a műveletet, és hogy a rovar megehető állapotban van-e. Ha sikeres a művelet,
+     * a rovar eltávolításra kerül az objektumok közül, és gombát hoz létre a helyére,
+     * amennyiben lehetséges.
+     *
+     * @param insect az Insect példány, amelyet meg szeretnénk enni
      */
     public void eatInsect(Insect insect) {
         FungalThread thread;
@@ -506,33 +619,24 @@ public class Controller {
         if (fungusPlayers.contains(currentPlayer)) {
             FungusPlayer fp = (FungusPlayer) currentPlayer;
             thread = (FungalThread) fp.getThread();
-        } else {
-            return;
-        }
+        } else return;
 
         // Megnézzük, hogy annak a játékosnak a fonalával akarunk lépni amelyik most van
         // soron
         FungusPlayer mushroomPlayer = null;
-        for (FungusPlayer fPlayer : fungusPlayers) {
-            if (fPlayer.getThread() == thread) {
+        for (FungusPlayer fPlayer : fungusPlayers)
+            if (fPlayer.getThread() == thread)
                 mushroomPlayer = fPlayer;
-            }
-        }
 
-        if (mushroomPlayer != currentPlayer) {
+        if (mushroomPlayer != currentPlayer)
             return;
-        }
 
         boolean canEat = false;
-        for (InsectPlayer iPlayer : insectPlayers) {
-            for (InsectAssociation insectA : iPlayer.getInsects()) {
-                if (insectA.getInsect() == insect) {
-                    if ((insectA.getCut() == true) && (insectA.getMoved() == true)) {
+        for (InsectPlayer iPlayer : insectPlayers)
+            for (InsectAssociation insectA : iPlayer.getInsects())
+                if (insectA.getInsect() == insect)
+                    if ((insectA.getCut()) && (insectA.getMoved()))
                         canEat = true;
-                    }
-                }
-            }
-        }
 
         if (canEat) {
             // Ha sikertelen, akkor kiírja, egyébként kivesszi a rovart az objectsből
@@ -551,20 +655,16 @@ public class Controller {
                         gPanel.addMushroom(m);
                     }
                 }
+
                 InsectPlayer insectPlayer = null;
-                for (InsectPlayer iPlayer : insectPlayers) {
-                    for (InsectAssociation insectA : iPlayer.getInsects()) {
-                        if (insectA.getInsect() == insect) {
+                for (InsectPlayer iPlayer : insectPlayers)
+                    for (InsectAssociation insectA : iPlayer.getInsects())
+                        if (insectA.getInsect() == insect)
                             insectPlayer = iPlayer;
-                        }
-                    }
-                }
+
                 insectPlayer.rm(insect);
-
                 gPanel.removeInsect(insect);
-
                 objects.entrySet().removeIf(entry -> entry.getValue() == insect);
-
                 gPanel.repaint();
             }
         } else {
@@ -572,23 +672,26 @@ public class Controller {
         }
     }
 
+
     /**
-     * Moves an insect onto a tecton, handles eating and effects.
+     * A megadott rovarral történő mozgást hajtja végre a játékban a megadott tecton vezérlő alapján.
+     * Ez a metódus egy sor ellenőrzést végez a mozgás jogosultságának megállapítására,
+     * majd végrehajtja a mozgást, és kezeli a spórák evését.
+     *
+     * @param insect Az a rovar, amelyik lépni fog a játékban. Nem lehet null értékű, és a játékosnak birtokolnia kell.
+     * @param tecton A játékban használt tecton vezérlő, amely biztosítja a megfelelő interakciókat
+     *               a spórákkal és a lépés különböző eseményeivel.
      */
     public void move(Insect insect, ITectonController tecton) {
-        if (round == 0) {
+        if (round == 0)
             return;
-        }
 
         // Ő következik?
         InsectPlayer insectPlayer = null;
-        for (InsectPlayer iPlayer : insectPlayers) {
-            for (InsectAssociation insectA : iPlayer.getInsects()) {
-                if (insectA.getInsect() == insect) {
+        for (InsectPlayer iPlayer : insectPlayers)
+            for (InsectAssociation insectA : iPlayer.getInsects())
+                if (insectA.getInsect() == insect)
                     insectPlayer = iPlayer;
-                }
-            }
-        }
 
         if (insectPlayer != currentPlayer) {
             gPanel.showError("Ez nem a te rovarad, vagy nem jelöltél ki rovart");
@@ -626,17 +729,15 @@ public class Controller {
                 for (Map.Entry<String, Object> entry : objects.entrySet()) {
                     if (entry.getValue().equals(spore)) {
                         str = entry.getKey();
-
                         break;
                     }
                 }
-                objects.remove(str);
 
+                objects.remove(str);
                 List<Spore> rm = new ArrayList<>();
                 rm.add(spores.get(0));
                 tecton.removeSpores(rm);
                 insectPlayer.addPoint();
-
                 gPanel.repaint();
             }
         } else {
@@ -644,42 +745,47 @@ public class Controller {
         }
 
         // Kapott effekt hatása
-        if (insect.getState().equals(DIVIDED)) { // létrejön egy új rovar
+        if (insect.getState().equals(DIVIDED))  // létrejön egy új rovar
             divide(insect);
-        }
+
         if (insect.getState().equals(SPEEDBOOST)) { // mintha nem is lépett volna
             insectAssociation.setMoved(false);
             insect.setState(NORMAL);
             gPanel.showInformation("A rovar SPEEDBOOST állapotba került");
         }
+
         if (insect.getState().equals(NOCUT)) { // nocut = mintha már vágott volna
             insectAssociation.setCut(true); // paralyzed = mintha már vágott és lépett is volna (az utóbbi igaz is)
             gPanel.showInformation("A rovar NOCUT állapotba került");
         }
-        if(insect.getState().equals(PARALYZED)){
+
+        if (insect.getState().equals(PARALYZED)) {
             insectAssociation.setCut(true);
             gPanel.showInformation("A rovar PARALYZED állapotba került");
         }
-        if(insect.getState().equals(SLOWED)){
+
+        if (insect.getState().equals(SLOWED)) {
             gPanel.showInformation("A rovar SLOWED állapotba került");
         }
     }
 
-    /** Cuts a thread on a tecton with an insect. */
+
+    /**
+     * Kezdeményezi egy rovar adott tekton objektumra való vágás műveletét.
+     *
+     * @param insect A rovar, amely végrehajtja a vágást.
+     * @param tecton Az a tekton objektum, amelyen a vágást végre kell hajtani.
+     */
     public void cut(Insect insect, ITectonController tecton) {
-        if (round == 0) {
+        if (round == 0)
             return;
-        }
 
         // Ő következik?
         InsectPlayer insectPlayer = null;
-        for (InsectPlayer iPlayer : insectPlayers) {
-            for (InsectAssociation insectA : iPlayer.getInsects()) {
-                if (insectA.getInsect() == insect) {
+        for (InsectPlayer iPlayer : insectPlayers)
+            for (InsectAssociation insectA : iPlayer.getInsects())
+                if (insectA.getInsect() == insect)
                     insectPlayer = iPlayer;
-                }
-            }
-        }
 
         if (insectPlayer != currentPlayer) {
             gPanel.showError("Ez nem a te rovarad, vagy nem jelöltél ki rovart");
@@ -694,6 +800,7 @@ public class Controller {
             gPanel.showError("Ez nem a te rovarad, vagy nem jelöltél ki rovart");
             return;
         }
+
         // Tud vágni?
         if (insectAssociation.getCut()) {
             gPanel.showError("Már vágtál ebben a körben, vagy olyan állapotban vagy, ami ezt nem engedi");
@@ -709,6 +816,13 @@ public class Controller {
         }
     }
 
+
+    /**
+     * Új Tecton objektumot hoz létre.
+     *
+     * @param type a létrehozandó Tecton objektum típusa
+     * @return az újonnan létrehozott Tecton objektum
+     */
     Tecton createTecton(String type) {
         Tecton t;
         switch (type) {
@@ -735,6 +849,14 @@ public class Controller {
         return t;
     }
 
+
+    /**
+     * Beállítja a szomszédokat a megadott lista alapján.
+     *
+     * @param neighborList A szomszédokat tartalmazó tömb, ahol az első elem azonosítja
+     *                     azt az objektumot, amelyhez a szomszédokat be kell állítani. A listában
+     *                     további elemek a szomszédokat jelölik, "null" megadása esetén a szomszéd értéke null lesz.
+     */
     void setNeighbors(String[] neighborList) {
         ITectonController t = (ITectonController) objects.get(neighborList[0]);
         List<Tecton> nList = new ArrayList<>();
@@ -749,6 +871,14 @@ public class Controller {
         t.setNeighbors(nList);
     }
 
+
+    /**
+     * Betölti a Tecton elemeket egy megadott fájlból, feldolgozza a
+     * pontokat és szomszédságokat, majd hozzáadja az elemeket a grafikus
+     * panelhez.
+     *
+     * @param filename Az a fájlnév, amelyből a Tecton elemeket be kívánjuk tölteni.
+     */
     public void loadTecton(String filename) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -756,38 +886,38 @@ public class Controller {
             boolean readPoints = true;
 
             while ((line = br.readLine()) != null) {
-
                 String[] str = line.split(" ");
-                if (str[0].equals("neighbors")) {
+                if (str[0].equals("neighbors"))
                     break;
-                }
 
                 List<Integer> points = new ArrayList<>();
-
-                for (int i = 0; i < str.length - 1; i++) {
+                for (int i = 0; i < str.length - 1; i++)
                     points.add(Integer.parseInt(str[i]));
-                }
 
                 Tecton t = createTecton(str[str.length - 1]);
-
                 gPanel.addTecton(points, t, str[str.length - 1]);
-
             }
 
             while ((line = br.readLine()) != null) {
                 String[] str = line.split(" ");
                 setNeighbors(str);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
+    /**
+     * A closestep metódus a játék körének egy lépését zárja le.
+     * Ez a metódus beállítja az aktuális játékost, majd újrarajzoltatja a játékpanelt
+     * annak érdekében, hogy frissítse a játék állapotának vizuális megjelenítését.
+     */
     public void closestep() {
         setCurrentPlayer();
         gPanel.repaint();
     }
+
 
     /**
      * Beállítja az aktuális játékost a játékmenetben, figyelembe véve a gombász és
@@ -852,6 +982,7 @@ public class Controller {
         }
     }
 
+
     /**
      * A játékkör inicializálását végző metódus.
      * <p>
@@ -871,7 +1002,6 @@ public class Controller {
             for (InsectPlayer insPlayer : insectPlayers) {
                 for (InsectAssociation insectA : insPlayer.getInsects()) {
                     InsectState state = insectA.getInsect().getState();
-
                     if (state == SLOWED) {
                         insectA.setMoved(true);
                         insectA.setCut(false);
@@ -954,21 +1084,20 @@ public class Controller {
             }
 
             if (round % 4 == 0) {
-                for (ITectonController tecton : tList) {
+                for (ITectonController tecton : tList)
                     tecton.absorb();
-                }
+
                 int rnumb = randomize(tList.size() - 1);
-                if(!breakTecton((Tecton) tList.get(rnumb))){
+                if (!breakTecton((Tecton) tList.get(rnumb))) {
                     rnumb = randomize(tList.size() - 1);
                     breakTecton((Tecton) tList.get(rnumb));
                 }
-
             }
-
         } else {
             gPanel.endGame();
         }
     }
+
 
     /**
      * Új gomba név generálása növekvő sorszám alapján.
@@ -984,6 +1113,7 @@ public class Controller {
         return name;
     }
 
+
     /**
      * Új fonál név generálása növekvő sorszám alapján.
      * A metódus növeli a fungalThreadCount mező értékét, és az értéket
@@ -997,6 +1127,7 @@ public class Controller {
         String name = "f" + fungalThreadCount;
         return name;
     }
+
 
     /**
      * Új spóra név generálása növekvő sorszám alapján.
@@ -1012,6 +1143,7 @@ public class Controller {
         return name;
     }
 
+
     /**
      * Új rovar név generálása növekvő sorszám alapján.
      * A metódus növeli az insectCount mező értékét, majd az értéket
@@ -1025,6 +1157,7 @@ public class Controller {
         String name = "i" + insectCount;
         return name;
     }
+
 
     /**
      * Új tecton név generálása növekvő sorszám alapján.
@@ -1040,6 +1173,7 @@ public class Controller {
         return name;
     }
 
+
     /**
      * Egy véletlenszerű egész számot generál egy megadott domainen belül, feltéve,
      * hogy a randomizálás engedélyezett.
@@ -1051,7 +1185,7 @@ public class Controller {
      *         különben 0.
      */
     public int randomize(int domain) {
-        if (randomize == true) {
+        if (randomize) {
             return (gPanel.randomize() % domain);
         } else {
             return 0;

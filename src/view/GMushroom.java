@@ -102,44 +102,44 @@ public class GMushroom {
 
 
         String pathName = null;
-        if(m.getState() == MushroomState.UNEVOLVED){
+        if (m.getState() == MushroomState.UNEVOLVED) {
             switch (playerColor.getRGB()) {
-            case 0xFFFF0000: // Color.RED
-                pathName = "mush1.png";
-                break;
+                case 0xFFFF0000: // Color.RED
+                    pathName = "mush1.png";
+                    break;
 
-            case 0xFF00FF00: // Color.GREEN
-                pathName = "mush3.png";
-                break;
+                case 0xFF00FF00: // Color.GREEN
+                    pathName = "mush3.png";
+                    break;
 
-            case 0xFF0000FF: // Color.BLUE
-                pathName = "mush2.png";
-                break;
+                case 0xFF0000FF: // Color.BLUE
+                    pathName = "mush2.png";
+                    break;
 
-            case 0xFFFFFF00: // Color.YELLOW
-                pathName = "mush4.png";
-                break;
+                case 0xFFFFFF00: // Color.YELLOW
+                    pathName = "mush4.png";
+                    break;
             }
-        }else{
+        } else {
             switch (playerColor.getRGB()) {
-            case 0xFFFF0000: // Color.RED
-                pathName = "mush1old.png";
-                break;
+                case 0xFFFF0000: // Color.RED
+                    pathName = "mush1old.png";
+                    break;
 
-            case 0xFF00FF00: // Color.GREEN
-                pathName = "mush3old.png";
-                break;
+                case 0xFF00FF00: // Color.GREEN
+                    pathName = "mush3old.png";
+                    break;
 
-            case 0xFF0000FF: // Color.BLUE
-                pathName = "mush2old.png";
-                break;
+                case 0xFF0000FF: // Color.BLUE
+                    pathName = "mush2old.png";
+                    break;
 
-            case 0xFFFFFF00: // Color.YELLOW
-                pathName = "mush4old.png";
-                break;
+                case 0xFFFFFF00: // Color.YELLOW
+                    pathName = "mush4old.png";
+                    break;
             }
         }
-       
+
 
         BufferedImage img = null;
         try {

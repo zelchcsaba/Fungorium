@@ -4,6 +4,7 @@ import controller.Controller;
 import controller.FungusPlayer;
 import controller.InsectPlayer;
 import controller.Player;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,9 +16,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import model.Insect;
 import model.Mushroom;
 import model.Tecton;
+
 import static view.FieldCreator.*;
 
 
@@ -57,7 +60,7 @@ public class GamePanel extends JPanel {
      * akciógombokat. A GamePanel a főablak (MainWindow) részeként működik, és Controller-t
      * használ a játék funkcióinak kezelésére.
      *
-     * @param parent A szülő MainWindow objektum, amelyhez ez a panel tartozik.
+     * @param parent     A szülő MainWindow objektum, amelyhez ez a panel tartozik.
      * @param controller A Controller objektum, amelyet a játék interaktív vezérléséhez
      *                   használnak az események kezelésére és a játékmenet logikájának kezelésére.
      */
@@ -71,7 +74,7 @@ public class GamePanel extends JPanel {
         setLayout(new BorderLayout());
 
         // játékos, körszám
-        int labelWidth = getWidth()/5;
+        int labelWidth = getWidth() / 5;
 
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(Color.BLACK);
@@ -122,9 +125,8 @@ public class GamePanel extends JPanel {
 
 
         drawingPanel = new DrawingPanel(controller, this);
-        drawingPanel.setBackground(Color.BLACK); 
+        drawingPanel.setBackground(Color.BLACK);
         add(drawingPanel, BorderLayout.CENTER);
-
 
 
         // akció gombok
@@ -290,7 +292,7 @@ public class GamePanel extends JPanel {
      * players attribútumon keresztül.
      */
     public void setPlayerColors() {
-        Color[] colors = { Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW };
+        Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW};
 
         List<InsectPlayer> iPlayers = controller.getInsectPlayers();
         List<FungusPlayer> fPlayers = controller.getFungusPlayers();
@@ -313,8 +315,8 @@ public class GamePanel extends JPanel {
      * annak típusát és színét, majd hozzáadja a játékfelülethez.
      *
      * @param points A tektonhoz tartozó pontok listája, ahol a páros indexek az x koordináták, a páratlanok pedig az y koordináták.
-     * @param t A hozzáadandó tekton objektum.
-     * @param type A tekton típusa, amely befolyásolja annak megjelenítését (például "MultiThreadTecton", "SingleThreadTecton").
+     * @param t      A hozzáadandó tekton objektum.
+     * @param type   A tekton típusa, amely befolyásolja annak megjelenítését (például "MultiThreadTecton", "SingleThreadTecton").
      */
     public void addTecton(List<Integer> points, Tecton t, String type) {
 
@@ -359,7 +361,7 @@ public class GamePanel extends JPanel {
      * A metódus a megadott forrás tektonból két új tekton objektumot hoz létre,
      * és frissíti a grafikus felületet a változásnak megfelelően.
      *
-     * @param source A forrás tekton, amelyet szét kell osztani.
+     * @param source   A forrás tekton, amelyet szét kell osztani.
      * @param created1 Az első létrehozott új tekton.
      * @param created2 A második létrehozott új tekton.
      */
@@ -439,7 +441,6 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
 
     }
-
 
 
     /**

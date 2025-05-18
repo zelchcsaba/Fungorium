@@ -43,7 +43,6 @@ public class DrawingPanel extends JPanel {
     private boolean firstpaint;
 
 
-
     /**
      * A DrawingPanel osztály konstruktora. Feladata az osztály attribútumainak inicializálása,
      * az egérkattintási események figyelése, és az alapértelmezett szélesség és magasság beállítása.

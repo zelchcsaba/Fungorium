@@ -24,13 +24,13 @@ public interface ITectonController {
 
     void setSpores(List<Spore> slist);
 
-    public List<Spore> getSpores();
+    List<Spore> getSpores();
 
-    public boolean removeSpores(List<Spore> slist);
+    boolean removeSpores(List<Spore> slist);
 
-    public void setNeighbors(List<Tecton> neighbors);
+    void setNeighbors(List<Tecton> neighbors);
 
-    public void addThread(FungalThread f);
+    void addThread(FungalThread f);
 
-    public void addSpore(Spore sp);
+    void addSpore(Spore sp);
 }

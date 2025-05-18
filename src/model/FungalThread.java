@@ -16,6 +16,7 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
     private List<Tecton> tectons;
     protected List<timeToDie> life;
 
+
     /**
      * A FungalThread konstruktora, amely inicializálja a szükséges adattagokat.
      * A konstruktor létrehozza és inicializálja a tectons és life listákat, amelyek
@@ -27,6 +28,7 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
         life = new ArrayList<>();
     }
 
+
     /**
      * Beállítja a fonalhoz tartozó tectonok listáját.
      *
@@ -35,6 +37,7 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
     public void setTectons(List<Tecton> tectons) {
         this.tectons = tectons;
     }
+
 
     /**
      * Visszaadja a jelenlegi tectonok listáját.
@@ -45,25 +48,12 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
         return tectons;
     }
 
+
     /**
-     * Eltávolítja azokat a fonálrészeket, amelyek nem kapcsolódnak ugyanolyan
-     * fajból származó gombatesthez.
-     * <p>
-     * A metódus végigiterál a tectons listán, és azokat a tektonokat, amelyek
-     * kapcsolódnak egy gombatestre,
-     * összegyűjti egy ideiglenes connectedTectons listába. Azokon a tectonokon,
-     * amelyek nem szerepelnek a
-     * connectedTectons listában, eltávolítja a fonálrészeket.
-     * <p>
-     * Függvényfolyamat:
-     * 1. Kiválasztja azokat a tektonokat (Tecton példányokat), amelyeken gombatest
-     * található, és egy külön listába helyezi.
-     * 2. Összegyűjti azokat a tektonokat, amelyek fonálrésszel kapcsolódnak
-     * ugyanolyan fajból származó gombatesthez.
-     * 3. Azokból a tektonokból, amelyek nem szerepelnek a kapcsolódó tektonok
-     * listájában, eltávolítja a fonálrészeket.
-     * <p>
-     * A szimulációt segítő t.toCall() metódus különböző részfolyamatokat naplóz ki.
+     * Eltávolítja a felesleges fonálszálakat, amelyek már nincsenek kapcsolatban olyan gombákat tartó
+     * tectonokkal, amelyek az adott FungalThread objektumból származnak.
+     * A metódus célja, hogy biztosítsa, hogy csak azok a fonálszálak és tectonok maradjanak meg,
+     * amelyek ténylegesen kapcsolódnak egy gombatesthez és aktívan hozzájárulnak a fonál működéséhez.
      */
     public void deleteUnnecessaryThreads() {
 
@@ -114,16 +104,17 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
         }
     }
 
+
     /**
      * Egy új ágazó fonalat hoz létre, amely a meglévő fonálból indul és egy másik
      * tektonra kiterjed.
      *
      * @param t A céltekton, amelyhez az új fonalat csatlakoztatják.
      * @return Igaz, ha a fonál sikeresen létrejött és csatlakozott, hamis, ha a
-     *         csatlakozás nem sikerült.
+     * csatlakozás nem sikerült.
      */
     public boolean branchThread(Tecton t) {
-        if(t.getThreads().contains(this)){
+        if (t.getThreads().contains(this)) {
             return false;
         }
         if (!t.putThread(this)) {
@@ -134,17 +125,19 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
         }
     }
 
+
     /**
      * Hozzáadja a megadott Tectont a jelenlegi FungalThread-hez tartozó tectons
      * listához.
      *
      * @param t a Tecton példány, amelyet hozzá kell adni
      * @return true értéket ad vissza, ha a Tecton sikeresen hozzáadásra került;
-     *         false egyébként
+     * false egyébként
      */
     public boolean addTecton(Tecton t) {
         return tectons.add(t);
     }
+
 
     /**
      * Eltávolítja a megadott tektont a jelenlegi tectons listából.
@@ -158,6 +151,7 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
         return true;
     }
 
+
     /**
      * Megpróbál egy új gombát növeszteni a megadott tektonon, amennyiben a
      * megfelelő feltételek teljesülnek.
@@ -165,7 +159,7 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
      * @param t A tekton, amelyen a gomba növekedni fog.
      * @param m A gomba, amelyet növeszteni kell.
      * @return Igaz értékkel tér vissza, ha a gomba sikeresen megnőtt a tektonon;
-     *         hamis egyébként.
+     * hamis egyébként.
      */
     public boolean growMushroom(Tecton t, Mushroom m) {
 
@@ -207,6 +201,7 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
         }
     }
 
+
     /**
      * A megadott Tectonnak jelzi, hogy megsemmisítésre küldendő. A metódus
      * célja, hogy meghatározza, a Tecton alkalmas-e ezen folyamat végrehajtására,
@@ -215,9 +210,10 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
      * @param t A Tecton példány, amelyet megsemmisítésre kell vizsgálni és
      *          esetlegesen kezelni.
      * @return true értéket ad vissza, ha a Tecton sikeresen kezelésre került,
-     *         hamis, ha a folyamat sikertelen volt.
+     * hamis, ha a folyamat sikertelen volt.
      */
     public abstract boolean sendToDie(Tecton t);
+
 
     /**
      * Csökkenti az életciklusban lévő objektumok idejét, majd eltávolítja azokat az
@@ -253,6 +249,7 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
         deleteUnnecessaryThreads();
     }
 
+
     /**
      * Megpróbálja megenni a megadott rovart egy olyan tecton helyzetében, amely a
      * jelenlegi gombafonálhoz tartozik.
@@ -261,7 +258,7 @@ public abstract class FungalThread implements IFungalThreadController, IFungalTh
      *
      * @param i A rovar (Insect példány), amelyet a fonálnak meg kell ennie.
      * @return true, ha a rovar sikeresen eltávolításra és elfogyasztásra került;
-     *         false, ha a folyamat nem sikerült.
+     * false, ha a folyamat nem sikerült.
      */
     public boolean eatInsect(Insect i) {
         if (tectons.contains(i.getPosition())) {

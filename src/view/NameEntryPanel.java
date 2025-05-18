@@ -1,13 +1,14 @@
 package view;
 
 import controller.Controller;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-import static view.FieldCreator.*;
 
+import static view.FieldCreator.*;
 
 
 /**
@@ -76,7 +77,7 @@ public class NameEntryPanel extends JPanel implements ActionListener {
     public void updatePlayerFields() {
         fPlayerNameFields.clear();
         iPlayerNameFields.clear();
-        namesPanel.removeAll(); 
+        namesPanel.removeAll();
         fungusCount = controller.getFungusPlayerCount();
         insectCount = controller.getInsectPlayerCount();
 
@@ -95,7 +96,7 @@ public class NameEntryPanel extends JPanel implements ActionListener {
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        while(gbc.gridy <fungusCount+1){
+        while (gbc.gridy < fungusCount + 1) {
             gbc.gridy++;
             JTextField fField = createTextField();
             fPlayerNameFields.add(fField);
@@ -104,7 +105,7 @@ public class NameEntryPanel extends JPanel implements ActionListener {
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        while(gbc.gridy <insectCount+1){
+        while (gbc.gridy < insectCount + 1) {
             gbc.gridy++;
             JTextField iField = createTextField();
             iPlayerNameFields.add(iField);

@@ -12,7 +12,9 @@ import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import controller.Controller;
+
 import static view.FieldCreator.*; // createLabel
 
 

@@ -30,6 +30,6 @@ public interface IMushroomController {
 
     int getShootedSporesCount();
 
-    public FungalThread getThread();
+    FungalThread getThread();
 
 }
