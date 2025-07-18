@@ -1,0 +1,17 @@
+# Fordított fájlok és IDE dolgok
+/bin/
+/*.class
+/.classpath
+/.project
+/.settings/
+*.log
+*.jar
+*.iml
+.idea/
+/target/
+/out/
+/*.iws
+
+# OS fájlok
+.DS_Store
+Thumbs.db
